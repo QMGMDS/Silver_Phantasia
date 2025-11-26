@@ -1,0 +1,7 @@
+public class Settings
+{
+    //单个网格的尺寸，有tranform.position的数值移动估计出1
+    public const float gridCellSize = 1f;
+    //单个网格的对角线尺寸
+    public const float gridCellDiagonalSize = 1.41f;
+}
