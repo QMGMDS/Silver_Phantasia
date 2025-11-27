@@ -46,6 +46,7 @@ public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHand
     //鼠标按下
     public void OnPointerClick(PointerEventData eventData)
     {
+        highlight.enabled = false;
         Debug.Log("按下了");
         //触发按下按钮的UI事件
         attackButtonStart?.Invoke();

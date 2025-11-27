@@ -36,6 +36,16 @@ public static class EventHandler
     }
 
     /// <summary>
+    /// 开启人物移动控制的事件
+    /// </summary>
+    public static event Action OpenPlayerMoveEvent;
+
+    public static void CallOpenPlayerMoveEvent()
+    {
+        OpenPlayerMoveEvent?.Invoke();
+    }
+
+    /// <summary>
     /// 战斗开始的触发事件
     /// </summary>
     public static event Action<string,BattleAttributeDataList_SO> BattleStartEvent;
@@ -45,6 +55,15 @@ public static class EventHandler
         BattleStartEvent?.Invoke(battleBack,enemyTeam);
     }
 
+    /// <summary>
+    /// 战斗结束的事件
+    /// </summary>
+    public static event Action BattleEndEvent;
+    
+    public static void CallBattleEndEvent()
+    {
+        BattleEndEvent?.Invoke();
+    }
 
     /// <summary>
     /// 对话结束的事件
@@ -56,7 +75,6 @@ public static class EventHandler
         DialogueOverEvent?.Invoke();
     }
 
-    
     /// <summary>
     /// 场景切换事件
     /// </summary>
@@ -86,7 +104,6 @@ public static class EventHandler
     {
         InteractButtonStartEvent?.Invoke();
     }
-
 
     /// <summary>
     /// 对话片段UI显示的事件

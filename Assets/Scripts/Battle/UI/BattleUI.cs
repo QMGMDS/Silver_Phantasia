@@ -1,36 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class BattleUI : MonoBehaviour
 {
     public GameObject Action;
     //用于存储当前回合的目标角色属性
-    private BattleAttribute thisCharacter;
-    private bool isAction;
+    private BattleAttribute thisCharacterTurn;
 
-
-    private void Awake()
+    private void Update()
     {
-        //战斗行动轴排序到玩家角色时触发玩家行动，开启玩家ActionUI
-        thisCharacter = BattleManager.Instance.isWhoTurn();
-        Debug.Log(thisCharacter.roleName);
-        //是玩家的话就打开玩家操作面板
-        if (thisCharacter.isPlayer)
+        if (BattleManager.Instance.BattleTurn == Turn.None)
         {
-            isAction = true;
-            Action.SetActive(true);
+            thisCharacterTurn = BattleManager.Instance.isWhoTurn();
+            Debug.Log(thisCharacterTurn.roleName);
+            if (thisCharacterTurn.isPlayer)
+            {
+                BattleManager.Instance.BattleTurn = Turn.Player;
+                Action.SetActive(true);
+                //高亮对应Player的HUD
+            }
+            else
+            {
+                BattleManager.Instance.BattleTurn = Turn.Enemy;
+                Debug.Log("enemy攻击!");
+                Action.SetActive(false);
+                BattleManager.Instance.EnemyAttack();
+                //HUD更新
+                var allBattleHUD = GetComponentsInChildren<BattleHUD>();
+                foreach (var battleHUD in allBattleHUD)
+                {
+                    if(battleHUD != null)
+                        battleHUD.UpdateHUD();
+                }
+                BattleManager.Instance.BattleTurn = Turn.None;
+            }
         }
-        else
+        else if(BattleManager.Instance.BattleTurn == Turn.End)
         {
-            isAction = false;
-            Action.SetActive(false);
+            Debug.Log("战斗结束");
+            BattleManager.Instance.BattleEnd();
         }
     }
 
-
+    /// <summary>
+    /// 按钮按下事件调用，按下按钮关闭ActionUI
+    /// </summary>
+    public void CloseActionUI()
+    {
+        Action.SetActive(false);
+    }
 
 }

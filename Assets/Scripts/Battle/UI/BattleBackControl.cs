@@ -21,19 +21,23 @@ public class BattleBackControl : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler.BattleStartEvent += BattleBackSwitch;
+        EventHandler.BattleStartEvent += OnBattleStartEvent;
+        EventHandler.BattleEndEvent += OnBattleEndEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.BattleStartEvent -= BattleBackSwitch;
+        EventHandler.BattleStartEvent -= OnBattleStartEvent;
+        EventHandler.BattleEndEvent += OnBattleEndEvent;
     }
+
+    
 
     /// <summary>
     /// 战斗开始————显示战斗背景画布
     /// </summary>
     /// <param name="battleBack"></param>
-    private void BattleBackSwitch(string battleBack,BattleAttributeDataList_SO enemyTeam)
+    private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
     {
         if(battleBackImage != null)
             battleBackImage.sprite = GetBattleBack(battleBack).backImage;
@@ -45,5 +49,10 @@ public class BattleBackControl : MonoBehaviour
         //根据名字找到对应的BattleBack
         //如果找到就返回对应的BattleBack，如果没找到就返回null
         return battleBack_SO.battleBacksList.Find(i => i.backName == battleBack);
+    }
+
+    private void OnBattleEndEvent()
+    {
+        battleBackImage.enabled = false;
     }
 }

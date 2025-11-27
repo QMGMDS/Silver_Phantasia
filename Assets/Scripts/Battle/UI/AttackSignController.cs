@@ -4,14 +4,20 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+//Enemy身上独有的脚本
+//显示攻击预览和控制攻击逻辑
 public class AttackSignController : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private GameObject attackSign;
     //Enemy身上的显示图片（因为图片射线检测范围大）
     private Image signImageParent;
-
     //Enemy的HUD，用来显示关闭HUD
     private BattleHUD EnemyHUD;
+
+    //由BattleHUD在初始化时赋值
+    //像BattleHUD知道自己是那个角色的HUD一样
+    //AttackSignController也要知道自己是那个敌人的Sign显示
+    public BattleAttribute thisEnemy;
 
 
 
@@ -38,9 +44,6 @@ public class AttackSignController : MonoBehaviour,IPointerEnterHandler, IPointer
         signImageParent.raycastTarget = false;
     }
 
-
-
-    
     //鼠标进入，打开预攻击显示提示
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -58,11 +61,18 @@ public class AttackSignController : MonoBehaviour,IPointerEnterHandler, IPointer
     //鼠标按下，进行攻击
     public void OnPointerClick(PointerEventData eventData)
     {
+        attackSign.SetActive(false);
+        EnemyHUD.CloseEnemyHUD();
         Debug.Log("打它");
         quitPrepareAttack();
 
-        //调用BattleManager的玩家攻击攻击
-        BattleManager.Instance.PlayerAttack();
+        //调用BattleManager的玩家攻击方法
+        BattleManager.Instance.PlayerAttack(thisEnemy);
+        //更新对应Enemy的BattleUI
+        EnemyHUD.UpdateHUD();
     }
+
+
+    
 
 }

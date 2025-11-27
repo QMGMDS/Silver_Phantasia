@@ -16,8 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField]private Vector2 currentSpeed;
     [Header("人物属性")]
     [SerializeField] private bool isMoving;
-    [SerializeField] private bool isBattle;
-    [SerializeField] private bool isTalking;
+    [SerializeField] private bool canMoving;
     
     [Header("玩家阵营")]
     public BattleAttributeDataList_SO playerTeam;
@@ -37,21 +36,22 @@ public class Player : MonoBehaviour
     {
         playerInput.Enable();
         EventHandler.ClosePlayerMoveEvent += OnClosePlayerMoveEvent;
+        EventHandler.OpenPlayerMoveEvent += OnOpenPlayerMoveEvent;
         EventHandler.MoveToPositionEvent += OnMoveToPositionEvent;
-        EventHandler.DialogueOverEvent += OnDialogueOverEvent;
     }
 
     private void OnDisable()
     {
         playerInput.Disable();
         EventHandler.ClosePlayerMoveEvent -= OnClosePlayerMoveEvent;
+        EventHandler.OpenPlayerMoveEvent += OnOpenPlayerMoveEvent;
         EventHandler.MoveToPositionEvent -= OnMoveToPositionEvent;
-        EventHandler.DialogueOverEvent -= OnDialogueOverEvent;
     }
+
 
     private void Update()
     {
-        if (!isBattle && !isTalking)
+        if (canMoving)
         {
             PlayerInput();
         }
@@ -108,30 +108,28 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnClosePlayerMoveEvent()
     {
-        isBattle = true;
+        canMoving = false;
         inputDirection = Vector2.zero;
         isMoving = false;
     }
 
-    
-
-    private void OnDialogueOverEvent()
+    /// <summary>
+    /// 开启人物移动控制
+    /// </summary>
+    /// <exception cref="System.NotImplementedException"></exception>
+    private void OnOpenPlayerMoveEvent()
     {
-        OpenMoveControl();
-    }
-    
-    private void OnMoveToPositionEvent(Vector3 positionToGo)
-    {
-        transform.position = positionToGo;
+        canMoving = true;
+        isMoving = true;
     }
 
     /// <summary>
-    /// 开启人物移动
+    /// 场景切换坐标传送
     /// </summary>
-    private void OpenMoveControl()
+    /// <param name="positionToGo"></param>
+    private void OnMoveToPositionEvent(Vector3 positionToGo)
     {
-        isMoving = true;
-        isTalking = false;
+        transform.position = positionToGo;
     }
 
 }

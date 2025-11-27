@@ -631,8 +631,7 @@ MonoBehaviour:
   speed: 500
   currentSpeed: {x: 0, y: 0}
   isMoving: 0
-  isBattle: 0
-  isTalking: 0
+  canMoving: 1
   playerTeam: {fileID: 11400000, guid: a8dcc2474feee7c46a7518edc30fc6fd, type: 2}
 --- !u!1 &436495456
 GameObject:
@@ -709,8 +708,8 @@ Transform:
   m_Children:
   - {fileID: 1621657199}
   - {fileID: 125135812}
-  - {fileID: 1192276281}
   - {fileID: 436495457}
+  - {fileID: 1192276281}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &568994171
@@ -1386,7 +1385,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d06fc210649bf45a9f08a138f64364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleList: []
   playerTeam: {fileID: 11400000, guid: a8dcc2474feee7c46a7518edc30fc6fd, type: 2}
+  enemyTeam: []
+  currentButtonType: 0
+  thisCharacterTurn:
+    roleID: 0
+    roleName: 
+    roleSprite: {fileID: 0}
+    isPlayer: 0
+    maxHP: 0
+    currentHP: 0
+    baseAttack: 0
+    baseDefend: 0
+    speed: 0
+    path: 0
+  BattleTurn: 0
+  walkPath: 0
 --- !u!1 &1222242733
 GameObject:
   m_ObjectHideFlags: 0

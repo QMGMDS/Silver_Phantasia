@@ -19,17 +19,6 @@ public enum ItemType
     Treatment,
 }
 
-//攻击类型
-// public enum AttackType
-// {
-//     //普攻
-//     Normal,
-//     //技能型攻击
-//     Skill,
-//     //物品型攻击
-//     Item,
-// }
-
 //按键Button类型
 public enum ButtonType
 {
@@ -39,4 +28,13 @@ public enum ButtonType
     Skill,
     Item,
     Flee,
+}
+
+//现在是什么回合？
+public enum Turn
+{
+    None,
+    Player,
+    Enemy,
+    End,
 }

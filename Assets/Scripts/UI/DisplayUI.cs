@@ -11,23 +11,30 @@ public class DisplayUI : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.BattleStartEvent += OnBattleStartEvent;
+        EventHandler.BattleEndEvent += OnBattleEndEvent;
     }
 
     private void OnDisable()
     {
         EventHandler.BattleStartEvent -= OnBattleStartEvent;
+        EventHandler.BattleEndEvent -= OnBattleEndEvent;
     }
 
     private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
     {
-        SwitchBattleUI(enemyTeam);
+        SwitchBattleStartUI();
+    }
+
+    private void OnBattleEndEvent()
+    {
+        SwitchBattleEndUI();
     }
 
     /// <summary>
     /// 切换战斗模式UI并将敌人队伍给到battleUI
     /// </summary>
     /// <param name="player"></param>
-    private void SwitchBattleUI(BattleAttributeDataList_SO enemyTeam)
+    private void SwitchBattleStartUI()
     {
         normalUI.SetActive(false);
         battleUI.SetActive(true);
@@ -37,8 +44,15 @@ public class DisplayUI : MonoBehaviour
         {
             if(battleHUD != null)
             {
-                battleHUD.InitHUD(enemyTeam);
+                battleHUD.InitHUD();
             }
         }
+    }
+
+
+    private void SwitchBattleEndUI()
+    {
+        normalUI.SetActive(true);
+        battleUI.SetActive(false);
     }
 }

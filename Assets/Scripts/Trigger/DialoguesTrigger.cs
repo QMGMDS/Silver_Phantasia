@@ -82,7 +82,7 @@ public class DialoguesTrigger : MonoBehaviour
             EventHandler.CallShowDialogueEvent(result);
             isTalking = false;
             //恢复人物控制
-            EventHandler.CallDialogueOverEvent();
+            EventHandler.CallOpenPlayerMoveEvent();
         }
     }
 
