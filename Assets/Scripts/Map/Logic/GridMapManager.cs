@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SP.Map
 {
-    public class GridMapManager:Singleton<GridMapManager>
+    public class GridMapManager : Singleton<GridMapManager>
     {
 
         [Header("地图信息列表")]

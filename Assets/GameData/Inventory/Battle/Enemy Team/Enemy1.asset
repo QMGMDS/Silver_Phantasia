@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy1
   m_EditorClassIdentifier: 
   AttributesList:
-  - roleID: 1
+  - roleID: 0
     roleName: "\u9F99?"
     roleSprite: {fileID: -1223106567, guid: 2ea41edda198e5c44a18921382deeaf6, type: 3}
     isPlayer: 0
@@ -21,3 +21,4 @@ MonoBehaviour:
     currentHP: 750
     baseAttack: 100
     baseDefend: 2
+    speed: 0

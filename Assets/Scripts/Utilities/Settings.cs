@@ -4,4 +4,6 @@ public class Settings
     public const float gridCellSize = 1f;
     //单个网格的对角线尺寸
     public const float gridCellDiagonalSize = 1.41f;
+    //回合制终点路程
+    public const float battleDistance = 100f; 
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerTeam_SO
   m_EditorClassIdentifier: 
   AttributesList:
-  - roleID: 1
+  - roleID: 0
     roleName: "\u59B9\u7EA2"
     roleSprite: {fileID: 1651464863, guid: d97aa8757d611984392d31c704b9f388, type: 3}
     isPlayer: 1
@@ -21,7 +21,8 @@ MonoBehaviour:
     currentHP: 750
     baseAttack: 200
     baseDefend: 50
-  - roleID: 2
+    speed: 0
+  - roleID: 1
     roleName: "\u8F89\u591C"
     roleSprite: {fileID: -1654272251, guid: 8a9fa7026336cdc449d697b962a3330e, type: 3}
     isPlayer: 1
@@ -29,3 +30,4 @@ MonoBehaviour:
     currentHP: 750
     baseAttack: 200
     baseDefend: 50
+    speed: 0

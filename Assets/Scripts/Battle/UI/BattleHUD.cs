@@ -28,7 +28,8 @@ public class BattleHUD : MonoBehaviour
     //玩家队伍的信息，手动赋值
     public BattleAttributeDataList_SO playerTeam;
     
-    
+    [Header("EnemyHUD需要额外赋值的")]
+    public Image back;
 
 
     /// <summary>
@@ -75,33 +76,31 @@ public class BattleHUD : MonoBehaviour
 
 
 
-
-
-    private void OnHUDUpdateEvent(BattleAttribute character)
+    /// <summary>
+    /// 开启EnemyHUD显示（除去角色的显示图片）
+    /// </summary>
+    public void OpenEnemyHUD()
     {
-        HUDUpdate(character);
-        HPUpdate(character);
+        if (isPlayerHUD == false)
+        {
+            back.color = new Color(255,255,255,255);
+            characterName.color = new Color(255,255,255,255);
+            characterHP.color = new Color(255,255,255,255);
+        }
     }
-
 
     /// <summary>
-    /// 更新血量之外的UI
+    /// 关闭EnemyHUD显示（除去角色的显示图片）
     /// </summary>
-    private void HUDUpdate(BattleAttribute character)
+    public void CloseEnemyHUD()
     {
-        characterName.text = character.roleName;
-        characterImage.sprite = character.roleSprite;
+        if (isPlayerHUD == false)
+        {
+            back.color = new Color(255,255,255,0);
+            characterName.color = new Color(255,255,255,0);
+            characterHP.color = new Color(255,255,255,0);
+        }
     }
 
-
-    /// <summary>
-    /// 血量HUD更新
-    /// </summary>
-    /// <param name="currentHP"></param>
-    /// <param name="maxHP"></param>
-    private void HPUpdate(BattleAttribute character)
-    {
-        characterHP.fillAmount = (float)character.currentHP/character.maxHP;
-        characterHPNum.text = character.currentHP + "/" + character.maxHP;
-    }
+    
 }

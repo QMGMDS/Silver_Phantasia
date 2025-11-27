@@ -8,6 +8,8 @@ using UnityEngine.Events;
 
 public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    //该按钮的类型
+    public ButtonType buttonType;
     private Image highlight;
     public UnityEvent attackButtonStart;
 
@@ -45,8 +47,10 @@ public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHand
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("按下了");
-        //触发按下按钮的事件
+        //触发按下按钮的UI事件
         attackButtonStart?.Invoke();
+        //告诉BattleManager现在是什么按钮模式
+        BattleManager.Instance.currentButtonType = buttonType;
     }
 
 

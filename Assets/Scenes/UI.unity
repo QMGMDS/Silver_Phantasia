@@ -398,8 +398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -984,6 +984,7 @@ GameObject:
   - component: {fileID: 538973912}
   - component: {fileID: 538973911}
   - component: {fileID: 538973914}
+  - component: {fileID: 538973915}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Untagged
@@ -1047,7 +1048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1084,12 +1085,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerHUD: 0
-  ID: 1
+  ID: 0
   characterName: {fileID: 1663222298}
   characterHP: {fileID: 93391235}
   characterImage: {fileID: 538973912}
   characterHPNum: {fileID: 0}
   playerTeam: {fileID: 0}
+  back: {fileID: 1861358334}
+--- !u!114 &538973915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538973908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da2fcc4837d1f614294565100243d39a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &557391714
 GameObject:
   m_ObjectHideFlags: 0
@@ -1942,7 +1956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &775721801
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1980,7 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f52db1e9ac3698c4b9aeafc87867b24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Action: {fileID: 0}
+  Action: {fileID: 1006008990}
 --- !u!1 &783004459
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,16 +2121,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c83087d3b8b509342b1577f9fb35758b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonType: 0
   attackButtonStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+      - m_Target: {fileID: 775721802}
+        m_TargetAssemblyTypeName: BattleUI, Assembly-CSharp
+        m_MethodName: CloseActionUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 538973915}
+        m_TargetAssemblyTypeName: AttackSignController, Assembly-CSharp
+        m_MethodName: entryPrepareAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2454,8 +2481,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3918,12 +3945,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerHUD: 1
-  ID: 1
+  ID: 0
   characterName: {fileID: 1281035005}
   characterHP: {fileID: 2117576952}
   characterImage: {fileID: 1546308094}
   characterHPNum: {fileID: 755348923}
   playerTeam: {fileID: 11400000, guid: a8dcc2474feee7c46a7518edc30fc6fd, type: 2}
+  back: {fileID: 0}
 --- !u!1 &1589351902
 GameObject:
   m_ObjectHideFlags: 0
@@ -4364,7 +4392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4379,8 +4407,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 0
+  m_fontColor: {r: 0, g: 0, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4704,7 +4732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1772440197
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4929,8 +4957,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5584,12 +5612,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayerHUD: 1
-  ID: 2
+  ID: 1
   characterName: {fileID: 154992435}
   characterHP: {fileID: 337081515}
   characterImage: {fileID: 2137344660}
   characterHPNum: {fileID: 2124465432}
   playerTeam: {fileID: 11400000, guid: a8dcc2474feee7c46a7518edc30fc6fd, type: 2}
+  back: {fileID: 0}
 --- !u!114 &2137344660
 MonoBehaviour:
   m_ObjectHideFlags: 0
