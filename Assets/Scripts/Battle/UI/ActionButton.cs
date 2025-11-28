@@ -9,6 +9,10 @@ public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHand
     public ButtonType buttonType;
     private Image highlight;
 
+    //按钮按下时的触发事件
+    public UnityEvent buttonStarted;
+
+
     //父物体Action被激活时（玩家可操作时）一开始就执行的方法
     private void Awake()
     {
@@ -43,9 +47,13 @@ public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHand
     public void OnPointerClick(PointerEventData eventData)
     {
         highlight.enabled = false;
-        Debug.Log("按下了");
         //告诉BattleManager现在是什么按钮模式
         BattleManager.Instance.currentButtonType = buttonType;
+
+        //按钮按下了表示确认了对应的行动
+        //1.关闭Action
+        //攻击键被按下：2.开启敌人图片的射线检测，允许预览攻击
+        buttonStarted?.Invoke();
     }
 
 }

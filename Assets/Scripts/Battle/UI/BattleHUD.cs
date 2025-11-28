@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using System.Collections;
 
 public class BattleHUD : MonoBehaviour
 {
@@ -74,5 +72,35 @@ public class BattleHUD : MonoBehaviour
         else
             playerImage.GetComponent<Animator>().enabled = false;
     }
-    
+
+
+    //按钮按下了表示确认了对应的行动
+    //攻击键被按下：2.开启敌人图片的射线检测，允许预览攻击
+    public void AllowEnemyPreview()
+    {
+        enemyImage.raycastTarget = true;
+    }
+
+    //鼠标按下事件
+    //2.关闭敌人图片的射线检测，不允许预览攻击
+    public void NotAllowEnemyPreview()
+    {
+        enemyImage.raycastTarget = false;
+    }
+
+
+    //鼠标射线检测到AttackPreviewController的图片时，开启敌人预览
+    //鼠标移入事件，显示敌人状态预览
+    public void OpenAttackPreview()
+    {
+        enemyHUD.SetActive(true);
+    }
+
+    //鼠标移出事件，关闭敌人状态预览
+    //鼠标按下事件
+    //1.关闭敌人状态预览
+    public void CloseAttackPreview()
+    {
+        enemyHUD.SetActive(false);
+    }
 }

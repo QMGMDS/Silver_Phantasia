@@ -30,9 +30,10 @@ public class BattleSystem : MonoBehaviour
             {
                 //玩家的战斗逻辑
                 BattleManager.Instance.BattleTurn = Turn.Player;
-                //UI事件
-                Debug.Log("高亮显示?");
+                //UI提示事件
                 nowIsPlayerTurn.Invoke();
+                //等待玩家操作......
+                //当玩家按下Action按钮时，每个按钮对应不同事件
 
             }
             //当前回合角色不是玩家就是敌人

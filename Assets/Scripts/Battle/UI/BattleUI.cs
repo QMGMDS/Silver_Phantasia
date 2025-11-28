@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BattleUI : MonoBehaviour
 {
@@ -32,5 +32,18 @@ public class BattleUI : MonoBehaviour
 
     
 
+    //玩家回合的触发事件
+    //3.对应玩家操作Action激活
+    public void OpenAction()
+    {
+        Action.SetActive(true);
+    }
+
+    //按钮按下了表示确认了对应的行动
+    //1.关闭Action
+    public void CloseAction()
+    {
+        Action.SetActive(false);
+    }
 
 }
