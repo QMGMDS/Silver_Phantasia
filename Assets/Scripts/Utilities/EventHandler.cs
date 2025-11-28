@@ -56,7 +56,7 @@ public static class EventHandler
     }
 
     /// <summary>
-    /// 战斗结束的事件
+    /// 战斗结束的事件（战斗胜利执行的）
     /// </summary>
     public static event Action BattleEndEvent;
     

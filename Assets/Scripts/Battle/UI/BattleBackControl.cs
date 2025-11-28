@@ -16,7 +16,7 @@ public class BattleBackControl : MonoBehaviour
     {
         battleBackImage = transform.GetChild(0).gameObject.GetComponent<Image>();
         //默认关闭战斗背景图片
-        //battleBackImage.enabled = false;
+        battleBackImage.enabled = false;
     }
 
     private void OnEnable()

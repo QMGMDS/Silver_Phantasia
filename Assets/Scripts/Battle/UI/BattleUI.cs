@@ -4,51 +4,33 @@ using UnityEngine;
 
 public class BattleUI : MonoBehaviour
 {
+    //玩家操作UI显示
     public GameObject Action;
-    //用于存储当前回合的目标角色属性
-    private BattleAttribute thisCharacterTurn;
 
-    private void Update()
+    //每次BattleUI被激活时调用，初始化HUD
+    private void OnEnable()
     {
-        if (BattleManager.Instance.BattleTurn == Turn.None)
-        {
-            thisCharacterTurn = BattleManager.Instance.isWhoTurn();
-            Debug.Log(thisCharacterTurn.roleName);
-            if (thisCharacterTurn.isPlayer)
-            {
-                BattleManager.Instance.BattleTurn = Turn.Player;
-                Action.SetActive(true);
-                //高亮对应Player的HUD
-            }
-            else
-            {
-                BattleManager.Instance.BattleTurn = Turn.Enemy;
-                Debug.Log("enemy攻击!");
-                Action.SetActive(false);
-                BattleManager.Instance.EnemyAttack();
-                //HUD更新
-                var allBattleHUD = GetComponentsInChildren<BattleHUD>();
-                foreach (var battleHUD in allBattleHUD)
-                {
-                    if(battleHUD != null)
-                        battleHUD.UpdateHUD();
-                }
-                BattleManager.Instance.BattleTurn = Turn.None;
-            }
-        }
-        else if(BattleManager.Instance.BattleTurn == Turn.End)
-        {
-            Debug.Log("战斗结束");
-            BattleManager.Instance.BattleEnd();
-        }
+        StartCoroutine(InitBattle());
     }
 
     /// <summary>
-    /// 按钮按下事件调用，按下按钮关闭ActionUI
+    /// 确保战斗初始化
     /// </summary>
-    public void CloseActionUI()
+    /// <returns></returns>
+    private IEnumerator InitBattle()
     {
-        Action.SetActive(false);
+        var allBattleHUD = GetComponentsInChildren<BattleHUD>();
+        foreach (var battleHUD in allBattleHUD)
+        {
+            if(battleHUD != null)
+                battleHUD.InitHUD();
+        }
+        //等待初始化（TODO：这里本来应该是等待行动轴上的玩家角色移动到终点）
+        yield return new WaitForSeconds(2f);
+        BattleManager.Instance.Inited = true;
     }
+
+    
+
 
 }

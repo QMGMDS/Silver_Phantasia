@@ -3,10 +3,31 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//战斗流程：
+//战斗开始，初始化准备工作(战斗场景UI显示，角色移动操作关闭，)
+//while循环（直到判断游戏结束）
+//{
+//行动轴判断谁的回合（行动轴判断谁的回合，行动轴移动判断动画，对应玩家角色HUD实化提示和人物选中半透明浮现提示，玩家操作面板显示提示）
+//对应回合的角色攻击（攻击动画提示，攻击后数据更新，状态栏更新）
+//判断游戏是否结束
+//}
+
+
+
+
+
+
 public class BattleManager : Singleton <BattleManager>
 {
+    public bool Inited;
+
+
     //战斗列表（用于搜索出角色行动轴和判断在场存活人数）
     public List<BattleAttribute> battleList = new List<BattleAttribute>();
+    //玩家是否存活
+    private bool playerSurvive = false;
+    //敌人是否存活
+    private bool enemySurvive = false;
 
 
     //玩家的战斗信息，调用时实时进行修改SO
@@ -104,16 +125,28 @@ public class BattleManager : Singleton <BattleManager>
     {
         foreach (var character in battleList)
         {
-            if(character.currentHP > 0 && character.isPlayer)
+            if (character.currentHP > 0)
             {
-                
+                if(character.isPlayer)
+                    playerSurvive = true;
+                else
+                    enemySurvive = true;
             }
         }
-
-
+        if(enemySurvive == false)
+        {
+            Debug.Log("玩家胜利");
+            EventHandler.CallOpenPlayerMoveEvent();
+            EventHandler.CallBattleEndEvent();
+        }
+        if(playerSurvive == false)
+        {
+            Debug.Log("敌人胜利");
+            
+        }
         BattleTurn = Turn.None;
-        EventHandler.CallBattleEndEvent();
-        EventHandler.CallOpenPlayerMoveEvent();
+        
+        
     }
 
 
