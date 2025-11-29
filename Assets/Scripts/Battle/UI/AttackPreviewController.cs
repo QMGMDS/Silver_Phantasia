@@ -11,7 +11,9 @@ public class AttackPreviewController : MonoBehaviour, IPointerEnterHandler, IPoi
     //鼠标按下事件
     //1.关闭敌人预览
     //2.关闭敌人图片的射线检测，不允许预览攻击
-    //3.攻击敌人
+    //2.5关闭对应玩家显示图片闪烁
+    //2.6关闭对应玩家HUD高亮显示
+    //3.攻击敌人(确认攻击对象，攻击动画，攻击数据处理)
     public UnityEvent mosueDown;
 
     public void OnPointerEnter(PointerEventData eventData)

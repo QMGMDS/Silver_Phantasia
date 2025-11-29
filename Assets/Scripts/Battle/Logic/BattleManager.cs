@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,15 +20,16 @@ using UnityEngine;
 
 public class BattleManager : Singleton <BattleManager>
 {
+    //战斗是否初始化完毕
     public bool Inited;
+    //当前回合是否结束
+    public bool thisTurnOver;
 
 
     //战斗列表（用于搜索出角色行动轴和判断在场存活人数）
     public List<BattleAttribute> battleList = new List<BattleAttribute>();
-    //玩家是否存活
-    private bool playerSurvive = false;
-    //敌人是否存活
-    private bool enemySurvive = false;
+    //行动轴动画是否播放完毕
+    public bool walkAnimOver;
 
 
     //玩家的战斗信息，调用时实时进行修改SO
@@ -39,7 +41,9 @@ public class BattleManager : Singleton <BattleManager>
     public ButtonType currentButtonType;
     //当前行动回合的角色
     public BattleAttribute thisCharacterTurn;
-    //当前的回合
+    //被攻击的角色
+    public BattleAttribute attackedCharacter;
+    //当前的回合阶段
     public Turn BattleTurn;
     
 
@@ -77,31 +81,28 @@ public class BattleManager : Singleton <BattleManager>
     /// <summary>
     /// 玩家攻击
     /// </summary>
-    /// <param name="enemy">被攻击敌人的信息</param>
-    public void PlayerAttack(BattleAttribute toSearchEnemy)
+    public void PlayerAttack()
     {
-        if (toSearchEnemy == null)
+        if (attackedCharacter == null)
             return;
         //搜索对应的enemy
-        foreach (var enemy in enemyTeam)
+       
+        switch (currentButtonType)
         {
-            if(enemy.roleID == toSearchEnemy.roleID)
-            {
-                switch (currentButtonType)
-                {
-                    case ButtonType.Attack:
-                        enemy.currentHP = enemy.currentHP - thisCharacterTurn.baseAttack;
-                        break;
-                    case ButtonType.Skill:
+            //普攻
+            case ButtonType.Attack:
+                attackedCharacter.currentHP = attackedCharacter.currentHP - thisCharacterTurn.baseAttack;
+                break;
+            //技能攻击
+            case ButtonType.Skill:
 
-                        break;
-                    case ButtonType.Item:
+                break;
+            //物品攻击
+            case ButtonType.Item:
 
-                        break;
-                }
-                BattleTurn = Turn.None;
-            }
+                break;
         }
+        BattleTurn = Turn.None;
     }
 
     public void EnemyAttack()
@@ -121,32 +122,39 @@ public class BattleManager : Singleton <BattleManager>
     /// <summary>
     /// 检测战斗是否结束
     /// </summary>
-    public void BattleEnd()
+    /// <returns>玩家胜利返回1，敌人胜利返回2，无人胜利返回-1</returns>
+    public int BattleEnd()
     {
-        foreach (var character in battleList)
+        //玩家是否存活
+        bool playerSurvive = false;
+        //敌人是否存活
+        bool enemySurvive = false;
+        foreach (var enemy in enemyTeam)
         {
-            if (character.currentHP > 0)
+            if (enemy.currentHP > 0)
             {
-                if(character.isPlayer)
-                    playerSurvive = true;
-                else
-                    enemySurvive = true;
+                enemySurvive = true;
+                break;
+            }
+        }
+        foreach (var player in playerTeam.AttributesList)
+        {
+            if (player.currentHP > 0)
+            {
+                playerSurvive = true;
+                break;
             }
         }
         if(enemySurvive == false)
         {
-            Debug.Log("玩家胜利");
-            EventHandler.CallOpenPlayerMoveEvent();
-            EventHandler.CallBattleEndEvent();
+            return 1;
         }
+            
         if(playerSurvive == false)
         {
-            Debug.Log("敌人胜利");
-            
+            return 2;
         }
-        BattleTurn = Turn.None;
-        
-        
+        return -1;
     }
 
 

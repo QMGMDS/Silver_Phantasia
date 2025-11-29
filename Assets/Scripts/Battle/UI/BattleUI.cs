@@ -7,6 +7,9 @@ public class BattleUI : MonoBehaviour
     //玩家操作UI显示
     public GameObject Action;
 
+    //行动轴
+    public BattleWalkController battleWalkController;
+
     //每次BattleUI被激活时调用，初始化HUD
     private void OnEnable()
     {
@@ -25,9 +28,15 @@ public class BattleUI : MonoBehaviour
             if(battleHUD != null)
                 battleHUD.InitHUD();
         }
-        //等待初始化（TODO：这里本来应该是等待行动轴上的玩家角色移动到终点）
+        //等待初始化
         yield return new WaitForSeconds(2f);
         BattleManager.Instance.Inited = true;
+        yield return new WaitForSeconds(1f);
+        //等待行动轴动画播放完毕
+        //执行行动轴动画的前提是：
+        //1.战斗初始化已经完成
+        //2.行动轴判断当前行动玩家已经完成
+        StartCoroutine(battleWalkController.Move());
     }
 
     

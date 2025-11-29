@@ -850,7 +850,6 @@ GameObject:
   - component: {fileID: 692766203}
   - component: {fileID: 692766205}
   - component: {fileID: 692766206}
-  - component: {fileID: 692766207}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1002,14 +1001,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!81 &692766207
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692766201}
-  m_Enabled: 1
 --- !u!1 &788998464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,11 +1376,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d06fc210649bf45a9f08a138f64364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Inited: 0
+  thisTurnOver: 1
   battleList: []
+  walkAnimOver: 0
   playerTeam: {fileID: 11400000, guid: a8dcc2474feee7c46a7518edc30fc6fd, type: 2}
   enemyTeam: []
   currentButtonType: 0
   thisCharacterTurn:
+    roleID: 0
+    roleName: 
+    roleSprite: {fileID: 0}
+    isPlayer: 0
+    maxHP: 0
+    currentHP: 0
+    baseAttack: 0
+    baseDefend: 0
+    speed: 0
+    path: 0
+  attackedCharacter:
     roleID: 0
     roleName: 
     roleSprite: {fileID: 0}

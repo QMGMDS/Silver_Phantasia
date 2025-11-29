@@ -42,12 +42,20 @@ public class PlayerAdditionalHUD : MonoBehaviour
     {
         if(BattleManager.Instance.thisCharacterTurn == player)
         {
-            HUDBack.DOColor(new Color(255,255,255,255),3f);
-            Debug.Log("高亮显示力");
-
+            HUDBack.color = new Color(255,255,255,255);
             HUDBackRec.sizeDelta = new Vector2(HUDBackRec.sizeDelta.x,210);
             HUDNameRec.position = new Vector2(HUDNameRec.position.x,160);
-            Debug.Log("被拉伸力");
+        }
+    }
+
+    //关闭对应玩家角色HUD高亮
+    public void CloseisYourTurnHUD()
+    {
+        if(BattleManager.Instance.thisCharacterTurn == player)
+        {
+            HUDBack.color = new Color(255,255,255,100);
+            HUDBackRec.sizeDelta = new Vector2(HUDBackRec.sizeDelta.x,200);
+            HUDNameRec.position = new Vector2(HUDNameRec.position.x,150);
         }
     }
 }

@@ -60,6 +60,10 @@ public class BattleAttribute
     public float speed;
     //回合制中当前角色走过的路程，默认是0
     public float path;
+    //行动轴速度
+    public float walkSpeed;
+    //行动轴路程
+    public float walkPath;
 }
 
 //对话片段

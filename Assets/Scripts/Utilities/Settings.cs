@@ -6,4 +6,6 @@ public class Settings
     public const float gridCellDiagonalSize = 1.41f;
     //回合制终点路程
     public const float battleDistance = 100f; 
+    //回合制行动轴判定时间
+    public const float battleWalkTime = 2f;
 }

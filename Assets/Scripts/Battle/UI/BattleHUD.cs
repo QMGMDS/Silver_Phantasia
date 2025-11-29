@@ -62,7 +62,7 @@ public class BattleHUD : MonoBehaviour
     }
 
     //玩家回合的触发事件
-    //2.对应玩家显示图片闪烁
+    //2.开启对应玩家显示图片闪烁
     public void isYourTurnImage()
     {
         if(BattleManager.Instance.thisCharacterTurn != thisCharacter)
@@ -71,6 +71,15 @@ public class BattleHUD : MonoBehaviour
             playerImage.GetComponent<Animator>().enabled = true;
         else
             playerImage.GetComponent<Animator>().enabled = false;
+    }
+
+    //关闭对应玩家显示图片闪烁
+    public void CloseisYourTurnImage()
+    {
+        if(BattleManager.Instance.thisCharacterTurn != thisCharacter)
+            return;
+        playerImage.GetComponent<Animator>().enabled = false;
+        playerImage.color = new Color(255,255,255,255);
     }
 
 
@@ -102,5 +111,20 @@ public class BattleHUD : MonoBehaviour
     public void CloseAttackPreview()
     {
         enemyHUD.SetActive(false);
+    }
+
+    //玩家血量UI更新
+    public void UpdatePlayerHUD()
+    {
+        playerHUD.SetActive(false);
+        playerHUD.SetActive(true);
+    }
+
+
+    //鼠标按下事件
+    //3.攻击敌人（确认攻击对象）
+    public void PlayerAttackToThis()
+    {
+        BattleManager.Instance.attackedCharacter = thisCharacter;
     }
 }
