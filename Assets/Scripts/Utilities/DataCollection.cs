@@ -62,8 +62,10 @@ public class BattleAttribute
     public float path;
     //行动轴速度
     public float walkSpeed;
-    //行动轴路程
+    //行动轴终点坐标
     public float walkPath;
+    //上次行动轴的起点坐标
+    public float lastWalkPath;
 }
 
 //对话片段

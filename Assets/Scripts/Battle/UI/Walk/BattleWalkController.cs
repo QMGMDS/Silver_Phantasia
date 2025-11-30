@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,24 +15,36 @@ public class BattleWalkController : MonoBehaviour
 
     //便于迭代
     private int i;
-
     
 
     public IEnumerator Move()
     {
+        Debug.Log("a");
         //46 236
         //724 236
-        //归零说明走到了终点
+        //动画播放未完成才播放动画
 
         //行动轴速度判断赋值
+        i = 0;
         foreach (var character in BattleManager.Instance.battleList)
         {
+            //确认终点的坐标
+            //归零说明走到了终点，下次动画执行时要将之放到起点
             if(character.path == 0)
                 character.walkPath = 678f;
             else
                 character.walkPath = character.path / Settings.battleDistance * 678;
-            
-            character.walkSpeed = character.walkPath / Settings.battleWalkTime;
+
+            //路径满了说明上一回合该角色抵达终点，初始要将之放回起点
+            if(character.lastWalkPath == 678f)
+            {
+                Rb[i].position = new Vector2(46,236);
+                character.lastWalkPath = 0f;
+            }
+
+            character.walkSpeed = Mathf.Abs(character.walkPath - character.lastWalkPath) / Settings.battleWalkTime;
+            character.lastWalkPath = character.walkPath;
+            i++;
         }
         //赋予行动轴速度
         i = 0;
@@ -50,8 +61,7 @@ public class BattleWalkController : MonoBehaviour
             Rb[i].velocity = new Vector2(0,0);
             i++;
         }
-        
-        BattleManager.Instance.walkAnimOver = true;
+        BattleManager.Instance.walking = false;
     }
 
 }

@@ -16,7 +16,7 @@ using UnityEngine;
 
 
 
-
+//BattleManager处理战斗的数据
 
 public class BattleManager : Singleton <BattleManager>
 {
@@ -30,6 +30,8 @@ public class BattleManager : Singleton <BattleManager>
     public List<BattleAttribute> battleList = new List<BattleAttribute>();
     //行动轴动画是否播放完毕
     public bool walkAnimOver;
+    //行动轴动画是否在播放
+    public bool walking;
 
 
     //玩家的战斗信息，调用时实时进行修改SO
@@ -47,9 +49,6 @@ public class BattleManager : Singleton <BattleManager>
     public Turn BattleTurn;
     
 
-    
-    //角色在战斗中已走过的回合制路程
-    public int walkPath;
 
 
     private void OnEnable()

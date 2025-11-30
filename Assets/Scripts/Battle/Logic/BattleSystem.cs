@@ -1,12 +1,15 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
+
+//BattleSystem处理战斗的逻辑
 
 public class BattleSystem : MonoBehaviour
 {
+    private BattleUI battleUI;
+
+
     //当前回合的战斗角色
     private BattleAttribute thisTurnCharacter;
 
@@ -26,6 +29,7 @@ public class BattleSystem : MonoBehaviour
     private void Awake()
     {
         BattleManager.Instance.BattleTurn = Turn.None;
+        battleUI = GetComponent<BattleUI>();
     }
 
     private void Update()
@@ -34,15 +38,16 @@ public class BattleSystem : MonoBehaviour
             return;
         if(BattleManager.Instance.BattleTurn == Turn.None)
         {
-            //当前回合结束了才进行行动轴判断
+            //上个回合结束了才判断下个回合的行动
             if (BattleManager.Instance.thisTurnOver)
             {
-                thisTurnCharacter = BattleManager.Instance.isWhoTurn();
-                BattleManager.Instance.thisTurnOver = false;
+                AxisOfAction();
             }
-            //等待行动轴动画播放完毕之后
-            if(BattleManager.Instance.walkAnimOver == false)
+            
+            //等待行动轴动画完成
+            if(BattleManager.Instance.walking)
                 return;
+            
             if(thisTurnCharacter.currentHP <= 0)
                 return;
             if (thisTurnCharacter.isPlayer)
@@ -87,13 +92,13 @@ public class BattleSystem : MonoBehaviour
         BattleManager.Instance.PlayerAttack();
         if(BattleManager.Instance.BattleEnd() == -1)
         {
-            Debug.Log("继续");
             BattleManager.Instance.BattleTurn = Turn.None;
         }
         else
         {
             BattleManager.Instance.BattleTurn = Turn.End;
         }
+        BattleManager.Instance.thisTurnOver = true;
     }
 
 
@@ -114,12 +119,11 @@ public class BattleSystem : MonoBehaviour
         {
             BattleManager.Instance.BattleTurn = Turn.End;
         }
+        BattleManager.Instance.thisTurnOver = true;
     }
 
     public void BattleEnd()
     {
-        //战斗结束清空列表
-        BattleManager.Instance.battleList = new List<BattleAttribute>();
         if(BattleManager.Instance.BattleEnd() == 1)
         {
             Debug.Log("玩家胜利");
@@ -132,7 +136,29 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("敌人胜利");
             //游戏失败
         }
+
+        //清空临时数据
+        foreach (var character in BattleManager.Instance.battleList)
+        {
+            if(!character.isPlayer)
+                character.currentHP = character.maxHP;
+            character.path = 0;
+            character.walkPath = 0;
+            character.lastWalkPath = 0;
+            character.walkSpeed = 0;
+        }
+        //战斗结束清空列表
+        BattleManager.Instance.battleList = new List<BattleAttribute>();
     }
 
+    private void AxisOfAction()
+    {
+        //这个回合开始了
+        BattleManager.Instance.thisTurnOver = false;
+        BattleManager.Instance.walking = true;
+        Debug.Log("aaa");
+        thisTurnCharacter = BattleManager.Instance.isWhoTurn();
+        battleUI.WalkAnimation();
+    }
 
 }
