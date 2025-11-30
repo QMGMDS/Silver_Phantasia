@@ -48,8 +48,14 @@ public class BattleSystem : MonoBehaviour
             if(BattleManager.Instance.walking)
                 return;
             
+            //当前回合角色血量为0则跳过
             if(thisTurnCharacter.currentHP <= 0)
+            {
+                BattleManager.Instance.thisTurnOver = true;
+                BattleManager.Instance.BattleTurn = Turn.None;
                 return;
+            }
+
             if (thisTurnCharacter.isPlayer)
             {
                 //玩家的战斗逻辑
@@ -137,18 +143,11 @@ public class BattleSystem : MonoBehaviour
             //游戏失败
         }
 
-        //清空临时数据
-        foreach (var character in BattleManager.Instance.battleList)
-        {
-            if(!character.isPlayer)
-                character.currentHP = character.maxHP;
-            character.path = 0;
-            character.walkPath = 0;
-            character.lastWalkPath = 0;
-            character.walkSpeed = 0;
-        }
-        //战斗结束清空列表
-        BattleManager.Instance.battleList = new List<BattleAttribute>();
+
+        //战斗数据复原
+        BattleManager.Instance.Recovery();
+        //行动轴图片复原
+        battleUI.RecoveryWalk();
     }
 
     private void AxisOfAction()

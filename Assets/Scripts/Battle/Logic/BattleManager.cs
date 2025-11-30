@@ -28,8 +28,6 @@ public class BattleManager : Singleton <BattleManager>
 
     //战斗列表（用于搜索出角色行动轴和判断在场存活人数）
     public List<BattleAttribute> battleList = new List<BattleAttribute>();
-    //行动轴动画是否播放完毕
-    public bool walkAnimOver;
     //行动轴动画是否在播放
     public bool walking;
 
@@ -157,6 +155,26 @@ public class BattleManager : Singleton <BattleManager>
     }
 
 
+    /// <summary>
+    /// 战斗数据复原
+    /// </summary>
+    public void Recovery()
+    {
+        //清空临时数据
+        foreach (var character in battleList)
+        {
+            if(!character.isPlayer)
+                character.currentHP = character.maxHP;
+            character.path = 0;
+            character.walkPath = 0;
+            character.lastWalkPath = 0;
+            character.walkSpeed = 0;
+        }
+        //战斗结束清空列表
+        battleList = new List<BattleAttribute>();
+        BattleTurn = Turn.None;
+        Inited = false;
+    }
 
 
     /// <summary>

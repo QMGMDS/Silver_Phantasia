@@ -7,5 +7,8 @@ public class Settings
     //回合制终点路程
     public const float battleDistance = 100f; 
     //回合制行动轴判定时间
-    public const float battleWalkTime = 2f;
+    public const float battleWalkTime = 1.3f;
+
+    //场景加载时间
+    public const float fadeDuration = 1f;
 }

@@ -53,6 +53,12 @@ public class BattleBackControl : MonoBehaviour
 
     private void OnBattleEndEvent()
     {
+        StartCoroutine(BattleEnd());
+    }
+
+    private IEnumerator BattleEnd()
+    {
+        yield return new WaitForSeconds(2f);
         battleBackImage.enabled = false;
     }
 }

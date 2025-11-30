@@ -18,10 +18,11 @@ MonoBehaviour:
     roleSprite: {fileID: -1223106567, guid: 2ea41edda198e5c44a18921382deeaf6, type: 3}
     isPlayer: 0
     maxHP: 1000
-    currentHP: -300
+    currentHP: 1000
     baseAttack: 100
     baseDefend: 2
-    speed: 3
-    path: 67
-    walkSpeed: 227.13
-    walkPath: 454.26
+    speed: 5
+    path: 0
+    walkSpeed: 0
+    walkPath: 0
+    lastWalkPath: 0

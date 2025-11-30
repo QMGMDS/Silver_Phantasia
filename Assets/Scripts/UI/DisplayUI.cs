@@ -27,7 +27,7 @@ public class DisplayUI : MonoBehaviour
 
     private void OnBattleEndEvent()
     {
-        SwitchBattleEndUI();
+        StartCoroutine(SwitchBattleEndUI());
     }
 
     /// <summary>
@@ -40,8 +40,9 @@ public class DisplayUI : MonoBehaviour
     }
 
     
-    private void SwitchBattleEndUI()
+    private IEnumerator SwitchBattleEndUI()
     {
+        yield return new WaitForSeconds(2f);
         normalUI.SetActive(true);
         battleUI.SetActive(false);
     }

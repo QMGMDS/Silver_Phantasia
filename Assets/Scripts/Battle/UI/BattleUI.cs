@@ -29,21 +29,24 @@ public class BattleUI : MonoBehaviour
                 battleHUD.InitHUD();
         }
         //等待初始化
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         BattleManager.Instance.Inited = true;
         yield return new WaitForSeconds(1f);
-        //等待行动轴动画播放完毕
-        //执行行动轴动画的前提是：
-        //1.战斗初始化已经完成
-        //2.行动轴判断当前行动玩家已经完成
-        //yield return WalkAnimation();
+        
     }
 
 
-
+    //执行行动轴动画的前提是：
+    //1.战斗初始化已经完成
+    //2.行动轴判断当前行动玩家已经完成
     public void WalkAnimation()
     {
         StartCoroutine(battleWalkController.Move());
+    }
+
+    public void RecoveryWalk()
+    {
+        battleWalkController.Recovery();
     }
     
 

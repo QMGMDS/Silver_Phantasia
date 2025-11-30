@@ -16,7 +16,10 @@ public class BattleWalkController : MonoBehaviour
     //便于迭代
     private int i;
     
-
+    /// <summary>
+    /// 行动轴动画移动
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator Move()
     {
         Debug.Log("a");
@@ -62,6 +65,18 @@ public class BattleWalkController : MonoBehaviour
             i++;
         }
         BattleManager.Instance.walking = false;
+    }
+
+    /// <summary>
+    /// 行动轴动画复原
+    /// </summary>
+    public void Recovery()
+    {
+        for (int i = 0; i < Rb.Count; i++)
+        {
+            Rb[i].position = new Vector2(46,236);
+        }
+        Debug.Log("复原完毕");
     }
 
 }
