@@ -79,13 +79,31 @@ public class DialoguePiece
     //对话人的名字
     public string dialogueName;
     //对话内容
+    //[TextArea]用于在Inspector窗口中为字符串字段提供一个多行的文本区域输入框，而不是默认的单行输入框。
     [TextArea] public string dialogueText;
-    //是否需要暂停
+    //是否需要暂停，用于显示继续提示框
     public bool hasToPause;
-    //对话片段播放是否结束
+    //是否是选项触发片段
+    public bool hasToOption;
+    //该对话片段播放是否结束
     [HideInInspector]public bool isDone;
+    //该对话选项是否选择
+    [HideInInspector]public bool isChoose;
     //对话片段结束后要执行的事件
     public UnityEvent afterTalkEvent;
+}
+
+
+//对话选项内容显示
+[System.Serializable]
+public class DialogueOption
+{
+    //选项一文本
+    public string option1Text;
+    //选项二文本
+    public string option2Text;
+    //该选项是否被选择
+    [HideInInspector]public bool isChoose;
 }
 
 //战斗背景

@@ -1853,7 +1853,20 @@ MonoBehaviour:
     dialogueName: "\u8F89\u591C"
     dialogueText: "\u300C\u4F55\u65F6\u624D\u80FD\u641E\u5B8C\u300D"
     hasToPause: 1
+    hasToOption: 0
     isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: eba32862616f4d747ab19a2bafaf9a19, type: 3}
+    onLeft: 0
+    dialogueName: "\u59B9\u7EA2"
+    dialogueText: "\u505A\u5F97\u73A9\u5417\u4F60\uFF1F"
+    hasToPause: 1
+    hasToOption: 1
+    isDone: 0
+    isChoose: 0
     afterTalkEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -1862,10 +1875,62 @@ MonoBehaviour:
     dialogueName: "\u59B9\u7EA2"
     dialogueText: "\u300C\u4F55\u65F6\u624D\u80FD\u641E\u5B8C?\u300D"
     hasToPause: 1
+    hasToOption: 0
     isDone: 0
+    isChoose: 0
     afterTalkEvent:
       m_PersistentCalls:
         m_Calls: []
+  dialogueBranchOne:
+  - faceImage: {fileID: 21300000, guid: 6c95f0c2caafc834e9fca472bc5c370e, type: 3}
+    onLeft: 1
+    dialogueName: "\u8F89\u591C"
+    dialogueText: "\u4E0D\u5E72\u561B"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: 6c95f0c2caafc834e9fca472bc5c370e, type: 3}
+    onLeft: 1
+    dialogueName: "\u8F89\u591C"
+    dialogueText: "\uFF1F"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  dialogueBranchTwo:
+  - faceImage: {fileID: 21300000, guid: 530dbd9fd7a3a2741bff99303435cc12, type: 3}
+    onLeft: 1
+    dialogueName: "\u8F89\u591C"
+    dialogueText: "\u4E0D\uFF1F"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: 530dbd9fd7a3a2741bff99303435cc12, type: 3}
+    onLeft: 1
+    dialogueName: "\u8F89\u591C"
+    dialogueText: "\uFF1F\uFF1F\uFF1F\uFF1F"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  dialogueOption:
+    option1Text: "\u5E72\u561B..."
+    option2Text: "\u4F60\u5E72\u561B..."
+    isChoose: 0
 --- !u!1 &1817094191
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -17,6 +18,17 @@ public class DialogueUI : MonoBehaviour
     //对话按键提示
     public GameObject continuteBox;
 
+
+    //对话选择文本一
+    public TextMeshProUGUI optionText1;
+    //对话选择文本二
+    public TextMeshProUGUI optionText2;
+
+    //选项按钮是否被按下
+    public bool isButtonDown;
+
+
+
     private void Awake()
     {
         continuteBox.SetActive(false);
@@ -25,16 +37,23 @@ public class DialogueUI : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.ShowDialogueEvent += OnShowDialogueEvent;
+        EventHandler.ShowDialogueOptionEvent += OnShowDialogueOptionEvent;
     }
 
     private void OnDisable()
     {
         EventHandler.ShowDialogueEvent -= OnShowDialogueEvent;
+        EventHandler.ShowDialogueOptionEvent -= OnShowDialogueOptionEvent;
     }
 
     private void OnShowDialogueEvent(DialoguePiece piece)
     {
         StartCoroutine(ShowDialogue(piece));
+    }
+
+    private void OnShowDialogueOptionEvent(DialogueOption option)
+    {
+        StartCoroutine(ShowOption(option));
     }
 
     /// <summary>
@@ -47,7 +66,7 @@ public class DialogueUI : MonoBehaviour
         if (piece != null)
         {
             piece.isDone = false;
-            //输出文本时先清空文本预览显示
+            //输出文本前先清空文本预览显示
             dialogueText.text = string.Empty;
 
             dialogueBox.SetActive(true);
@@ -73,7 +92,7 @@ public class DialogueUI : MonoBehaviour
     
             piece.isDone = true;
 
-            if(piece.hasToPause && piece.isDone)
+            if(piece.hasToPause && piece.isDone && !piece.hasToOption)
                 continuteBox.SetActive(true);
         }
         else
@@ -85,6 +104,67 @@ public class DialogueUI : MonoBehaviour
             continuteBox.SetActive(false);
             yield break;
         }
+    }
+
+
+    /// <summary>
+    /// 对话选择显示
+    /// </summary>
+    public IEnumerator ShowOption(DialogueOption option)
+    {
+        if(option != null)
+        {
+            option.isChoose = false;
+            //该方法被调用时说明执行了对话选项显示的事件
+            //打开对话显示物体
+            optionText1.gameObject.SetActive(true);
+            optionText2.gameObject.SetActive(true);
+
+            //同步选项内容
+            optionText1.text = option.option1Text;
+            optionText2.text = option.option2Text;
+
+
+            //做出选择...
+            Debug.Log("选择ing");
+
+            yield return new WaitUntil(() => isButtonDown);
+
+            Debug.Log("选项被按下了");
+
+            //选择结束后关闭选项框
+            optionText1.gameObject.SetActive(false);
+            optionText2.gameObject.SetActive(false);
+
+            option.isChoose = true;
+        }
+        else
+        {
+            //option为空关闭选项框
+            optionText1.gameObject.SetActive(false);
+            optionText2.gameObject.SetActive(false);
+            yield break;
+        }
+        
+    }
+
+
+    /// <summary>
+    /// 选项一被按下
+    /// </summary>
+    public void ButtonStartOne()
+    {
+        isButtonDown = true;
+        EventHandler.CallDialogueOptionOneDownEvent();
+    }
+
+    /// <summary>
+    /// 选项二被按下
+    /// </summary>
+    public void ButtonStartTwo()
+    {
+        isButtonDown = true;
+        EventHandler.CallDialogueOptionTwoDownEvent();
     }
     
 }

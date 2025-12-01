@@ -66,16 +66,6 @@ public static class EventHandler
     }
 
     /// <summary>
-    /// 对话结束的事件
-    /// </summary>
-    public static event Action DialogueOverEvent;
-
-    public static void CallDialogueOverEvent()
-    {
-        DialogueOverEvent?.Invoke();
-    }
-
-    /// <summary>
     /// 场景切换事件
     /// </summary>
     public static event Action<string,Vector3> TransitionEvent;
@@ -96,7 +86,17 @@ public static class EventHandler
     }
 
     /// <summary>
-    /// 交互键被按下事件
+    /// 对话结束的事件
+    /// </summary>
+    public static event Action DialogueOverEvent;
+
+    public static void CallDialogueOverEvent()
+    {
+        DialogueOverEvent?.Invoke();
+    }
+
+    /// <summary>
+    /// 对话交互键被按下事件
     /// </summary>
     public static event Action InteractButtonStartEvent;
 
@@ -115,6 +115,33 @@ public static class EventHandler
         ShowDialogueEvent?.Invoke(piece);
     }
 
+    /// <summary>
+    /// 对话选项UI显示的事件
+    /// </summary>
+    public static event Action<DialogueOption> ShowDialogueOptionEvent;
+
+    public static void CallShowDialogueOptionEvent(DialogueOption option)
+    {
+        ShowDialogueOptionEvent?.Invoke(option);
+    }
     
-    
+    /// <summary>
+    /// 对话选项一被按下
+    /// </summary>
+    public static event Action DialogueOptionOneDownEvent;
+
+    public static void CallDialogueOptionOneDownEvent()
+    {
+        DialogueOptionOneDownEvent?.Invoke();
+    }
+
+    /// <summary>
+    /// 对话选项二被按下
+    /// </summary>
+    public static event Action DialogueOptionTwoDownEvent;
+
+    public static void CallDialogueOptionTwoDownEvent()
+    {
+        DialogueOptionTwoDownEvent?.Invoke();
+    }
 }
