@@ -23,6 +23,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Open DialogueHistory",
+                    "type": "Button",
+                    "id": "4dabbb35-7e93-40b4-8f82-c157e5fe92d6",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -91,6 +100,17 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1fdc5320-9410-44c7-976c-9226fe1c65bd",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Open DialogueHistory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -117,9 +137,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Return",
+                    "name": "ScrollWheel",
+                    "type": "Value",
+                    "id": "130c0ec4-2f92-4ade-8f69-97bdd19ec7b9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "5dc0f074-a4a4-4b99-b3ed-3e984c6c7e98",
+                    "id": "6cd0d623-821c-4c70-8f2b-66f3791ad7f0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -151,12 +180,23 @@
                 },
                 {
                     "name": "",
-                    "id": "f351ef31-71d9-4921-88a7-7cb97b47f48d",
-                    "path": "<Keyboard>/escape",
+                    "id": "a240a67c-bfd5-483a-b10c-9190cad3b986",
+                    "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Return",
+                    "action": "ScrollWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16efca86-c1fd-4024-bd40-335bd6df2cb4",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

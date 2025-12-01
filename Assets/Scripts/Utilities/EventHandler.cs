@@ -95,6 +95,8 @@ public static class EventHandler
         DialogueOverEvent?.Invoke();
     }
 
+
+#region 按键交互
     /// <summary>
     /// 对话交互键被按下事件
     /// </summary>
@@ -105,6 +107,21 @@ public static class EventHandler
         InteractButtonStartEvent?.Invoke();
     }
 
+    /// <summary>
+    /// 查看对话历史按键Y被按下
+    /// </summary>
+    public static event Action OpenDialogueEvent;
+
+    public static void CallOpenDialogueEvent()
+    {
+        OpenDialogueEvent?.Invoke();
+    }
+#endregion
+
+
+
+
+#region 对话事件
     /// <summary>
     /// 对话片段UI显示的事件
     /// </summary>
@@ -144,4 +161,8 @@ public static class EventHandler
     {
         DialogueOptionTwoDownEvent?.Invoke();
     }
+#endregion
+
+
+
 }

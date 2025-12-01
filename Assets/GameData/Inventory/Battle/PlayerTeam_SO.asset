@@ -18,7 +18,7 @@ MonoBehaviour:
     roleSprite: {fileID: 1651464863, guid: d97aa8757d611984392d31c704b9f388, type: 3}
     isPlayer: 1
     maxHP: 1000
-    currentHP: 530
+    currentHP: 0
     baseAttack: 200
     baseDefend: 50
     speed: 5.7
@@ -31,8 +31,8 @@ MonoBehaviour:
     roleSprite: {fileID: -1654272251, guid: 8a9fa7026336cdc449d697b962a3330e, type: 3}
     isPlayer: 1
     maxHP: 1000
-    currentHP: 1000
-    baseAttack: 11
+    currentHP: 200
+    baseAttack: 1000
     baseDefend: 0
     speed: 5.4
     path: 0

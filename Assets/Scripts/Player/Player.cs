@@ -27,9 +27,6 @@ public class Player : MonoBehaviour
         playerInput = new PlayerInputControl();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
-        //空格键按下时
-        playerInput.GamePlay.Interact.started += Interact;
     }
 
     private void OnEnable()
@@ -38,6 +35,11 @@ public class Player : MonoBehaviour
         EventHandler.ClosePlayerMoveEvent += OnClosePlayerMoveEvent;
         EventHandler.OpenPlayerMoveEvent += OnOpenPlayerMoveEvent;
         EventHandler.MoveToPositionEvent += OnMoveToPositionEvent;
+
+        //空格键按下时
+        playerInput.UI.Interact.started += Interact;
+        //Y键查看历史对话
+        playerInput.GamePlay.OpenDialogueHistory.started += ViewDialogue;
     }
 
     private void OnDisable()
@@ -100,6 +102,10 @@ public class Player : MonoBehaviour
     private void Interact(InputAction.CallbackContext context)
     {
         EventHandler.CallInteractButtonStartEvent();
+    }
+    private void ViewDialogue(InputAction.CallbackContext context)
+    {
+        EventHandler.CallOpenDialogueEvent();
     }
     #endregion
 
