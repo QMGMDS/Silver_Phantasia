@@ -22,7 +22,6 @@ public class BattleWalkController : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Move()
     {
-        Debug.Log("a");
         //46 236
         //724 236
         //动画播放未完成才播放动画
@@ -64,11 +63,12 @@ public class BattleWalkController : MonoBehaviour
             Rb[i].velocity = new Vector2(0,0);
             i++;
         }
+        //动画播放完毕
         BattleManager.Instance.walking = false;
     }
 
     /// <summary>
-    /// 行动轴动画复原
+    /// 战斗彻底结束时，行动轴动画的复原
     /// </summary>
     public void Recovery()
     {
@@ -76,7 +76,6 @@ public class BattleWalkController : MonoBehaviour
         {
             Rb[i].position = new Vector2(46,236);
         }
-        Debug.Log("复原完毕");
     }
 
 }

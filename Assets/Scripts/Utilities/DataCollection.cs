@@ -1,4 +1,4 @@
-using System.Drawing;
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -114,4 +114,14 @@ public class BattleBack
     public string backName;
     //战斗背景图片
     public Sprite backImage;
+}
+
+//战斗动画结构体
+[System.Serializable]
+public struct BattleAnim
+{
+    //用于判断该动画是谁的动画
+    public int ID;
+    public Image image;
+    public Animator anim;
 }

@@ -176,7 +176,7 @@ public class DialogueUI : MonoBehaviour
         EventHandler.CallDialogueOptionTwoDownEvent();
 
         //记录历史选项
-        historyContent.text = "\n\n" + optionText2.text;
+        historyContent.text += "\n\n" + optionText2.text;
     }
     
 }

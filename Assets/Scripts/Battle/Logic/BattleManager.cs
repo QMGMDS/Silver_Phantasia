@@ -109,6 +109,7 @@ public class BattleManager : Singleton <BattleManager>
         {
             if (player.currentHP > 0)
             {
+                attackedCharacter = player;
                 player.currentHP = player.currentHP - thisCharacterTurn.baseAttack;
                 return;
             }
