@@ -88,7 +88,7 @@ public class BattleManager : Singleton <BattleManager>
         {
             //普攻
             case ButtonType.Attack:
-                attackedCharacter.currentHP = attackedCharacter.currentHP - thisCharacterTurn.baseAttack;
+                attackedCharacter.currentHP = attackedCharacter.currentHP + attackedCharacter.baseDefend + attackedCharacter.addDefend - thisCharacterTurn.baseAttack;
                 break;
             //技能攻击
             case ButtonType.Skill:
@@ -102,6 +102,14 @@ public class BattleManager : Singleton <BattleManager>
         BattleTurn = Turn.None;
     }
 
+    /// <summary>
+    /// 玩家防御
+    /// </summary>
+    public void PlayerDefend()
+    {
+        thisCharacterTurn.addDefend = (int)(thisCharacterTurn.baseDefend*0.4);
+    }
+
     public void EnemyAttack()
     {
         //搜索活着的站位靠前的Player进行攻击
@@ -110,7 +118,7 @@ public class BattleManager : Singleton <BattleManager>
             if (player.currentHP > 0)
             {
                 attackedCharacter = player;
-                player.currentHP = player.currentHP - thisCharacterTurn.baseAttack;
+                player.currentHP = player.currentHP + player.baseDefend +player.addDefend - thisCharacterTurn.baseAttack;
                 return;
             }
         }

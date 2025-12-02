@@ -173,10 +173,17 @@ public class BattleSystem : MonoBehaviour
             EventHandler.CallBattleEndEvent();
             EventHandler.CallOpenPlayerMoveEvent();
         }
-        else
+        else if(BattleManager.Instance.BattleEnd() == 2)
         {
             Debug.Log("敌人胜利");
             //游戏失败
+        }
+        else
+        {
+            Debug.Log("逃跑");
+            //返回
+            EventHandler.CallBattleEndEvent();
+            EventHandler.CallOpenPlayerMoveEvent();
         }
         //战斗数据复原
         BattleManager.Instance.Recovery();
@@ -198,6 +205,30 @@ public class BattleSystem : MonoBehaviour
         //播放动画，动画结束BattleManager.Instance.walking变为false
         BattleManager.Instance.walking = true;
         battleUI.WalkAnimation();
+    }
+
+
+    /// <summary>
+    /// 玩家按下防御
+    /// </summary>
+    public void DefendButtonDown()
+    {
+        //玩家防御数据处理
+        BattleManager.Instance.PlayerDefend();
+
+        //该回合结束
+        BattleManager.Instance.thisTurnOver = true;
+        BattleManager.Instance.BattleTurn = Turn.None;
+    }
+
+    /// <summary>
+    /// 玩家按下逃跑
+    /// </summary>
+    public void FleeButtonDown()
+    {
+        //该回合结束
+        BattleManager.Instance.thisTurnOver = true;
+        BattleManager.Instance.BattleTurn = Turn.End;
     }
 
 }

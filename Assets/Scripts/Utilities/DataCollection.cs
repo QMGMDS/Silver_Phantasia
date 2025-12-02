@@ -56,6 +56,8 @@ public class BattleAttribute
     public int baseAttack;
     //角色的基础防御力
     public int baseDefend;
+    //角色的附加防御力
+    public int addDefend;
     //角色的基础速度
     public float speed;
     //回合制中当前角色走过的路程，默认是0
