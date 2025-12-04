@@ -5,5 +5,5 @@ using UnityEngine;
 public class NPCManager : MonoBehaviour
 {
     public List<NPCPosition> npcPositionList;
-
+ 
 }

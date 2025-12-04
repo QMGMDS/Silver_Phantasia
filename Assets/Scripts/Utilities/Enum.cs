@@ -38,3 +38,14 @@ public enum Turn
     Enemy,
     End,
 }
+
+//Grid地图的类型
+public enum GridType
+{
+    //NPC障碍物地图
+    NPCObstacle,
+    //不允许走的地方的地图
+    NotAllowWalk,
+    //传送点的地图
+    Transition
+}

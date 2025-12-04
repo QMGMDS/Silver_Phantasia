@@ -42,7 +42,6 @@ namespace SP.AStar
         {
             pathFound = false;
 
-
             if(GenerateGridNodes(sceneName, startPos, endPos))
             {
                 //查找最短路径
@@ -84,6 +83,24 @@ namespace SP.AStar
             targetNode = gridNoders.GetGridNode(endPos.x - originX, endPos.y - originY);
 
             //遍历地图中的所有格子，判断每个格子AStar是否是障碍物
+            for (int x = 0; x < gridWidth; x++)
+            {
+                for (int y = 0; y < gridHeight; y++)
+                {
+                    Vector3Int tilePos = new Vector3Int(x + originX, y + originY, 0);
+                    var key = tilePos.x + "x" + tilePos.y + "y" + sceneName;
+
+                    TileDetails tile = GridMapManager.Instance.GetTileDetails(key);
+
+                    if (tile != null)
+                    {
+                        AStarNode node = gridNoders.GetGridNode(x, y);
+
+                        if (tile.isNPCObstacle)
+                            node.isObstacle = true;
+                    }
+                }
+            }
 
             return true;
         }

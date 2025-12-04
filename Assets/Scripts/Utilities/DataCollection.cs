@@ -1,13 +1,29 @@
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEditor.AddressableAssets.Build.DataBuilders;
 
-//每一块瓦片的属性
+// 存储在MapData中每一块瓦片的标识属性
 [System.Serializable]
 public class TileProperty 
 {
-    //瓦片坐标
+    //该瓦片坐标
     public Vector2Int tileCoordinate; 
+    //该瓦片的属性类型
+    public GridType gridType;
+    //该瓦片属性是否被激活
+    public bool boolTypeValue;
+}
+
+//每一块瓦片的详情
+[System.Serializable]
+public class TileDetails
+{
+    public int gridX,gridY;
+
+    public bool isNPCObstacle;
+    public bool isNotAllowWalk;
+    public bool isTransition;
 }
 
 //每个物品的属性
