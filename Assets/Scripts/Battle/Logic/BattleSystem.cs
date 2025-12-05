@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,7 +43,6 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-
     //前方一大波石山来袭()
     private void Update()
     {
@@ -58,11 +56,11 @@ public class BattleSystem : MonoBehaviour
             {
                 AxisOfAction();
             }
-            
+
             //2.等待行动轴动画完成
             if(BattleManager.Instance.walking)
                 return;
-            
+
             //3.当前回合角色血量为0则跳过
             if(thisTurnCharacter.currentHP <= 0)
             {
@@ -96,7 +94,7 @@ public class BattleSystem : MonoBehaviour
             Debug.Log("战斗结束");
             BattleEnd();
         }
-        
+
     }
 
 
