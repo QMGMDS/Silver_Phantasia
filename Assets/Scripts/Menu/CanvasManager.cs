@@ -28,6 +28,7 @@ public class CanvasManager : MonoBehaviour
         mainCanvas.enabled = true;
         dialogueCanvas.enabled = true;
         fadeCanvas.enabled = true;
+        EventHandler.CallNewGameEvent();
     }
 
 
