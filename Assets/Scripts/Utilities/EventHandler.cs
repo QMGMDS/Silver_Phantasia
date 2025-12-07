@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 //EventHandler专门定义跨场景的+控制人物输入系统的  事件
@@ -35,6 +36,16 @@ public static class EventHandler
     public static void CallTransitionEvent(string sceneToGo,Vector3 positionToGo)
     {
         TransitionEvent?.Invoke(sceneToGo,positionToGo);
+    }
+
+    public static event Action<string> LoadSceneEvent;
+    /// <summary>
+    /// 加载对应的场景
+    /// </summary>
+    /// <param name="loadScene">要加载的场景</param>
+    public static void CallLoadSceneEvent(string loadScene)
+    {
+        LoadSceneEvent?.Invoke(loadScene);
     }
 
     /// <summary>
@@ -172,6 +183,18 @@ public static class EventHandler
 #endregion
 
 
+#region 剧情对话触发事件
+    public static event Action<int> PlotDialogueEvent;
+    /// <summary>
+    /// 剧情对话触发
+    /// </summary>
+    public static void CallPlotDialogueEvent(int plotIndex)
+    {
+        PlotDialogueEvent?.Invoke(plotIndex);
+    }
+
+#endregion
+
 #region 游戏运行逻辑事件
 
     public static event Action NewGameEvent;
@@ -181,6 +204,15 @@ public static class EventHandler
     public static void CallNewGameEvent()
     {
         NewGameEvent?.Invoke();
+    }
+
+    public static event Action PlotOneEvent;
+    /// <summary>
+    /// 呼叫：剧情一开始
+    /// </summary>
+    public static void CallPlotOneEvent()
+    {
+        PlotOneEvent?.Invoke();
     }
 
 

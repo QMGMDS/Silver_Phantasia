@@ -18,6 +18,13 @@ public class TextAutoPlay : MonoBehaviour
     //该剧情是否播放完毕
     public bool playIsOver;
 
+    // 每句话间隔时间
+    public float timePiece;
+    // 每一页间隔时间
+    public float timePage;
+    // 每个字的间隔时间
+    public float timeChar;
+
     private void Awake()
     {
         playText = GetComponent<Text>();
@@ -69,14 +76,14 @@ public class TextAutoPlay : MonoBehaviour
         {
             if (piece == "#")
             {
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(timePage);
                 //翻页
                 playText.text = "";
             }
             else
             {
                 yield return PlayPiece(piece);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(timePiece);
             }
         }
         Debug.Log("打印完成");
@@ -95,7 +102,7 @@ public class TextAutoPlay : MonoBehaviour
         foreach (char c in piece)
         {
             playText.text += c;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(timeChar);
         }
         playText.text += "\n";
     }

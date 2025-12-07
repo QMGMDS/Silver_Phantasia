@@ -78,15 +78,21 @@ public class DialogueUI : MonoBehaviour
             
             if (piece.onLeft)
             {
-                faceLeft.gameObject.SetActive(true);
-                faceRight.gameObject.SetActive(false);
+                if (piece.faceImage != null)
+                {
+                    faceLeft.gameObject.SetActive(true);
+                    faceRight.gameObject.SetActive(false);
+                }
                 faceLeft.sprite = piece.faceImage;
                 dialogueName.text = piece.dialogueName;
             }
             else
             {
-                faceLeft.gameObject.SetActive(false);
-                faceRight.gameObject.SetActive(true);
+                if (piece.faceImage != null)
+                {
+                    faceLeft.gameObject.SetActive(false);
+                    faceRight.gameObject.SetActive(true);
+                }
                 faceRight.sprite = piece.faceImage;
                 dialogueName.text = piece.dialogueName;
             }

@@ -26,6 +26,8 @@ public class TransitionManager : MonoBehaviour
         EventHandler.TransitionEvent += OnTransitionEvent;
         //进入战斗显示效果
         EventHandler.BattleStartEvent += OnBattleStartEvent;
+        //加载场景
+        EventHandler.LoadSceneEvent += OnLoadSceneEvent;
     }
 
     private void OnDisable()
@@ -34,7 +36,10 @@ public class TransitionManager : MonoBehaviour
         EventHandler.TransitionEvent -= OnTransitionEvent;
         //进入战斗显示效果
         EventHandler.BattleStartEvent -= OnBattleStartEvent;
+        //加载场景
+        EventHandler.LoadSceneEvent -= OnLoadSceneEvent;
     }
+
 
     private void OnTransitionEvent(string sceneToGo, Vector3 positionToGo)
     {
@@ -45,6 +50,11 @@ public class TransitionManager : MonoBehaviour
     private void OnBattleStartEvent(string battleBack, BattleAttributeDataList_SO enemyTeam)
     {
         StartCoroutine(BattleStartFade());
+    }
+
+    private void OnLoadSceneEvent(string loadScene)
+    {
+        StartCoroutine(LoadScene(loadScene));
     }
 
 
@@ -95,6 +105,18 @@ public class TransitionManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 加载初始场景
+    /// </summary>
+    /// <param name="loadScene"></param>
+    /// <returns></returns>
+    private IEnumerator LoadScene(string loadScene)
+    {
+        StartCoroutine(LoadSceneSetActive(loadScene));
+        yield return null;
+    }
+
+
 
     /// <summary>
     /// 加载场景并激活
@@ -103,7 +125,6 @@ public class TransitionManager : MonoBehaviour
     private IEnumerator LoadSceneSetActive(string sceneToGo)
     {
         yield return SceneManager.LoadSceneAsync(sceneToGo,LoadSceneMode.Additive);
-
         Scene newScene = SceneManager.GetSceneAt(SceneManager.sceneCount - 1);
         SceneManager.SetActiveScene(newScene);
     }

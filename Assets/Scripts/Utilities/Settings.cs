@@ -10,5 +10,5 @@ public class Settings
     public const float battleWalkTime = 1.3f;
 
     //场景加载时间
-    public const float fadeDuration = 1f;
+    public const float fadeDuration = 4f;
 }
