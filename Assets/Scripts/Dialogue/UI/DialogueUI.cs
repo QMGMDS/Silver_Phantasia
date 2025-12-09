@@ -99,6 +99,8 @@ public class DialogueUI : MonoBehaviour
             //DOText()实现了逐渐打印对话内容
             //yield return等待DOText()这个方法的完成WaitForCompletion()
             yield return dialogueText.DOText(piece.dialogueText, 1f).WaitForCompletion();
+            //触发对话后的事件
+            piece.afterTalkEvent.Invoke();
             //记录历史对话
             historyContent.text += "\n\n" + dialogueName.text + "：" + dialogueText.text;
     

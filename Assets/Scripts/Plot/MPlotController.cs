@@ -1,0 +1,221 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing.Printing;
+using UnityEditor.AddressableAssets.Settings;
+using UnityEngine;
+
+public class MPlotController : MonoBehaviour
+{
+    private Animator anim;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+    private NPCMovement NPCMovement;
+    private GameObject cameraObject;
+
+    public Sprite MPlot1_WakeUped;
+    
+
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        NPCMovement = GetComponent<NPCMovement>();
+        cameraObject = GameObject.FindWithTag("CameraObject");
+    }
+
+    private void OnEnable()
+    {
+        EventHandler.Plot1_MJumpAndWalk += OnPlot1_MJumpAndWalk;
+        EventHandler.MPlot1_CameraAndMove += OnMPlot1_CameraAndMove;
+        EventHandler.Plot1_MFindWhat += OnPlot1_MFindWhat;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.Plot1_MJumpAndWalk -= OnPlot1_MJumpAndWalk;
+        EventHandler.MPlot1_CameraAndMove -= OnMPlot1_CameraAndMove;
+        EventHandler.Plot1_MFindWhat -= OnPlot1_MFindWhat;
+    }
+
+    private void OnPlot1_MFindWhat()
+    {
+        StartCoroutine(MPlot1_MFindWhat());
+    }
+
+    private void OnMPlot1_CameraAndMove()
+    {
+        StartCoroutine(MPlot1_CameraAndMove());
+    }
+
+    private void OnPlot1_MJumpAndWalk()
+    {
+        StartCoroutine(MPlot1_JumpAndWalk());
+    }
+
+    public void OnMPlot1_LookAround()
+    {
+        StartCoroutine(MPlot1_LookAround());
+    }
+
+
+    /// <summary>
+    /// 动画：苏醒_眼睛半睁
+    /// </summary>
+    public void MPlot1_WakeUp_1()
+    {
+        anim.enabled = true;
+        anim.SetBool("WakeUp",true);
+    }
+
+    /// <summary>
+    /// 动画：苏醒_眼睛全睁
+    /// </summary>
+    public void MPlot1_WakeUp_2()
+    {
+        anim.SetBool("WakeUp",false);
+        anim.enabled = false;
+        spriteRenderer.sprite = MPlot1_WakeUped;
+    }
+
+    /// <summary>
+    /// 动作：跳起来，走几步
+    /// </summary>
+    private IEnumerator MPlot1_JumpAndWalk()
+    {
+        //跳起来
+        // rb.velocity = new Vector2(0,20);
+        // yield return new WaitForSeconds(0.1f);
+        // rb.velocity = new Vector2(0,-20);
+        // yield return new WaitForSeconds(0.1f);
+        // rb.velocity = new Vector2(0,0);
+        //yield return new WaitForSeconds(1f);
+
+        // 站起来
+        anim.enabled = true;
+        anim.SetBool("IsIdle",true);
+
+        yield return null;
+        // 走几步
+        // 给定起始坐标
+        NPCMovement.startGridPosition = new Vector3Int(-7,-8);
+        NPCMovement.targetGridPosition = new Vector3Int(-10,-11);
+        //执行走路
+        NPCMovement.InitNPC();
+        StartCoroutine(NPCMovement.Movement());
+        yield return new WaitUntil(() => NPCMovement.moveToTarget);
+        
+        Debug.Log("到达目的地");
+        GamePlotManager.Instance.MJumpAndWalkisOver = true;
+    }
+
+    /// <summary>
+    /// 动作：妹红环顾四周
+    /// </summary>
+    private IEnumerator MPlot1_LookAround()
+    {
+        // 朝左看
+        anim.SetFloat("Y",0f);
+        anim.SetFloat("X",-1f);
+        yield return new WaitForSeconds(1f);
+        // 朝上看
+        anim.SetFloat("X",0f);
+        anim.SetFloat("Y",1f);
+        yield return new WaitForSeconds(1f);
+        // 朝右看
+        anim.SetFloat("Y",0f);
+        anim.SetFloat("X",1f);
+        yield return new WaitForSeconds(1f);
+        // 回到原位置
+        anim.SetFloat("X",0f);
+        anim.SetFloat("Y",-1f);
+        yield return new WaitForSeconds(1f);
+    }
+
+    /// <summary>
+    /// 缓慢运镜 + 妹红移动
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator MPlot1_CameraAndMove()
+    {
+        //摄像机移动
+        StartCoroutine(CameraMove(false,-11f,0.125f,40));
+        
+        // 摄像机与人物移动的时间差
+        yield return new WaitForSeconds(1.3f);
+
+        //人物移动
+        NPCMovement.startGridPosition = new Vector3Int(-10,-11);
+        NPCMovement.targetGridPosition = new Vector3Int(-14,-18);
+        //NPCMovement.InitNPC();
+        StartCoroutine(NPCMovement.Movement());
+
+        GamePlotManager.Instance.MCameraAndWalkisOver = true;
+    }
+
+    /// <summary>
+    /// 妹红朝左看，发出感叹号，随后镜头快速移动
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator MPlot1_MFindWhat()
+    {
+        Debug.Log("aaa");
+        // 朝左看
+        anim.SetFloat("Y",0f);
+        anim.SetFloat("X",-1f);
+        yield return new WaitForSeconds(1f);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    /// <summary>
+    /// 移动摄像机跟随的物体，moveTime*moveNumber为移动的时间总花费
+    /// </summary>
+    /// <param name="isHorizontal">是否横向移动</param>
+    /// <param name="targetDistance">移动的距离</param>
+    /// <param name="moveTime">每次移动的间隔时间，越小移动越快速</param>
+    /// <param name="moveNumber">移动的次数，越大移动越流畅</param>
+    /// <returns></returns>
+    private IEnumerator CameraMove(bool isHorizontal,float moveDistance,float moveTime,int moveNumber)
+    {
+        if (isHorizontal)
+        {
+            float moveOnceDistance = moveDistance / moveNumber;
+            for (int i = 0; i < moveNumber; i++)
+            {
+                cameraObject.transform.position += new Vector3(moveOnceDistance,0,0);
+                yield return new WaitForSeconds(moveTime);
+            }
+        }
+        else
+        {
+            float moveOnceDistance = moveDistance / moveNumber;
+            for (int i = 0; i < moveNumber; i++)
+            {
+                cameraObject.transform.position += new Vector3(0,moveOnceDistance,0);
+                yield return new WaitForSeconds(moveTime);
+            }
+        }
+    }
+
+}

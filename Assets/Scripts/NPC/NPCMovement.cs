@@ -10,53 +10,57 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Animator))]
 public class NPCMovement : MonoBehaviour
 {
-    //临时存储信息
-    //人物当前坐标所处场景
-    [SerializeField]private string currentScene;
-    //人物目的坐标所处场景
-    private string targetScene;
-
-    //人物开始的网格坐标
-    [SerializeField]private Vector3Int startGridPosition;
-    //人物当前的网格坐标
-    [SerializeField]private Vector3Int currentGridPosition;
-    //人物目标的网格坐标
-    [SerializeField]private Vector3Int targetGridPosition;
-
-    [Header("移动属性")]
-    // NPC移动一个格子所花费的时间
-    public float moveTime;
-    // NPC的移动速度
-    public Vector2 moveSpeed;
-
-
     //拿到NPC身上的组件
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D coll;
     private Animator anim;
-
     //拿到网格地图
     private Grid grid;
 
+
+    [Header("观察")]
+    //人物当前坐标所处场景
+    [SerializeField]private string currentScene;
+    //人物当前的网格坐标
+    [SerializeField]private Vector3Int currentGridPosition;
+
+    [Header("设定移动路径")]
+    //人物开始的网格坐标
+    public Vector3Int startGridPosition;
+    //人物目的地的网格坐标
+    public Vector3Int targetGridPosition;
+
+    [Header("移动属性")]
+    // NPC移动一个格子所花费的时间
+    public float moveTime;
+    // NPC的移动速度
+    private Vector2 moveSpeed;
+
+    private Stack<MovementStep> movementStep;
+    //是否走到终点
+    [HideInInspector]public bool moveToTarget;
+
+
+
+
+    [Header("路径可视化")]
     //瓦片地图
     public Tilemap displayMap;
     //要绘制的瓦片
     public TileBase displayTile;
-
-
-    //NPC的网格坐标是否被初始化过了
-    private bool isInitialised;
-    //堆栈是否已经塞入移动路径坐标
-    private bool isInitMovementStep;
-    //是否在瓦片地图中显示起始格子
+    //是否显示起始和终点
     public bool displayStartAndFinish;
     //是否在瓦片地图中显示NPC格子路径
     public bool displayPath;
+
+
+
+    //堆栈是否已经塞入移动路径坐标
+    private bool isInitMovementStep;
+    
     private Stack<MovementStep> npcMovementStepStack;
-
-
-    private Stack<MovementStep> movementStep;
+    
 
     private void Awake()
     {
@@ -74,67 +78,11 @@ public class NPCMovement : MonoBehaviour
         ShowPathOnGridMap();
     }
 
-    private void Start()
-    {
-        InitNPC();
-        StartCoroutine(Movement());
-    }
-
-    // private void OnEnable()
-    // {
-    //     EventHandler.AfterSceneloadedEvent += OnAfterSceneloadedEvent;
-    // }
-
-    // private void OnDisable()
-    // {
-    //     EventHandler.AfterSceneloadedEvent -= OnAfterSceneloadedEvent;
-    // }
-
-    // private void OnAfterSceneloadedEvent()
-    // {
-    //     //FindObjectOfType<T>()是指搜索当前加载场景中的Grid组件，即瓦片地图
-    //     grid = FindObjectOfType<Grid>();
-    //     CheckVisiable();
-
-    //     if (!isInitialised)
-    //     {
-    //         InitNPC();
-    //         isInitialised = true;
-    //     }
-    // }
-
-
-    // /// <summary>
-    // /// 切换对应场景显示对应NPC
-    // /// </summary>
-    // private void CheckVisiable() //添加到场景加载之后
-    // {
-    //     if(currentScene == SceneManager.GetActiveScene().name)
-    //         SetActiveInScene();
-    //     else
-    //         SetInactiveScene();
-    // }
-
-    #region 设置NPC在场景中的显示情况
-    //判断NPC是否显示在场景当中
-    private void SetActiveInScene()
-    {
-        spriteRenderer.enabled = true;
-        coll.enabled = true;
-    }
-
-    private void SetInactiveScene()
-    {
-        spriteRenderer.enabled = false;
-        coll.enabled = false;
-    }
-    #endregion
-
 
     /// <summary>
     /// 初始化NPC的网格坐标
     /// </summary>
-    private void InitNPC()
+    public void InitNPC()
     {
         grid = FindObjectOfType<Grid>();
         //当前坐标转化成网格坐标，网格坐标在瓦片地图的节点上
@@ -148,8 +96,9 @@ public class NPCMovement : MonoBehaviour
     /// 递归：NPC行走
     /// </summary>
     /// <returns></returns>
-    private IEnumerator Movement()
+    public IEnumerator Movement()
     {
+        moveToTarget = false;
         if (!isInitMovementStep)
         {
             BuildPath();
@@ -176,6 +125,8 @@ public class NPCMovement : MonoBehaviour
             Debug.Log("到了终点");
             rb.velocity = Vector2.zero;
             anim.SetBool("IsMoving",false);
+            moveToTarget = true;
+            isInitMovementStep = false;
         }
     }
 

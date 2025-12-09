@@ -215,6 +215,29 @@ public static class EventHandler
         PlotOneEvent?.Invoke();
     }
 
+    public static event Action PlotOneVisionOpen;
+    public static void CallPlotOneVisionOpen()
+    {
+        PlotOneVisionOpen?.Invoke();
+    }
+
+    public static event Action Plot1_MJumpAndWalk;
+    public static void CallPlot1_MJumpAndWalk()
+    {
+        Plot1_MJumpAndWalk?.Invoke();
+    }
+
+    public static event Action MPlot1_CameraAndMove;
+    public static void CallMPlot1_CameraAndMove()
+    {
+        MPlot1_CameraAndMove?.Invoke();
+    }
+
+    public static event Action Plot1_MFindWhat;
+    public static void CallPlot1_MFindWhat()
+    {
+        Plot1_MFindWhat?.Invoke();
+    }
 
 #endregion
 

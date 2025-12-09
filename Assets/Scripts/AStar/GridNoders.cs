@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SP.AStar
 {
     //存储地图中格子的容器的属性
-    public class GridNoders : MonoBehaviour
+    public class GridNoders
     {
         //该地图的宽和高
         private int width;

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlotDialogueController : MonoBehaviour
 {
-    [Header("剧情一对话")]
+    [Header("剧情一对话1")]
     public List<DialoguePiece> plotOne;
     private Stack<DialoguePiece> onePlotStack;
-    [Header("剧情二对话")]
+    [Header("剧情一对话2")]
     public List<DialoguePiece> plotTwo;
     private Stack<DialoguePiece> twoPlotStack;
+    [Header("剧情一对话3")]
+    public List<DialoguePiece> plotThree;
+    private Stack<DialoguePiece> threePlotStack;
+    [Header("剧情一对话4")]
+    public List<DialoguePiece> plotFour;
+    private Stack<DialoguePiece> fourPlotStack;
 
     private int plotIndex;
 
@@ -31,10 +37,10 @@ public class PlotDialogueController : MonoBehaviour
         switch (plotIndex)
         {
             case 1:
-                StartCoroutine(PlayPlotDialogue(onePlotStack));
+                StartCoroutine(PlayPlotDialogue(onePlotStack,plotIndex));
                 break;
             case 2:
-                StartCoroutine(PlayPlotDialogue(twoPlotStack));
+                StartCoroutine(PlayPlotDialogue(twoPlotStack,plotIndex));
                 break;
         }
     }
@@ -50,11 +56,11 @@ public class PlotDialogueController : MonoBehaviour
         {
             case 1:
                 InitPlotStack(ref onePlotStack,plotOne);
-                StartCoroutine(PlayPlotDialogue(onePlotStack));
+                StartCoroutine(PlayPlotDialogue(onePlotStack,plotIndex));
                 break;
             case 2:
                 InitPlotStack(ref twoPlotStack,plotTwo);
-                StartCoroutine(PlayPlotDialogue(twoPlotStack));
+                StartCoroutine(PlayPlotDialogue(twoPlotStack,plotIndex));
                 break;
         }
     }
@@ -62,7 +68,7 @@ public class PlotDialogueController : MonoBehaviour
     /// <summary>
     /// 执行一次剧情对话
     /// </summary>
-    private IEnumerator PlayPlotDialogue(Stack<DialoguePiece> plotStack)
+    private IEnumerator PlayPlotDialogue(Stack<DialoguePiece> plotStack,int plotIndex)
     {
         if(plotStack.TryPop(out DialoguePiece result))
         {
@@ -77,7 +83,16 @@ public class PlotDialogueController : MonoBehaviour
             //关闭对话框，退出对话状态
             EventHandler.CallShowDialogueEvent(result);
             //恢复人物控制
-            EventHandler.CallOpenPlayerMoveEvent();
+            //EventHandler.CallOpenPlayerMoveEvent();
+
+            if (plotIndex == 1)
+            {
+                GamePlotManager.Instance.MTalkOneisOver = true;
+            }
+            else if (plotIndex == 2)
+            {  
+                GamePlotManager.Instance.MTalkTwoisOver = true;
+            }
         }
 
     }

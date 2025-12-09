@@ -7,8 +7,6 @@ public class TransitionManager : MonoBehaviour
 {
     //淡入淡出画布
     private CanvasGroup fadeCanvasGroup;
-    //是否在淡入淡出
-    private bool isFade;
 
     //初始场景
     public string InitScene;
@@ -137,8 +135,6 @@ public class TransitionManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Fade(float targetAlpha)
     {
-        isFade = true;
-
         //鼠标射线遮挡，鼠标无法互动场景中的物体
         fadeCanvasGroup.blocksRaycasts = true;
 
@@ -153,6 +149,5 @@ public class TransitionManager : MonoBehaviour
         }
 
         fadeCanvasGroup.blocksRaycasts = false;
-        isFade = false;
     }
 }

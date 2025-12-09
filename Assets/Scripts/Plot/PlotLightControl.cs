@@ -18,9 +18,18 @@ public class PlotLightControl : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(OpenVision());
+        EventHandler.PlotOneVisionOpen += OnPlotOneVisionOpen;
     }
 
+    private void OnDisable()
+    {
+        EventHandler.PlotOneVisionOpen -= OnPlotOneVisionOpen;
+    }
+
+    private void OnPlotOneVisionOpen()
+    {
+        StartCoroutine(OpenVision());
+    }
 
     // 视野逐渐出现
     private IEnumerator OpenVision()
@@ -31,6 +40,6 @@ public class PlotLightControl : MonoBehaviour
             spotLight.intensity += 0.015f;
             yield return new WaitForSeconds(0.1f);
         }
-        GamePlotManager.Instance.visionIs = true;
+        GamePlotManager.Instance.visionOpen = true;
     }
 }

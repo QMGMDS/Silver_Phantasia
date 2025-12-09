@@ -41,7 +41,6 @@ namespace SP.AStar
         public void BuildPath(string sceneName, Vector2Int startPos, Vector2Int endPos, Stack<MovementStep> npcMovementStack)
         {
             pathFound = false;
-
             if(GenerateGridNodes(sceneName, startPos, endPos))
             {
                 //查找最短路径
@@ -54,7 +53,7 @@ namespace SP.AStar
             }
         }
 
-
+        
         /// <summary>
         /// 生成网格节点信息，初始化存储所有格子的容器
         /// </summary>
@@ -77,7 +76,10 @@ namespace SP.AStar
                 closeNodeList = new HashSet<AStarNode>();
             }
             else
+            {
                 return false;
+            }
+                
             //gridNodes的范围是从0，0开始所以要减去原点坐标得到实际位置
             startNode = gridNoders.GetGridNode(startPos.x - originX, startPos.y - originY);
             targetNode = gridNoders.GetGridNode(endPos.x - originX, endPos.y - originY);
