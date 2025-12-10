@@ -18,6 +18,10 @@ public class GamePlotManager : Singleton <GamePlotManager>
     public bool MTalkTwoisOver;
     // 运镜 + 移动是否结束
     public bool MCameraAndWalkisOver;
+    // 发出感叹号 + 运镜是否结束
+    public bool MAmazingAndCamera;
+    // 小对话
+    public bool dialogue1;
 
     private void OnEnable()
     {
@@ -75,6 +79,10 @@ public class GamePlotManager : Singleton <GamePlotManager>
 
         // 6.妹红转向，发现了什么，感叹号出现，摄像机快速移动
         EventHandler.CallPlot1_MFindWhat();
+        yield return new WaitUntil(() => MAmazingAndCamera);
 
+        // 7.对话1
+        EventHandler.CallPlotDialogueEvent(3);
+        yield return new WaitUntil(() => dialogue1);
     }
 }

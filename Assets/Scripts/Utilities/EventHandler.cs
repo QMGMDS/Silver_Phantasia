@@ -129,44 +129,57 @@ public static class EventHandler
 
 
 #region 对话事件
+    
+    public static event Action<DialoguePiece> ShowDialogueEvent;
     /// <summary>
     /// 对话片段UI显示的事件
     /// </summary>
-    public static event Action<DialoguePiece> ShowDialogueEvent;
-
     public static void CallShowDialogueEvent(DialoguePiece piece)
     {
         ShowDialogueEvent?.Invoke(piece);
     }
 
+    
+    public static event Action<DialogueOption,int> ShowDialogueOptionEvent;
     /// <summary>
     /// 对话选项UI显示的事件
     /// </summary>
-    public static event Action<DialogueOption> ShowDialogueOptionEvent;
-
-    public static void CallShowDialogueOptionEvent(DialogueOption option)
+    /// <param name="option">选项信息</param>
+    /// <param name="determinant">1是剧情对话，2是游玩对话</param>
+    public static void CallShowDialogueOptionEvent(DialogueOption option,int determinant)
     {
-        ShowDialogueOptionEvent?.Invoke(option);
+        ShowDialogueOptionEvent?.Invoke(option,determinant);
     }
     
-    /// <summary>
-    /// 对话选项一被按下
-    /// </summary>
+    
     public static event Action DialogueOptionOneDownEvent;
-
+    /// <summary>
+    /// 对话选项一被按下(游玩型)
+    /// </summary>
     public static void CallDialogueOptionOneDownEvent()
     {
         DialogueOptionOneDownEvent?.Invoke();
     }
 
-    /// <summary>
-    /// 对话选项二被按下
-    /// </summary>
+    
     public static event Action DialogueOptionTwoDownEvent;
-
+    /// <summary>
+    /// 对话选项二被按下(游玩型)
+    /// </summary>
     public static void CallDialogueOptionTwoDownEvent()
     {
         DialogueOptionTwoDownEvent?.Invoke();
+    }
+
+    
+    public static event Action<int> PlotDialogueOptionDown;
+    /// <summary>
+    /// 对话选项被按下(剧情型)
+    /// 1代表选择了选项一，以此类推
+    /// </summary>
+    public static void CallPlotDialogueOptionDown(int choose)
+    {
+        PlotDialogueOptionDown?.Invoke(choose);
     }
 
     /// <summary>

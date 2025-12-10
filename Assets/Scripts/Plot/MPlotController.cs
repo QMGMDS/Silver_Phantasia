@@ -1,24 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Printing;
+using Unity.VisualScripting;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class MPlotController : MonoBehaviour
 {
     private Animator anim;
+    private Animator signAnim;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     private NPCMovement NPCMovement;
     private GameObject cameraObject;
 
     public Sprite MPlot1_WakeUped;
+
+    //摄像机移动是否结束
+    private bool cameraMoveIsOver;
     
 
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        signAnim = transform.GetChild(0).GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         NPCMovement = GetComponent<NPCMovement>();
@@ -57,6 +64,11 @@ public class MPlotController : MonoBehaviour
     public void OnMPlot1_LookAround()
     {
         StartCoroutine(MPlot1_LookAround());
+    }
+
+    public void OnMPlot1_AngryWalk()
+    {
+        StartCoroutine(MPlot1_AngryWalk());
     }
 
 
@@ -150,6 +162,7 @@ public class MPlotController : MonoBehaviour
         NPCMovement.targetGridPosition = new Vector3Int(-14,-18);
         //NPCMovement.InitNPC();
         StartCoroutine(NPCMovement.Movement());
+        yield return new WaitUntil(() => NPCMovement.moveToTarget);
 
         GamePlotManager.Instance.MCameraAndWalkisOver = true;
     }
@@ -160,26 +173,69 @@ public class MPlotController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MPlot1_MFindWhat()
     {
-        Debug.Log("aaa");
+        yield return new WaitForSeconds(1f);
         // 朝左看
         anim.SetFloat("Y",0f);
         anim.SetFloat("X",-1f);
-        yield return new WaitForSeconds(1f);
+
+        // 出现感叹号
+        signAnim.SetBool("IsAmazing",true);
+        signAnim.SetTrigger("Amazing");
+
+        yield return new WaitForSeconds(0.3f);
+
+        // 摄像机快速移动
+        StartCoroutine(CameraMove(true,-8f,0.016f,30));
+
+        yield return new WaitUntil(() => cameraMoveIsOver);
+        signAnim.SetBool("IsAmazing",false);
+        GamePlotManager.Instance.MAmazingAndCamera = true;
     }
 
+    /// <summary>
+    /// 妹红走上前去救辉夜
+    /// </summary>
+    public void MPlot1_WalkToHelpK()
+    {
+        NPCMovement.startGridPosition = new Vector3Int(-14,-18);
+        NPCMovement.targetGridPosition = new Vector3Int(-16,-18);
+        StartCoroutine(NPCMovement.Movement());
+    }
 
+    /// <summary>
+    /// 妹红对辉夜的梦话感到尴尬
+    /// </summary>
+    public void MPlot1_Awkward()
+    {
+        // 出现问号
+        signAnim.SetBool("IsProblem",true);
+        signAnim.SetTrigger("Problem");
+        signAnim.SetBool("IsProblem",false);
+    }
 
+    /// <summary>
+    /// 妹红愤怒的踱步 + 摄像机运镜
+    /// </summary>
+    private IEnumerator MPlot1_AngryWalk()
+    {
+        // 缓慢后撤步
+        NPCMovement.moveTime = 0.6f;
+        NPCMovement.startGridPosition = new Vector3Int(-16,-18);
+        NPCMovement.targetGridPosition = new Vector3Int(-16,-23);
+        StartCoroutine(NPCMovement.Movement());
 
+        StartCoroutine(CameraMove(false,-5f,0.1f,30));
 
-
-
-
-
-
-
-
-
-
+        yield return new WaitUntil(() => NPCMovement.moveToTarget);
+        
+        //猛的往前冲
+        NPCMovement.moveTime = 0.2f;
+        NPCMovement.startGridPosition = new Vector3Int(-16,-23);
+        NPCMovement.targetGridPosition = new Vector3Int(-17,-20);
+        StartCoroutine(NPCMovement.Movement());
+        StartCoroutine(CameraMove(false,5f,0.016f,30));
+        //NPCMovement.moveTime = 0.5f;
+    }
 
 
 
@@ -194,10 +250,11 @@ public class MPlotController : MonoBehaviour
     /// <param name="isHorizontal">是否横向移动</param>
     /// <param name="targetDistance">移动的距离</param>
     /// <param name="moveTime">每次移动的间隔时间，越小移动越快速</param>
-    /// <param name="moveNumber">移动的次数，越大移动越流畅</param>
+    /// <param name="moveNumber">移动的次数，越大移动越流畅(可以看作是行动过程的帧数)</param>
     /// <returns></returns>
     private IEnumerator CameraMove(bool isHorizontal,float moveDistance,float moveTime,int moveNumber)
     {
+        cameraMoveIsOver = false;
         if (isHorizontal)
         {
             float moveOnceDistance = moveDistance / moveNumber;
@@ -216,6 +273,7 @@ public class MPlotController : MonoBehaviour
                 yield return new WaitForSeconds(moveTime);
             }
         }
+        cameraMoveIsOver = true;
     }
 
 }

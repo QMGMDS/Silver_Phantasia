@@ -31,7 +31,8 @@ public class DialogueUI : MonoBehaviour
     //添加历史对话
     public TextMeshProUGUI historyContent;
 
-    
+    // 判断选项为剧情选项还是游玩选项
+    private int optionDeterminant;
 
     private void Awake()
     {
@@ -55,9 +56,10 @@ public class DialogueUI : MonoBehaviour
         StartCoroutine(ShowDialogue(piece));
     }
 
-    private void OnShowDialogueOptionEvent(DialogueOption option)
+    private void OnShowDialogueOptionEvent(DialogueOption option,int determinant)
     {
         StartCoroutine(ShowOption(option));
+        optionDeterminant = determinant;
     }
 
     /// <summary>
@@ -75,6 +77,9 @@ public class DialogueUI : MonoBehaviour
 
             dialogueBox.SetActive(true);
             continuteBox.SetActive(false);
+
+            faceLeft.gameObject.SetActive(false);
+            faceRight.gameObject.SetActive(false);
             
             if (piece.onLeft)
             {
@@ -138,13 +143,10 @@ public class DialogueUI : MonoBehaviour
             optionText1.text = option.option1Text;
             optionText2.text = option.option2Text;
 
-
             //做出选择...
             Debug.Log("选择ing");
 
             yield return new WaitUntil(() => isButtonDown);
-
-            Debug.Log("选项被按下了");
 
             //选择结束后关闭选项框
             optionText1.gameObject.SetActive(false);
@@ -169,7 +171,16 @@ public class DialogueUI : MonoBehaviour
     public void ButtonStartOne()
     {
         isButtonDown = true;
-        EventHandler.CallDialogueOptionOneDownEvent();
+        switch (optionDeterminant)
+        {
+            case 1:
+                EventHandler.CallPlotDialogueOptionDown(1);
+                break;
+            case 2:
+                EventHandler.CallDialogueOptionOneDownEvent();
+                break;
+        }
+        
 
         //记录历史选项
         historyContent.text += "\n\n" + optionText1.text;
@@ -181,7 +192,16 @@ public class DialogueUI : MonoBehaviour
     public void ButtonStartTwo()
     {
         isButtonDown = true;
-        EventHandler.CallDialogueOptionTwoDownEvent();
+        switch (optionDeterminant)
+        {
+            case 1:
+                EventHandler.CallPlotDialogueOptionDown(2);
+                break;
+            case 2:
+                EventHandler.CallDialogueOptionTwoDownEvent();
+                break;
+        }
+        
 
         //记录历史选项
         historyContent.text += "\n\n" + optionText2.text;

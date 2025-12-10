@@ -157,7 +157,7 @@ public class DialoguesTrigger : MonoBehaviour
             //如果为含对话选项的片段
             if (result.hasToOption)
             {
-                EventHandler.CallShowDialogueOptionEvent(dialogueOption);
+                EventHandler.CallShowDialogueOptionEvent(dialogueOption,2);
                 //等待选项选择
                 yield return new WaitUntil(() => dialogueOption.isChoose);
             }
