@@ -67,6 +67,9 @@ public class PlotDialogueController : MonoBehaviour
             case 3:
                 StartCoroutine(PlayPlotDialogue(threePlotStack,plotIndex));
                 break;
+            case 4:
+                StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
+                break;
             case 0:
                 StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));
                 break;
@@ -93,6 +96,10 @@ public class PlotDialogueController : MonoBehaviour
             case 3:
                 InitPlotStack(ref threePlotStack,plotThree);
                 StartCoroutine(PlayPlotDialogue(threePlotStack,plotIndex));
+                break;
+            case 4:
+                InitPlotStack(ref fourPlotStack,plotFour);
+                StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
                 break;
         }
     }

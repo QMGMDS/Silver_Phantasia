@@ -22,6 +22,10 @@ public class GamePlotManager : Singleton <GamePlotManager>
     public bool MAmazingAndCamera;
     // 小对话
     public bool dialogue1;
+    // 视野是否展开
+    public bool visionAllOpen;
+    // 小对话 2
+    public bool dialogue2;
 
     private void OnEnable()
     {
@@ -84,5 +88,13 @@ public class GamePlotManager : Singleton <GamePlotManager>
         // 7.对话1
         EventHandler.CallPlotDialogueEvent(3);
         yield return new WaitUntil(() => dialogue1);
+
+        // 8.视野展开!!!
+        EventHandler.CallVisionAllOpen();
+        yield return new WaitUntil(() => visionAllOpen);
+
+        // 9.小对话2
+        EventHandler.CallPlotDialogueEvent(4);
+        yield return new WaitUntil(() => dialogue2);
     }
 }

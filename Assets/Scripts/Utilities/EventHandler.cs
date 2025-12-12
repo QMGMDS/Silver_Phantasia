@@ -252,6 +252,15 @@ public static class EventHandler
         Plot1_MFindWhat?.Invoke();
     }
 
+    public static event Action VisionAllOpen;
+    /// <summary>
+    /// 视野完全展开
+    /// </summary>
+    public static void CallVisionAllOpen()
+    {
+        VisionAllOpen?.Invoke();
+    }
+
 #endregion
 
 }

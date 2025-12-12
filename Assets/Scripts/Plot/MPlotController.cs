@@ -1,10 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using Unity.VisualScripting;
-using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class MPlotController : MonoBehaviour
 {
@@ -218,25 +213,30 @@ public class MPlotController : MonoBehaviour
     /// </summary>
     private IEnumerator MPlot1_AngryWalk()
     {
-        // 缓慢后撤步
-        NPCMovement.moveTime = 0.6f;
+        // 后撤步
+        NPCMovement.moveTime = 0.3f;
         NPCMovement.startGridPosition = new Vector3Int(-16,-18);
-        NPCMovement.targetGridPosition = new Vector3Int(-16,-23);
+        NPCMovement.targetGridPosition = new Vector3Int(-12,-18);
         StartCoroutine(NPCMovement.Movement());
-
-        StartCoroutine(CameraMove(false,-5f,0.1f,30));
 
         yield return new WaitUntil(() => NPCMovement.moveToTarget);
         
         //猛的往前冲
-        NPCMovement.moveTime = 0.2f;
-        NPCMovement.startGridPosition = new Vector3Int(-16,-23);
-        NPCMovement.targetGridPosition = new Vector3Int(-17,-20);
+        NPCMovement.moveTime = 0.1f;
+        NPCMovement.startGridPosition = new Vector3Int(-12,-18);
+        NPCMovement.targetGridPosition = new Vector3Int(-16,-18);
         StartCoroutine(NPCMovement.Movement());
-        StartCoroutine(CameraMove(false,5f,0.016f,30));
         //NPCMovement.moveTime = 0.5f;
     }
 
+    /// <summary>
+    /// 妹红朝下看
+    /// </summary>
+    public void MPlot1_LookDown()
+    {
+        anim.SetFloat("X",0f);
+        anim.SetFloat("Y",-1f);
+    }
 
 
 

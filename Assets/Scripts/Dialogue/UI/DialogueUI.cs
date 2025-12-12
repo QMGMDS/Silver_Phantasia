@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using System;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -26,6 +25,10 @@ public class DialogueUI : MonoBehaviour
 
     //选项按钮是否被按下
     public bool isButtonDown;
+    //对话框出现动画是否播放完毕
+    private bool dialogueShowIsOver;
+    //对话框消失动画是否播放完毕
+    private bool dialogueCloseIsOver;
 
 
     //添加历史对话
@@ -71,15 +74,17 @@ public class DialogueUI : MonoBehaviour
     {
         if (piece != null)
         {
+            StartCoroutine(DialogueCloseAnim());
+            yield return new WaitUntil(() => dialogueCloseIsOver); // 等待消失动画播放完毕
+            dialogueCloseIsOver = false; // 复原
+            yield return new WaitForSeconds(0.3f); // 黑屏时间
+            StartCoroutine(DialogueShowAnim());
+            yield return new WaitUntil(() => dialogueShowIsOver); // 等待出现动画播放完毕
+            dialogueShowIsOver = false; // 复原
+
             piece.isDone = false;
             //输出文本前先清空文本预览显示
             dialogueText.text = string.Empty;
-
-            dialogueBox.SetActive(true);
-            continuteBox.SetActive(false);
-
-            faceLeft.gameObject.SetActive(false);
-            faceRight.gameObject.SetActive(false);
             
             if (piece.onLeft)
             {
@@ -117,10 +122,7 @@ public class DialogueUI : MonoBehaviour
         else
         {
             //piece为空则关闭对话框
-            dialogueBox.SetActive(false);
-            faceLeft.gameObject.SetActive(false);
-            faceRight.gameObject.SetActive(false);
-            continuteBox.SetActive(false);
+            StartCoroutine(DialogueCloseAnim());
             yield break;
         }
     }
@@ -205,6 +207,62 @@ public class DialogueUI : MonoBehaviour
 
         //记录历史选项
         historyContent.text += "\n\n" + optionText2.text;
+    }
+
+    /// <summary>
+    /// 利用Text.fontSize与LayoutGroup实现对话框逐渐出现动画
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DialogueShowAnim()
+    {
+        if(dialogueShowIsOver == true)
+            yield return null;
+
+        dialogueBox.SetActive(true);
+        while (dialogueName.fontSize < 15)
+        {
+            dialogueName.fontSize += 4;
+            yield return new WaitForSeconds(0.01f);
+        }
+        while (dialogueText.fontSize < 15)
+        {
+            dialogueText.fontSize += 4;
+            yield return new WaitForSeconds(0.01f);
+        }
+        //dialogueName.fontSize = 22f;
+        //dialogueText.fontSize = 17;
+        dialogueShowIsOver = true;
+    }
+
+    /// <summary>
+    /// 利用Text.fontSize与LayoutGroup实现对话框逐渐消失动画
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DialogueCloseAnim()
+    {
+        if(dialogueCloseIsOver == true)
+            yield return null;
+        
+        while (dialogueName.fontSize > 2)
+        {
+            dialogueName.fontSize -= 5;
+            yield return new WaitForSeconds(0.01f);
+        }
+        while (dialogueText.fontSize > 2)
+        {
+            dialogueText.fontSize -= 5;
+            yield return new WaitForSeconds(0.01f);
+        }
+        dialogueName.text = null;
+        dialogueText.text = null;
+        //dialogueName.fontSize = 0f;
+        //dialogueText.fontSize = 0;
+        dialogueBox.SetActive(false);
+        faceLeft.gameObject.SetActive(false);
+        faceRight.gameObject.SetActive(false);
+        continuteBox.SetActive(false);
+
+        dialogueCloseIsOver = true;
     }
     
 }
