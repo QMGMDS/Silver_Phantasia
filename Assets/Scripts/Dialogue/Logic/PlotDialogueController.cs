@@ -16,24 +16,41 @@ public class PlotDialogueController : MonoBehaviour
     [Header("剧情一对话4")]
     public List<DialoguePiece> plotFour;
     private Stack<DialoguePiece> fourPlotStack;
+    [Header("剧情一对话5")]
+    public List<DialoguePiece> plotFive;
+    private Stack<DialoguePiece> FivePlotStack;
+
+
+    // 选项分支对话堆栈
+    private Stack<DialoguePiece> currentDialogueStack;
     [Header("剧情一选项1")]
     // 选项信息
     public DialogueOption dialogueOption1;
-    // 选项分支对话堆栈
-    private Stack<DialoguePiece> currentDialogueStack;
+    
     // 选项一的对话
     public List<DialoguePiece> plot1_Option1_Choose1; //剧情一选项一的第一个选择触发的对话的信息
     private Stack<DialoguePiece> plot1_Option1_Choose1_Stack;
     // 选项二的对话
     public List<DialoguePiece> plot1_Option1_Choose2;
     private Stack<DialoguePiece> plot1_Option1_Choose2_Stack;
+    [Header("剧情一选项2")]
+    // 选项信息
+    public DialogueOption dialogueOption2;
+    // 选项一的对话
+    public List<DialoguePiece> plot1_Option2_Choose1;
+    private Stack<DialoguePiece> plot1_Option2_Choose1_Stack;
+    // 选项二的对话
+    public List<DialoguePiece> plot1_Option2_Choose2;
+    private Stack<DialoguePiece> plot1_Option2_Choose2_Stack;
 
 
 
-    // 确定播放的主对话
+    // 确定播放的主对话，类似指向当前播放对话的一个指针
     private int plotIndex;
+    // 确定哪个剧情选项出现
+    private int plotChooseIndex = 100;
     // 当前片段动画是否播放结束
-    private bool pieceOver;
+    [SerializeField]private bool pieceOver;
     
 
 
@@ -56,24 +73,37 @@ public class PlotDialogueController : MonoBehaviour
     {
         if(!pieceOver)
             return;
+        
         switch (plotIndex)
         {
             case 1:
                 StartCoroutine(PlayPlotDialogue(onePlotStack,plotIndex));
                 break;
+
             case 2:
                 StartCoroutine(PlayPlotDialogue(twoPlotStack,plotIndex));
                 break;
+
             case 3:
-                StartCoroutine(PlayPlotDialogue(threePlotStack,plotIndex));
+                if (plotChooseIndex == 101)
+                    StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));
+                else
+                    StartCoroutine(PlayPlotDialogue(threePlotStack,plotIndex));
                 break;
+
             case 4:
-                StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
+                if (plotChooseIndex == 102)
+                    StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));
+                else
+                    StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
                 break;
-            case 0:
-                StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));
+
+            case 5:
+                StartCoroutine(PlayPlotDialogue(twoPlotStack,plotIndex));
                 break;
+
         }
+        
     }
 
     /// <summary>
@@ -101,6 +131,10 @@ public class PlotDialogueController : MonoBehaviour
                 InitPlotStack(ref fourPlotStack,plotFour);
                 StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
                 break;
+            case 5:
+                InitPlotStack(ref FivePlotStack,plotFive);
+                StartCoroutine(PlayPlotDialogue(FivePlotStack,plotIndex));
+                break;
         }
     }
 
@@ -118,17 +152,24 @@ public class PlotDialogueController : MonoBehaviour
             EventHandler.CallShowDialogueEvent(result);
             yield return new WaitUntil(() => result.isDone);
 
+            Debug.Log(plotIndex);
+
             //如果为含对话选项的片段
             if (result.hasToOption)
             {
                 switch (plotIndex)
                 {
                     case 3:
-                        EventHandler.CallShowDialogueOptionEvent(dialogueOption1,1);
+                        EventHandler.CallShowDialogueOptionEvent(dialogueOption1,1); // 1是剧情型对话
+                        // 等待选项选择
+                        yield return new WaitUntil(() => dialogueOption1.isChoose);
+                        break;
+                    case 4:
+                        EventHandler.CallShowDialogueOptionEvent(dialogueOption2,1);
+                        // 等待选项选择
+                        yield return new WaitUntil(() => dialogueOption2.isChoose);
                         break;
                 }
-                // 等待选项选择
-                yield return new WaitUntil(() => dialogueOption1.isChoose);
             }
 
             pieceOver = true;
@@ -140,17 +181,23 @@ public class PlotDialogueController : MonoBehaviour
             // 恢复人物控制
             //EventHandler.CallOpenPlayerMoveEvent();
 
-            if (plotIndex == 1)
+            switch (plotIndex)
             {
-                GamePlotManager.Instance.MTalkOneisOver = true;
-            }
-            else if (plotIndex == 2)
-            {
-                GamePlotManager.Instance.MTalkTwoisOver = true;
-            }
-            else if (plotIndex == 0)
-            {
-                GamePlotManager.Instance.dialogue1 = true;
+                case 1:
+                    GamePlotManager.Instance.MTalkOneisOver = true;
+                    break;
+                case 2:
+                    GamePlotManager.Instance.MTalkTwoisOver = true;
+                    break;
+                case 3:
+                    GamePlotManager.Instance.dialogue1 = true;
+                    break;
+                case 4:
+                    GamePlotManager.Instance.dialogue2 = true;
+                    break;
+                case 5:
+                    GamePlotManager.Instance.dialogue3 = true;
+                    break;
             }
         }
 
@@ -175,26 +222,42 @@ public class PlotDialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// 根据选项选择对应剧情对话
+    /// 是第几个选项的剧情？
     /// </summary>
     /// <param name="choose"></param>
     private void OnPlotDialogueOptionDown(int choose)
     {
-        // 设置为播放选项对话
-        plotIndex = 0;
-        switch (choose)
+        plotChooseIndex++;
+        // 101说明此时为第一个对话选项出现并已经选择了
+        // 102说明此时为第二个对话选项出现并已经选择了
+        switch (plotChooseIndex)
         {
-            case 1:
-                InitPlotStack(ref plot1_Option1_Choose1_Stack,plot1_Option1_Choose1);
-                currentDialogueStack = plot1_Option1_Choose1_Stack;
+            case 101:
+                if(choose == 1)
+                {
+                    InitPlotStack(ref plot1_Option1_Choose1_Stack,plot1_Option1_Choose1);
+                    currentDialogueStack = plot1_Option1_Choose1_Stack;
+                }
+                else if(choose == 2)
+                {
+                    InitPlotStack(ref plot1_Option1_Choose2_Stack,plot1_Option1_Choose2);
+                    currentDialogueStack = plot1_Option1_Choose2_Stack;
+                }
                 break;
-            case 2:
-                InitPlotStack(ref plot1_Option1_Choose2_Stack,plot1_Option1_Choose2);
-                currentDialogueStack = plot1_Option1_Choose2_Stack;
+            case 102:
+                if(choose == 1)
+                {
+                    InitPlotStack(ref plot1_Option2_Choose1_Stack,plot1_Option2_Choose1);
+                    currentDialogueStack = plot1_Option2_Choose1_Stack;
+                }
+                else if(choose == 2)
+                {
+                    InitPlotStack(ref plot1_Option2_Choose2_Stack,plot1_Option2_Choose2);
+                    currentDialogueStack = plot1_Option2_Choose2_Stack;
+                }
                 break;
         }
-        StartCoroutine(PlayPlotDialogue(currentDialogueStack,3));
+
+        StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));
     }
-
-
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using UnityEngine;
 
@@ -260,6 +261,28 @@ public static class EventHandler
     {
         VisionAllOpen?.Invoke();
     }
+
+    /// <summary>
+    /// 谁肚子叫？
+    /// </summary>
+    public static event Action StrangeSound;
+    public static void CallStrangeSound()
+    {
+        StrangeSound?.Invoke();
+    }
+
+    public static event Action DragonAppear;
+    public static void CallDragonAppear()
+    {
+        DragonAppear?.Invoke();
+    }
+
+    public static event Action FindDragon;
+    public static void CallFindDragon()
+    {
+        FindDragon?.Invoke();
+    }
+
 
 #endregion
 

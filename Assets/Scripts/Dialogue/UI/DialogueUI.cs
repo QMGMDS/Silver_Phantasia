@@ -16,6 +16,8 @@ public class DialogueUI : MonoBehaviour
     public Image faceLeft,faceRight;
     //对话按键提示
     public GameObject continuteBox;
+    //渐入渐出
+    private CanvasGroup canvasGroup;
 
 
     //对话选择文本一
@@ -39,7 +41,9 @@ public class DialogueUI : MonoBehaviour
 
     private void Awake()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
         continuteBox.SetActive(false);
+        canvasGroup.alpha = 0f;
     }
 
     private void OnEnable()
@@ -61,6 +65,7 @@ public class DialogueUI : MonoBehaviour
 
     private void OnShowDialogueOptionEvent(DialogueOption option,int determinant)
     {
+        Debug.Log(option.option1Text);
         StartCoroutine(ShowOption(option));
         optionDeterminant = determinant;
     }
@@ -77,38 +82,19 @@ public class DialogueUI : MonoBehaviour
             StartCoroutine(DialogueCloseAnim());
             yield return new WaitUntil(() => dialogueCloseIsOver); // 等待消失动画播放完毕
             dialogueCloseIsOver = false; // 复原
+
             yield return new WaitForSeconds(0.3f); // 黑屏时间
-            StartCoroutine(DialogueShowAnim());
+
+            StartCoroutine(DialogueShowAnim(piece));
             yield return new WaitUntil(() => dialogueShowIsOver); // 等待出现动画播放完毕
             dialogueShowIsOver = false; // 复原
 
             piece.isDone = false;
-            //输出文本前先清空文本预览显示
-            dialogueText.text = string.Empty;
             
-            if (piece.onLeft)
-            {
-                if (piece.faceImage != null)
-                {
-                    faceLeft.gameObject.SetActive(true);
-                    faceRight.gameObject.SetActive(false);
-                }
-                faceLeft.sprite = piece.faceImage;
-                dialogueName.text = piece.dialogueName;
-            }
-            else
-            {
-                if (piece.faceImage != null)
-                {
-                    faceLeft.gameObject.SetActive(false);
-                    faceRight.gameObject.SetActive(true);
-                }
-                faceRight.sprite = piece.faceImage;
-                dialogueName.text = piece.dialogueName;
-            }
+            
             //DOText()实现了逐渐打印对话内容
             //yield return等待DOText()这个方法的完成WaitForCompletion()
-            yield return dialogueText.DOText(piece.dialogueText, 1f).WaitForCompletion();
+            yield return dialogueText.DOText(piece.dialogueText, 0.1f).WaitForCompletion();
             //触发对话后的事件
             piece.afterTalkEvent.Invoke();
             //记录历史对话
@@ -135,6 +121,7 @@ public class DialogueUI : MonoBehaviour
     {
         if(option != null)
         {
+            isButtonDown = false;
             option.isChoose = false;
             //该方法被调用时说明执行了对话选项显示的事件
             //打开对话显示物体
@@ -173,6 +160,7 @@ public class DialogueUI : MonoBehaviour
     public void ButtonStartOne()
     {
         isButtonDown = true;
+        // 判断是剧情型对话还是游玩型对话
         switch (optionDeterminant)
         {
             case 1:
@@ -210,53 +198,73 @@ public class DialogueUI : MonoBehaviour
     }
 
     /// <summary>
-    /// 利用Text.fontSize与LayoutGroup实现对话框逐渐出现动画
+    /// 利用CanvasGroup.alpha实现对话框逐渐出现动画
     /// </summary>
     /// <returns></returns>
-    private IEnumerator DialogueShowAnim()
+    private IEnumerator DialogueShowAnim(DialoguePiece piece)
     {
         if(dialogueShowIsOver == true)
             yield return null;
 
         dialogueBox.SetActive(true);
-        while (dialogueName.fontSize < 15)
+        if (piece.onLeft)
         {
-            dialogueName.fontSize += 4;
-            yield return new WaitForSeconds(0.01f);
+            if (piece.faceImage != null)
+            {
+                faceLeft.gameObject.SetActive(true);
+                faceRight.gameObject.SetActive(false);
+                faceLeft.sprite = piece.faceImage;
+            }
+            else
+            {
+                faceLeft.gameObject.SetActive(false);
+                faceRight.gameObject.SetActive(false);
+            }
+            dialogueName.text = piece.dialogueName;
         }
-        while (dialogueText.fontSize < 15)
+        else
         {
-            dialogueText.fontSize += 4;
-            yield return new WaitForSeconds(0.01f);
+            if (piece.faceImage != null)
+            {
+                faceLeft.gameObject.SetActive(false);
+                faceRight.gameObject.SetActive(true);
+                faceRight.sprite = piece.faceImage;
+            }
+            else
+            {
+                faceLeft.gameObject.SetActive(false);
+                faceRight.gameObject.SetActive(false);
+            }
+            dialogueName.text = piece.dialogueName;
         }
-        //dialogueName.fontSize = 22f;
-        //dialogueText.fontSize = 17;
+
+        while (canvasGroup.alpha < 1)
+        {
+            canvasGroup.alpha += 0.1f;
+            yield return new WaitForSeconds(0.02f);
+        }
+
         dialogueShowIsOver = true;
     }
 
     /// <summary>
-    /// 利用Text.fontSize与LayoutGroup实现对话框逐渐消失动画
+    /// 利用CanvasGroup.alpha实现对话框逐渐消失动画
     /// </summary>
     /// <returns></returns>
     private IEnumerator DialogueCloseAnim()
     {
         if(dialogueCloseIsOver == true)
             yield return null;
-        
-        while (dialogueName.fontSize > 2)
+
+        while (canvasGroup.alpha > 0)
         {
-            dialogueName.fontSize -= 5;
-            yield return new WaitForSeconds(0.01f);
+            canvasGroup.alpha -= 0.1f;
+            yield return new WaitForSeconds(0.02f);
         }
-        while (dialogueText.fontSize > 2)
-        {
-            dialogueText.fontSize -= 5;
-            yield return new WaitForSeconds(0.01f);
-        }
-        dialogueName.text = null;
-        dialogueText.text = null;
-        //dialogueName.fontSize = 0f;
-        //dialogueText.fontSize = 0;
+
+        //关闭对话之前清空文本
+        dialogueText.text = string.Empty;
+
         dialogueBox.SetActive(false);
         faceLeft.gameObject.SetActive(false);
         faceRight.gameObject.SetActive(false);

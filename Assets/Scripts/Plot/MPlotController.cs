@@ -32,6 +32,8 @@ public class MPlotController : MonoBehaviour
         EventHandler.Plot1_MJumpAndWalk += OnPlot1_MJumpAndWalk;
         EventHandler.MPlot1_CameraAndMove += OnMPlot1_CameraAndMove;
         EventHandler.Plot1_MFindWhat += OnPlot1_MFindWhat;
+        EventHandler.StrangeSound += OnStrangeSound;
+        EventHandler.FindDragon += OnFindDragon;
     }
 
     private void OnDisable()
@@ -39,6 +41,8 @@ public class MPlotController : MonoBehaviour
         EventHandler.Plot1_MJumpAndWalk -= OnPlot1_MJumpAndWalk;
         EventHandler.MPlot1_CameraAndMove -= OnMPlot1_CameraAndMove;
         EventHandler.Plot1_MFindWhat -= OnPlot1_MFindWhat;
+        EventHandler.StrangeSound -= OnStrangeSound;
+        EventHandler.FindDragon -= OnFindDragon;
     }
 
     private void OnPlot1_MFindWhat()
@@ -64,6 +68,12 @@ public class MPlotController : MonoBehaviour
     public void OnMPlot1_AngryWalk()
     {
         StartCoroutine(MPlot1_AngryWalk());
+    }
+
+    
+    private void OnFindDragon()
+    {
+        StartCoroutine(FindDragon());
     }
 
 
@@ -106,7 +116,7 @@ public class MPlotController : MonoBehaviour
         yield return null;
         // 走几步
         // 给定起始坐标
-        NPCMovement.startGridPosition = new Vector3Int(-7,-8);
+        NPCMovement.startGridPosition = new Vector3Int(-7,-10);
         NPCMovement.targetGridPosition = new Vector3Int(-10,-11);
         //执行走路
         NPCMovement.InitNPC();
@@ -154,7 +164,7 @@ public class MPlotController : MonoBehaviour
 
         //人物移动
         NPCMovement.startGridPosition = new Vector3Int(-10,-11);
-        NPCMovement.targetGridPosition = new Vector3Int(-14,-18);
+        NPCMovement.targetGridPosition = new Vector3Int(-14,-20);
         //NPCMovement.InitNPC();
         StartCoroutine(NPCMovement.Movement());
         yield return new WaitUntil(() => NPCMovement.moveToTarget);
@@ -192,8 +202,8 @@ public class MPlotController : MonoBehaviour
     /// </summary>
     public void MPlot1_WalkToHelpK()
     {
-        NPCMovement.startGridPosition = new Vector3Int(-14,-18);
-        NPCMovement.targetGridPosition = new Vector3Int(-16,-18);
+        NPCMovement.startGridPosition = new Vector3Int(-14,-20);
+        NPCMovement.targetGridPosition = new Vector3Int(-16,-20);
         StartCoroutine(NPCMovement.Movement());
     }
 
@@ -209,22 +219,22 @@ public class MPlotController : MonoBehaviour
     }
 
     /// <summary>
-    /// 妹红愤怒的踱步 + 摄像机运镜
+    /// 妹红愤怒的踱步
     /// </summary>
     private IEnumerator MPlot1_AngryWalk()
     {
         // 后撤步
         NPCMovement.moveTime = 0.3f;
-        NPCMovement.startGridPosition = new Vector3Int(-16,-18);
-        NPCMovement.targetGridPosition = new Vector3Int(-12,-18);
+        NPCMovement.startGridPosition = new Vector3Int(-16,-19);
+        NPCMovement.targetGridPosition = new Vector3Int(-12,-19);
         StartCoroutine(NPCMovement.Movement());
 
         yield return new WaitUntil(() => NPCMovement.moveToTarget);
         
         //猛的往前冲
         NPCMovement.moveTime = 0.1f;
-        NPCMovement.startGridPosition = new Vector3Int(-12,-18);
-        NPCMovement.targetGridPosition = new Vector3Int(-16,-18);
+        NPCMovement.startGridPosition = new Vector3Int(-12,-19);
+        NPCMovement.targetGridPosition = new Vector3Int(-16,-19);
         StartCoroutine(NPCMovement.Movement());
         //NPCMovement.moveTime = 0.5f;
     }
@@ -238,6 +248,37 @@ public class MPlotController : MonoBehaviour
         anim.SetFloat("Y",-1f);
     }
 
+    /// <summary>
+    /// 谁肚子叫？
+    /// </summary>
+    private void OnStrangeSound()
+    {
+        signAnim.SetBool("IsAmazing",true);
+        signAnim.SetTrigger("Amazing");
+        signAnim.SetBool("IsAmazing",false);
+        //这里应该是等待音效结束后再去修改布尔值
+        GamePlotManager.Instance.strangeSound = true;
+    }
+
+    /// <summary>
+    /// 妹红发现敌人
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator FindDragon()
+    {
+        signAnim.SetBool("IsAmazing",true);
+        signAnim.SetTrigger("Amazing");
+        signAnim.SetBool("IsAmazing",false);
+        // 朝右看
+        anim.SetFloat("Y",0f);
+        anim.SetFloat("X",1f);
+        yield return new WaitForSeconds(1f);
+        // 朝下看
+        anim.SetFloat("X",0f);
+        anim.SetFloat("Y",-1f);
+        yield return new WaitForSeconds(1f);
+        GamePlotManager.Instance.findDragon = true;
+    }
 
 
 

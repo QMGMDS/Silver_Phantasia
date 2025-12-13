@@ -5,6 +5,7 @@ public class GamePlotManager : Singleton <GamePlotManager>
 {
     public GameObject MPlot_1;
     public GameObject KPlot_1;
+    public GameObject Plot1_Enemy_Dragon;
 
 
     [Header("剧情一判断布尔值")]
@@ -26,6 +27,14 @@ public class GamePlotManager : Singleton <GamePlotManager>
     public bool visionAllOpen;
     // 小对话 2
     public bool dialogue2;
+    // 谁肚子叫？
+    public bool strangeSound;
+    // 小对话 3 
+    public bool dialogue3;
+    // 龙出现
+    public bool dragonAppear;
+    // 发现龙
+    public bool findDragon;
 
     private void OnEnable()
     {
@@ -96,5 +105,24 @@ public class GamePlotManager : Singleton <GamePlotManager>
         // 9.小对话2
         EventHandler.CallPlotDialogueEvent(4);
         yield return new WaitUntil(() => dialogue2);
+
+        // 10.谁肚子叫？
+        EventHandler.CallStrangeSound();
+        yield return new WaitUntil(() => strangeSound);
+
+        // 11.小对话3
+        EventHandler.CallPlotDialogueEvent(5);
+        yield return new WaitUntil(() => dialogue3);
+
+        // 12.龙出现
+        EventHandler.CallDragonAppear();
+        yield return new WaitUntil(() => dragonAppear);
+
+        // 13.两人惊讶
+        EventHandler.CallFindDragon();
+        yield return new WaitUntil(() => findDragon);
+
+        // 14.小对话4
+
     }
 }

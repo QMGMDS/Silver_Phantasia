@@ -4590,6 +4590,7 @@ GameObject:
   - component: {fileID: 824538759}
   - component: {fileID: 824538761}
   - component: {fileID: 824538760}
+  - component: {fileID: 824538762}
   m_Layer: 5
   m_Name: Dialogue Panel
   m_TagString: Untagged
@@ -4641,7 +4642,6 @@ MonoBehaviour:
   optionText1: {fileID: 338799632}
   optionText2: {fileID: 562273434}
   isButtonDown: 0
-  dialogueShowIsOver: 0
   historyContent: {fileID: 752475479}
 --- !u!222 &824538761
 CanvasRenderer:
@@ -4651,6 +4651,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 824538758}
   m_CullTransparentMesh: 0
+--- !u!225 &824538762
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824538758}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &840979632
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,7 +60,7 @@ public class PlotLightControl : MonoBehaviour
     {
         while (globalLight.intensity <= 0.8)
         {
-            globalLight.intensity += 0.01f;
+            globalLight.intensity += 0.1f;
             yield return new WaitForSeconds(0.05f);
         }
         spotLight.intensity = 0f;
