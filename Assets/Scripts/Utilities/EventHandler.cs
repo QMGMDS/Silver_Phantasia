@@ -262,28 +262,44 @@ public static class EventHandler
         VisionAllOpen?.Invoke();
     }
 
+    
+    public static event Action StrangeSound;
     /// <summary>
     /// 谁肚子叫？
     /// </summary>
-    public static event Action StrangeSound;
     public static void CallStrangeSound()
     {
         StrangeSound?.Invoke();
     }
 
+    
     public static event Action DragonAppear;
+    /// <summary>
+    /// 龙出现
+    /// </summary>
     public static void CallDragonAppear()
     {
         DragonAppear?.Invoke();
     }
 
+    
     public static event Action FindDragon;
+    /// <summary>
+    /// 发现龙
+    /// </summary>
     public static void CallFindDragon()
     {
         FindDragon?.Invoke();
     }
 
-
+    public static event Action DragonRush;
+    /// <summary>
+    /// 龙冲过来
+    /// </summary>
+    public static void CallDragonRush()
+    {
+        DragonRush?.Invoke();
+    }
 #endregion
 
 }

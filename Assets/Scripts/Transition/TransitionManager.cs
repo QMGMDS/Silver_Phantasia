@@ -1,19 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TransitionManager : MonoBehaviour
 {
     //淡入淡出画布
-    private CanvasGroup fadeCanvasGroup;
+    private Image fadeImage;
 
     //初始场景
     public string InitScene;
 
     private IEnumerator Start()
     {
-        fadeCanvasGroup = FindObjectOfType<CanvasGroup>();
+        fadeImage = GameObject.FindWithTag("FadeImage").GetComponent<Image>();
         //yield return LoadSceneSetActive(InitScene);
         yield return null;
     }
@@ -93,10 +93,12 @@ public class TransitionManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator BattleStartFade()
     {
-        //场景直接变黑
-        fadeCanvasGroup.alpha = 1;
+        //场景逐渐变黑
+        yield return Fade(1);
 
         yield return new WaitForSeconds(1f);
+
+
 
         //场景逐渐出现
         yield return Fade(0);
@@ -133,21 +135,21 @@ public class TransitionManager : MonoBehaviour
     /// </summary>
     /// <param name="targetAlpha">1是黑，0是透明</param>
     /// <returns></returns>
-    private IEnumerator Fade(float targetAlpha)
+    private IEnumerator Fade(float targetFillAmount)
     {
         //鼠标射线遮挡，鼠标无法互动场景中的物体
-        fadeCanvasGroup.blocksRaycasts = true;
+        fadeImage.raycastTarget = true;
 
-        float speed = Mathf.Abs(fadeCanvasGroup.alpha - targetAlpha) / Settings.fadeDuration; //Mathf.Abs()取绝对值
+        float speed = Mathf.Abs(fadeImage.fillAmount - targetFillAmount) / Settings.fadeDuration; //Mathf.Abs()取绝对值
 
         //Mathf.Approximately()比较函数，比较两个数是否相等，返回布尔值Approximately表示近似比较
-        while (!Mathf.Approximately(fadeCanvasGroup.alpha, targetAlpha))
+        while (!Mathf.Approximately(fadeImage.fillAmount, targetFillAmount))
         {
-            //Mathf.MoveTowards()趋近函数，让fadeCanvasGroup.alpha以speed * Time.deltaTime的速度趋近targetAlpha
-            fadeCanvasGroup.alpha = Mathf.MoveTowards(fadeCanvasGroup.alpha, targetAlpha, speed * Time.deltaTime);
+            //Mathf.MoveTowards()趋近函数，让fadeImage.fillAmount以speed * Time.deltaTime的速度趋近targetFillAmount
+            fadeImage.fillAmount = Mathf.MoveTowards(fadeImage.fillAmount, targetFillAmount, 12 * speed * Time.deltaTime);
             yield return null;
         }
 
-        fadeCanvasGroup.blocksRaycasts = false;
+        fadeImage.raycastTarget = false;
     }
 }

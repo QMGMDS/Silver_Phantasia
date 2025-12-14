@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 public class BattleUI : MonoBehaviour
 {
@@ -26,7 +27,10 @@ public class BattleUI : MonoBehaviour
         foreach (var battleHUD in allBattleHUD)
         {
             if(battleHUD != null)
+            {
                 battleHUD.InitHUD();
+                Debug.Log("battleHUD");
+            }
         }
         //等待初始化
         yield return new WaitForSeconds(2f);

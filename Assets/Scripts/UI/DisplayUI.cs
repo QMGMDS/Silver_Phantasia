@@ -22,7 +22,7 @@ public class DisplayUI : MonoBehaviour
 
     private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
     {
-        SwitchBattleStartUI();
+        StartCoroutine(SwitchBattleStartUI());
     }
 
     private void OnBattleEndEvent()
@@ -33,8 +33,9 @@ public class DisplayUI : MonoBehaviour
     /// <summary>
     /// 切换战斗模式UI
     /// </summary>
-    private void SwitchBattleStartUI()
+    private IEnumerator SwitchBattleStartUI()
     {
+        yield return new WaitForSeconds(1.2f);
         normalUI.SetActive(false);
         battleUI.SetActive(true);
     }

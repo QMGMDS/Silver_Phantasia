@@ -18,7 +18,10 @@ public class PlotDialogueController : MonoBehaviour
     private Stack<DialoguePiece> fourPlotStack;
     [Header("剧情一对话5")]
     public List<DialoguePiece> plotFive;
-    private Stack<DialoguePiece> FivePlotStack;
+    private Stack<DialoguePiece> fivePlotStack;
+    [Header("剧情一对话6")]
+    public List<DialoguePiece> plotSix;
+    private Stack<DialoguePiece> sixPlotStack;
 
 
     // 选项分支对话堆栈
@@ -99,7 +102,11 @@ public class PlotDialogueController : MonoBehaviour
                 break;
 
             case 5:
-                StartCoroutine(PlayPlotDialogue(twoPlotStack,plotIndex));
+                StartCoroutine(PlayPlotDialogue(fivePlotStack,plotIndex));
+                break;
+
+            case 6:
+                StartCoroutine(PlayPlotDialogue(sixPlotStack,plotIndex));
                 break;
 
         }
@@ -132,8 +139,12 @@ public class PlotDialogueController : MonoBehaviour
                 StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
                 break;
             case 5:
-                InitPlotStack(ref FivePlotStack,plotFive);
-                StartCoroutine(PlayPlotDialogue(FivePlotStack,plotIndex));
+                InitPlotStack(ref fivePlotStack,plotFive);
+                StartCoroutine(PlayPlotDialogue(fivePlotStack,plotIndex));
+                break;
+            case 6:
+                InitPlotStack(ref sixPlotStack,plotSix);
+                StartCoroutine(PlayPlotDialogue(sixPlotStack,plotIndex));
                 break;
         }
     }
@@ -197,6 +208,9 @@ public class PlotDialogueController : MonoBehaviour
                     break;
                 case 5:
                     GamePlotManager.Instance.dialogue3 = true;
+                    break;
+                case 6:
+                    GamePlotManager.Instance.dialogue4 = true;
                     break;
             }
         }

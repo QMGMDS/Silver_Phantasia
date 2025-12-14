@@ -39,6 +39,12 @@ public class BattleBackControl : MonoBehaviour
     /// <param name="battleBack"></param>
     private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
     {
+        StartCoroutine(SwitchBattleBack(battleBack));
+    }
+
+    private IEnumerator SwitchBattleBack(string battleBack)
+    {
+        yield return new WaitForSeconds(1.2f);
         if(battleBackImage != null)
             battleBackImage.sprite = GetBattleBack(battleBack).backImage;
         battleBackImage.enabled = true;

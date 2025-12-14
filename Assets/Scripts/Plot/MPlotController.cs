@@ -117,7 +117,7 @@ public class MPlotController : MonoBehaviour
         // 走几步
         // 给定起始坐标
         NPCMovement.startGridPosition = new Vector3Int(-7,-10);
-        NPCMovement.targetGridPosition = new Vector3Int(-10,-11);
+        NPCMovement.targetGridPosition = new Vector3Int(-7,-13);
         //执行走路
         NPCMovement.InitNPC();
         StartCoroutine(NPCMovement.Movement());
@@ -163,7 +163,7 @@ public class MPlotController : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
 
         //人物移动
-        NPCMovement.startGridPosition = new Vector3Int(-10,-11);
+        NPCMovement.startGridPosition = new Vector3Int(-7,-13);
         NPCMovement.targetGridPosition = new Vector3Int(-14,-20);
         //NPCMovement.InitNPC();
         StartCoroutine(NPCMovement.Movement());
@@ -249,6 +249,15 @@ public class MPlotController : MonoBehaviour
     }
 
     /// <summary>
+    /// 妹红朝左看
+    /// </summary>
+    public void MPlot1_LookLeft()
+    {
+        anim.SetFloat("X",-1f);
+        anim.SetFloat("Y",0f);
+    }
+
+    /// <summary>
     /// 谁肚子叫？
     /// </summary>
     private void OnStrangeSound()
@@ -269,14 +278,8 @@ public class MPlotController : MonoBehaviour
         signAnim.SetBool("IsAmazing",true);
         signAnim.SetTrigger("Amazing");
         signAnim.SetBool("IsAmazing",false);
-        // 朝右看
-        anim.SetFloat("Y",0f);
-        anim.SetFloat("X",1f);
-        yield return new WaitForSeconds(1f);
-        // 朝下看
-        anim.SetFloat("X",0f);
-        anim.SetFloat("Y",-1f);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        MPlot1_LookDown();
         GamePlotManager.Instance.findDragon = true;
     }
 

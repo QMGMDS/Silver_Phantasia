@@ -35,6 +35,10 @@ public class GamePlotManager : Singleton <GamePlotManager>
     public bool dragonAppear;
     // 发现龙
     public bool findDragon;
+    // 小对话4
+    public bool dialogue4;
+    // 龙冲过来了
+    public bool dragonRush;
 
     private void OnEnable()
     {
@@ -110,6 +114,8 @@ public class GamePlotManager : Singleton <GamePlotManager>
         EventHandler.CallStrangeSound();
         yield return new WaitUntil(() => strangeSound);
 
+        yield return new WaitForSeconds(1f);
+
         // 11.小对话3
         EventHandler.CallPlotDialogueEvent(5);
         yield return new WaitUntil(() => dialogue3);
@@ -123,6 +129,11 @@ public class GamePlotManager : Singleton <GamePlotManager>
         yield return new WaitUntil(() => findDragon);
 
         // 14.小对话4
+        EventHandler.CallPlotDialogueEvent(6);
+        yield return new WaitUntil(() => dialogue4);
 
+        // 15.龙冲过来了
+        EventHandler.CallDragonRush();
+        yield return new WaitUntil(() => dragonRush);
     }
 }

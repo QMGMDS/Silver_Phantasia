@@ -47,23 +47,18 @@ public class BattleHUD : MonoBehaviour
         else
         {
             //判断站位编号
-            if(BattleManager.Instance.enemyTeam[0] == null)
+            foreach (var enemy in BattleManager.Instance.enemyTeam)
             {
-                Debug.Log("空");
+                if(enemy.roleID == ID)
+                {
+                    Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    //存起来
+                    thisCharacter = enemy;
+                    //显示图片
+                    enemyImage.enabled = true;
+                    enemyImage.sprite = thisCharacter.roleSprite;
+                }
             }
-            // foreach (var enemy in BattleManager.Instance.enemyTeam)
-            // {
-            //     Debug.Log("aa");
-            //     if(enemy.roleID == ID)
-            //     {
-            //         Debug.Log("aaa");
-            //         //存起来
-            //         thisCharacter = enemy;
-            //         //显示图片
-            //         enemyImage.enabled = true;
-            //         enemyImage.sprite = thisCharacter.roleSprite;
-            //     }
-            // }
         }
     }
 

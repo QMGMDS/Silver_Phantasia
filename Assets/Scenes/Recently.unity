@@ -466,7 +466,7 @@ Transform:
   m_GameObject: {fileID: 382848110}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.9, y: -7.79, z: 0}
+  m_LocalPosition: {x: -17.16, y: -19.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,6 +643,8 @@ MonoBehaviour:
   dialogue3: 0
   dragonAppear: 0
   findDragon: 0
+  dialogue4: 0
+  dragonRush: 0
 --- !u!114 &388706355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,7 +850,19 @@ MonoBehaviour:
     isChoose: 0
     afterTalkEvent:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 437356674}
+          m_TargetAssemblyTypeName: MPlotController, Assembly-CSharp
+          m_MethodName: MPlot1_LookLeft
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - faceImage: {fileID: 21300000, guid: f47a74c647378f749bb2d8a44107ea78, type: 3}
     onLeft: 0
     dialogueName: "\u300C\u59B9\u7EA2\u300D"
@@ -1047,19 +1061,7 @@ MonoBehaviour:
     isChoose: 0
     afterTalkEvent:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1490857623}
-          m_TargetAssemblyTypeName: KPlotController, Assembly-CSharp
-          m_MethodName: KProblem
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   - faceImage: {fileID: 21300000, guid: 7496e8e6481c19e4f8eb8b8afe8335e0, type: 3}
     onLeft: 1
     dialogueName: "\u300C\u8F89\u591C\u300D"
@@ -1075,6 +1077,62 @@ MonoBehaviour:
     onLeft: 0
     dialogueName: "\u300C\u59B9\u7EA2\u300D"
     dialogueText: "\u96BE\u9053\u8BF4.................."
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  plotSix:
+  - faceImage: {fileID: 21300000, guid: 7bd6d39c58a882940a57feef4cb0eef6, type: 3}
+    onLeft: 0
+    dialogueName: "\u300C\u59B9\u7EA2\u300D"
+    dialogueText: "\u5582\uFF01\uFF01\u8FD9\u662F\u4EC0\u4E48\u4E1C\u897F\uFF01\uFF01\uFF01\u4E0D\u662F\u6BDB\u7389\u4E48\uFF01"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: b38c0ec265ee86649a64c2a593e8bb27, type: 3}
+    onLeft: 1
+    dialogueName: "\u300C\u8F89\u591C\u300D"
+    dialogueText: "\u770B\u6765\u8FD9\u91CC\u771F\u7684\u4E0D\u662F\u5E7B\u60F3\u4E61\u554A......"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: 570b9fd56fb2a204db482e67896841fe, type: 3}
+    onLeft: 0
+    dialogueName: "\u300C\u59B9\u7EA2\u300D"
+    dialogueText: "\u4F3C\u4E4E\u5B8C\u5168\u4E0D\u53CB\u597D\u7684\u6837\u5B50......"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: 8a8d4f24d2806d3428187846f94c71e0, type: 3}
+    onLeft: 1
+    dialogueName: "\u300C\u8F89\u591C\u300D"
+    dialogueText: "\u800C\u4E14\u6BD4\u8D77\u5E7B\u60F3\u4E61\u4E0D\u662F\u6BDB\u7389\u5C31\u662F\u5996\u7CBE\u840C\u5C11\u5973\u7684\u654C\u4EBA\u6765\u8BF4\u8FD9\u4E2A\u663E\u5F97\u592A\u4E11\u4E86\uFF01\uFF01\u7C97\u5236\u6EE5\u9020\u7684\u5427\uFF01\uFF01"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 21300000, guid: 7bd6d39c58a882940a57feef4cb0eef6, type: 3}
+    onLeft: 0
+    dialogueName: "\u300C\u59B9\u7EA2\u300D"
+    dialogueText: "\u73B0\u5728\u4E0D\u662F\u8BF4\u90A3\u79CD\u5E9F\u8BDD\u7684\u65F6\u5019\uFF01\uFF01\u8FD9\u5BB6\u4F19\u653B\u8FC7\u6765\u4E86\uFF01\uFF01"
     hasToPause: 1
     hasToOption: 0
     isDone: 0
@@ -2678,7 +2736,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 0
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: 00000000e3cf03a2e33984cb1ff815abe1764c7a9f57ca1c1da34a30ddb332fba3ce402715be78682ff6ddf2
@@ -2988,8 +3046,10 @@ GameObject:
   - component: {fileID: 1101230027}
   - component: {fileID: 1101230026}
   - component: {fileID: 1101230025}
+  - component: {fileID: 1101230030}
   - component: {fileID: 1101230024}
   - component: {fileID: 1101230023}
+  - component: {fileID: 1101230029}
   m_Layer: 0
   m_Name: Plot1_Enemy
   m_TagString: Untagged
@@ -3146,6 +3206,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1101230029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101230022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ee0d19ba1298aa4eadd406146f1f56d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleBack: Forest
+  enemyTeam: {fileID: 11400000, guid: 9cff5bef2d7bb774eb8c3bd6dc7dfe8c, type: 2}
+--- !u!61 &1101230030
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101230022}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.64382946}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.56, y: 1.272341}
+  m_EdgeRadius: 0
 --- !u!1 &1192276280
 GameObject:
   m_ObjectHideFlags: 0
