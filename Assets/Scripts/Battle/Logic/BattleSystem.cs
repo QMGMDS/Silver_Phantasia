@@ -42,6 +42,15 @@ public class BattleSystem : MonoBehaviour
         battleUI = GetComponent<BattleUI>();
     }
 
+    private void OnEnable()
+    {
+        EventHandler.PlayerUseItem += OnPlayerUseItem;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.PlayerUseItem -= OnPlayerUseItem;
+    }
 
     //前方一大波石山来袭()
     private void Update()
@@ -77,7 +86,6 @@ public class BattleSystem : MonoBehaviour
                 BattleManager.Instance.BattleTurn = Turn.Player;
                 //UI提示事件
                 nowIsPlayerTurn.Invoke();
-                Debug.Log(thisTurnCharacter.roleName);
                 //等待玩家操作......
                 //当玩家按下Action按钮时，每个按钮对应不同事件
             }
@@ -228,5 +236,22 @@ public class BattleSystem : MonoBehaviour
         BattleManager.Instance.thisTurnOver = true;
         BattleManager.Instance.BattleTurn = Turn.End;
     }
+
+    /// <summary>
+    /// 玩家使用物品
+    /// </summary>
+    /// <param name="usedItem">被使用的物品</param>
+    private void OnPlayerUseItem(ItemDetials usedItem)
+    {
+        // 使用物品
+        BattleManager.Instance.PlayerUseItem(usedItem);
+
+        // 该回合结束
+        BattleManager.Instance.thisTurnOver = true;
+        BattleManager.Instance.BattleTurn = Turn.None;
+    }
+
+
+    
 
 }

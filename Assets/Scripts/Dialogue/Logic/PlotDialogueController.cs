@@ -54,6 +54,8 @@ public class PlotDialogueController : MonoBehaviour
     private int plotChooseIndex = 100;
     // 当前片段动画是否播放结束
     [SerializeField]private bool pieceOver;
+    //跳过键是否按下,按下跳过键则进入跳过模式
+    [SerializeField]private bool skip;
     
 
 
@@ -62,6 +64,7 @@ public class PlotDialogueController : MonoBehaviour
         EventHandler.InteractButtonStartEvent += OnInteractButtonStart;
         EventHandler.PlotDialogueEvent += OnPlotDialogueEvent;
         EventHandler.PlotDialogueOptionDown += OnPlotDialogueOptionDown;
+        EventHandler.SkipDialogue += OnSkipDialogue;
     }
 
     private void OnDisable()
@@ -69,13 +72,25 @@ public class PlotDialogueController : MonoBehaviour
         EventHandler.InteractButtonStartEvent -= OnInteractButtonStart;
         EventHandler.PlotDialogueEvent -= OnPlotDialogueEvent;
         EventHandler.PlotDialogueOptionDown += OnPlotDialogueOptionDown;
+        EventHandler.SkipDialogue -= OnSkipDialogue;
     }
 
-    
+    /// <summary>
+    /// 模式切换：对话是否跳过
+    /// </summary>
+    private void OnSkipDialogue()
+    {
+        skip = !skip;
+    }
+
     private void OnInteractButtonStart()
     {
-        if(!pieceOver)
+        if (skip == false)
+        {
+            if(!pieceOver)
             return;
+        }
+        
         
         switch (plotIndex)
         {

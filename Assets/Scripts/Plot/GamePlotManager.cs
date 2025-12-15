@@ -3,9 +3,14 @@ using UnityEngine;
 
 public class GamePlotManager : Singleton <GamePlotManager>
 {
-    public GameObject MPlot_1;
-    public GameObject KPlot_1;
-    public GameObject Plot1_Enemy_Dragon;
+    //1
+    // public GameObject MPlot_1;
+    // public GameObject KPlot_1;
+    // public GameObject Plot1_Enemy_Dragon;
+    //1
+
+    [Header("初始加载场景")]
+    [SerializeField]private string InitScene;
 
 
     [Header("剧情一判断布尔值")]
@@ -61,10 +66,10 @@ public class GamePlotManager : Singleton <GamePlotManager>
 
     private IEnumerator PlotOne()
     {
-        EventHandler.CallLoadSceneEvent("Forest");
+        EventHandler.CallLoadSceneEvent(InitScene);
         yield return new WaitForSeconds(0.5f);
-        MPlot_1.SetActive(true);
-        KPlot_1.SetActive(true);
+        //MPlot_1.SetActive(true);
+        //KPlot_1.SetActive(true);
         StartCoroutine(OpenVision());
     }
 

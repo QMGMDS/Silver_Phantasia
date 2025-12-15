@@ -38,9 +38,16 @@ public class Player : MonoBehaviour
 
         //空格键按下时
         playerInput.UI.Interact.started += Interact;
+        //T键按下时
+        playerInput.UI.Skip.started += SkipDialogue;
+        //L键按下时
+        playerInput.UI.OpenGameSettings_L.started += OpenGameSettings_L;
+        //F键按下时
+        playerInput.UI.OpenGameSettings_F.started += OpenGameSettings_F;
         //Y键查看历史对话
         playerInput.GamePlay.OpenDialogueHistory.started += ViewDialogue;
     }
+
 
     private void OnDisable()
     {
@@ -107,6 +114,19 @@ public class Player : MonoBehaviour
     {
         EventHandler.CallOpenDialogueEvent();
     }
+    private void SkipDialogue(InputAction.CallbackContext context)
+    {
+        EventHandler.CallSkipDialogue();
+    }
+    private void OpenGameSettings_L(InputAction.CallbackContext context)
+    {
+        EventHandler.CallGameSettings_LDown();
+    }
+    private void OpenGameSettings_F(InputAction.CallbackContext context)
+    {
+        EventHandler.CallGameSettings_FDown();
+    }
+
     #endregion
 
     /// <summary>

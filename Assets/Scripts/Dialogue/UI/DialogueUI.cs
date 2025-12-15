@@ -83,7 +83,7 @@ public class DialogueUI : MonoBehaviour
             yield return new WaitUntil(() => dialogueCloseIsOver); // 等待消失动画播放完毕
             dialogueCloseIsOver = false; // 复原
 
-            yield return new WaitForSeconds(0.3f); // 黑屏时间
+            yield return new WaitForSeconds(0.2f); // 黑屏时间
 
             StartCoroutine(DialogueShowAnim(piece));
             yield return new WaitUntil(() => dialogueShowIsOver); // 等待出现动画播放完毕
@@ -94,7 +94,7 @@ public class DialogueUI : MonoBehaviour
             
             //DOText()实现了逐渐打印对话内容
             //yield return等待DOText()这个方法的完成WaitForCompletion()
-            yield return dialogueText.DOText(piece.dialogueText, 0.1f).WaitForCompletion();
+            yield return dialogueText.DOText(piece.dialogueText, 0.01f).WaitForCompletion();
             //触发对话后的事件
             piece.afterTalkEvent.Invoke();
             //记录历史对话
@@ -241,7 +241,7 @@ public class DialogueUI : MonoBehaviour
         while (canvasGroup.alpha < 1)
         {
             canvasGroup.alpha += 0.1f;
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.01f);
         }
 
         dialogueShowIsOver = true;
@@ -259,7 +259,7 @@ public class DialogueUI : MonoBehaviour
         while (canvasGroup.alpha > 0)
         {
             canvasGroup.alpha -= 0.1f;
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.01f);
         }
 
         //关闭对话之前清空文本

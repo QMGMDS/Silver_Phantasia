@@ -106,6 +106,36 @@ public class BattleManager : Singleton <BattleManager>
         thisCharacterTurn.addDefend = (int)(thisCharacterTurn.baseDefend*0.4);
     }
 
+    /// <summary>
+    /// 玩家使用物品
+    /// </summary>
+    public void PlayerUseItem(ItemDetials usedItem)
+    {
+        // 物品-1
+        usedItem.itemNum--;
+        switch (usedItem.itemType)
+        {
+            case ItemType.Treatment:
+                if ((thisCharacterTurn.currentHP + usedItem.baseAttribute) > thisCharacterTurn.maxHP)
+                {
+                    thisCharacterTurn.currentHP = thisCharacterTurn.maxHP;
+                }
+                else
+                {
+                    thisCharacterTurn.currentHP += usedItem.baseAttribute;
+                }
+                break;
+            case ItemType.Speed:
+                
+                break;
+            
+        }
+    }
+
+
+    /// <summary>
+    /// 敌人攻击
+    /// </summary>
     public void EnemyAttack()
     {
         //搜索活着的站位靠前的Player进行攻击

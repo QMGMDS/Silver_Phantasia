@@ -103,29 +103,67 @@ public static class EventHandler
         BattleEndEvent?.Invoke();
     }
 
+    public static event Action<ItemDetials> PlayerUseItem;
+    /// <summary>
+    /// 玩家使用物品
+    /// </summary>
+    /// <param name="usedItem">被使用的物品</param>
+    public static void CallPlayerUseItem(ItemDetials usedItem)
+    {
+        PlayerUseItem?.Invoke(usedItem);
+    }
+
 #endregion
 
 
 #region 按键交互
+    
+    public static event Action InteractButtonStartEvent;
     /// <summary>
     /// 对话交互键被按下事件
     /// </summary>
-    public static event Action InteractButtonStartEvent;
-
     public static void CallInteractButtonStartEvent()
     {
         InteractButtonStartEvent?.Invoke();
     }
 
+    
+    public static event Action OpenDialogueEvent;
     /// <summary>
     /// 查看对话历史按键Y被按下
     /// </summary>
-    public static event Action OpenDialogueEvent;
-
     public static void CallOpenDialogueEvent()
     {
         OpenDialogueEvent?.Invoke();
     }
+
+    public static event Action SkipDialogue;
+    /// <summary>
+    /// 跳过对话键按下
+    /// </summary>
+    public static void CallSkipDialogue()
+    {
+        SkipDialogue?.Invoke();
+    }
+
+    public static event Action GameSettings_LDown;
+    /// <summary>
+    /// 游戏设置L键被按下
+    /// </summary>
+    public static void CallGameSettings_LDown()
+    {
+        GameSettings_LDown?.Invoke();
+    }
+
+    public static event Action GameSettings_FDown;
+    /// <summary>
+    /// 游戏背包F键被按下
+    /// </summary>
+    public static void CallGameSettings_FDown()
+    {
+        GameSettings_FDown?.Invoke();
+    }
+
 #endregion
 
 

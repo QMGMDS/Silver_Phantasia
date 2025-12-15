@@ -13,10 +13,12 @@ public enum BattleState
 //物品类型
 public enum ItemType
 {
-    //攻击物品
+    // +攻击
     Attack,
-    //治疗物品
+    // +治疗
     Treatment,
+    // +速度
+    Speed,
 }
 
 //按键Button类型

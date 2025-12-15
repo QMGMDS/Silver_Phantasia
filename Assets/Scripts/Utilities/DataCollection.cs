@@ -28,16 +28,23 @@ public class TileDetails
 
 //每个物品的属性
 [System.Serializable]
-public class ItemDetials 
+public class ItemDetials
 {
-    //物品ID
-    public int ItemID;
-    //物品名称
-    public string itemName;
-    //物品种类
-    public ItemType itemType;
-    //物品图片
+    // 物品在背包的格子序号
+    public int itemID;
+    // 物品图片
     public Sprite itemIcon;
+    // 物品名称
+    public string itemName;
+    // 物品数量
+    public int itemNum;
+    // 物品种类
+    public ItemType itemType;
+    // 物品攻击力/恢复力
+    public int baseAttribute;
+    // 物品详情
+    [TextArea]public string itemDecorations;
+    
 }
 
 //NPC的初始坐标属性

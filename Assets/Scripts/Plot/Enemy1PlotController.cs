@@ -6,13 +6,16 @@ public class Enemy1PlotController : MonoBehaviour
 {
     private NPCMovement NPCMovement;
     private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider2D;
 
 
     private void Awake()
     {
         NPCMovement = GetComponent<NPCMovement>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
         spriteRenderer.enabled = false;
+        boxCollider2D.enabled = false;
     }
 
     private void OnEnable()
@@ -51,6 +54,7 @@ public class Enemy1PlotController : MonoBehaviour
 
     private IEnumerator DragonRush()
     {
+        boxCollider2D.enabled = true;
         NPCMovement.moveTime = 0.1f;
         yield return new WaitForSeconds(0.5f);
         NPCMovement.startGridPosition = new Vector3Int(-17,-24);
@@ -58,5 +62,7 @@ public class Enemy1PlotController : MonoBehaviour
         StartCoroutine(NPCMovement.Movement());
         yield return new WaitUntil(() => NPCMovement.moveToTarget);
         GamePlotManager.Instance.dragonRush = true;
+        spriteRenderer.enabled = false;
+        boxCollider2D.enabled = false;
     }
 }

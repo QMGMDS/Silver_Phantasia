@@ -7,7 +7,8 @@ public class BattleUI : MonoBehaviour
 {
     //玩家操作UI显示
     public GameObject Action;
-
+    //玩家Item/Skill背包
+    public GameObject battleBag;
     //行动轴
     public BattleWalkController battleWalkController;
 
@@ -15,6 +16,12 @@ public class BattleUI : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(InitBattle());
+        EventHandler.PlayerUseItem += CloseBag;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.PlayerUseItem -= CloseBag;
     }
 
     /// <summary>
@@ -66,6 +73,23 @@ public class BattleUI : MonoBehaviour
     public void CloseAction()
     {
         Action.SetActive(false);
+    }
+
+    /// <summary>
+    /// 打开战斗背包
+    /// </summary>
+    public void OpenBag()
+    {
+        Action.SetActive(false);
+        battleBag.SetActive(true);
+    }
+
+    /// <summary>
+    /// 使用物品关闭战斗背包
+    /// </summary>
+    public void CloseBag(ItemDetials usedItem)
+    {
+        battleBag.SetActive(false);
     }
 
 }

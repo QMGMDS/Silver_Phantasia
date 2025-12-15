@@ -51,7 +51,6 @@ public class BattleHUD : MonoBehaviour
             {
                 if(enemy.roleID == ID)
                 {
-                    Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                     //存起来
                     thisCharacter = enemy;
                     //显示图片
