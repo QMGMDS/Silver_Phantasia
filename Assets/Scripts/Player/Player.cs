@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +7,9 @@ public class Player : MonoBehaviour
     public PlayerInputControl playerInput;
     private Rigidbody2D rb;
     private Animator anim;
+    private SpriteRenderer sprite;
+
+    private GameObject playerSign;
 
     [Header("移动方向")]
     private Vector2 inputDirection;
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour
         playerInput = new PlayerInputControl();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        playerSign = transform.GetChild(1).gameObject;
     }
 
     private void OnEnable()
@@ -35,17 +39,15 @@ public class Player : MonoBehaviour
         EventHandler.ClosePlayerMoveEvent += OnClosePlayerMoveEvent;
         EventHandler.OpenPlayerMoveEvent += OnOpenPlayerMoveEvent;
         EventHandler.MoveToPositionEvent += OnMoveToPositionEvent;
+        EventHandler.BraveFaceChange += OnBraveFaceChange;
+        EventHandler.Dungeon_FirstEntry += OnDungeon_FirstEntry;
+        EventHandler.PlayerShowImageChange += OnCallPlayerShowImageChange;
+        EventHandler.PlayerSign += OnPlayerSign;
 
         //空格键按下时
         playerInput.UI.Interact.started += Interact;
-        //T键按下时
-        playerInput.UI.Skip.started += SkipDialogue;
         //L键按下时
-        playerInput.UI.OpenGameSettings_L.started += OpenGameSettings_L;
-        //F键按下时
-        playerInput.UI.OpenGameSettings_F.started += OpenGameSettings_F;
-        //Y键查看历史对话
-        playerInput.GamePlay.OpenDialogueHistory.started += ViewDialogue;
+        playerInput.UI.OpenGameSettings_O.started += OpenGameSettings_O;
     }
 
 
@@ -53,10 +55,31 @@ public class Player : MonoBehaviour
     {
         playerInput.Disable();
         EventHandler.ClosePlayerMoveEvent -= OnClosePlayerMoveEvent;
-        EventHandler.OpenPlayerMoveEvent += OnOpenPlayerMoveEvent;
+        EventHandler.OpenPlayerMoveEvent -= OnOpenPlayerMoveEvent;
         EventHandler.MoveToPositionEvent -= OnMoveToPositionEvent;
+        EventHandler.BraveFaceChange -= OnBraveFaceChange;
+        EventHandler.Dungeon_FirstEntry -= OnDungeon_FirstEntry;
+        EventHandler.PlayerSign += OnPlayerSign;
     }
 
+
+    /// <summary>
+    /// 修改Player图片显示
+    /// </summary>
+    /// <param name="obj"></param>
+    private void OnCallPlayerShowImageChange(bool change)
+    {
+        sprite.enabled = change;
+    }
+
+    /// <summary>
+    /// PlayerSign是否可见
+    /// </summary>
+    /// <param name="change"></param>
+    private void OnPlayerSign(bool change)
+    {
+        playerSign.SetActive(change);
+    }
 
     private void Update()
     {
@@ -105,29 +128,25 @@ public class Player : MonoBehaviour
     }
 
 
-    #region 按键检测
+#region 按键检测
+    /// <summary>
+    /// 空格键按下
+    /// </summary>
+    /// <param name="context"></param>
     private void Interact(InputAction.CallbackContext context)
     {
         EventHandler.CallInteractButtonStartEvent();
     }
-    private void ViewDialogue(InputAction.CallbackContext context)
-    {
-        EventHandler.CallOpenDialogueEvent();
-    }
-    private void SkipDialogue(InputAction.CallbackContext context)
-    {
-        EventHandler.CallSkipDialogue();
-    }
-    private void OpenGameSettings_L(InputAction.CallbackContext context)
-    {
-        EventHandler.CallGameSettings_LDown();
-    }
-    private void OpenGameSettings_F(InputAction.CallbackContext context)
-    {
-        EventHandler.CallGameSettings_FDown();
-    }
 
-    #endregion
+    /// <summary>
+    /// O键按下
+    /// </summary>
+    /// <param name="context"></param>
+    private void OpenGameSettings_O(InputAction.CallbackContext context)
+    {
+        EventHandler.CallGameSettings_ODown();
+    }
+#endregion
 
     /// <summary>
     /// 关闭人物移动控制
@@ -156,6 +175,64 @@ public class Player : MonoBehaviour
     private void OnMoveToPositionEvent(Vector3 positionToGo)
     {
         transform.position = positionToGo;
+    }
+
+    /// <summary>
+    /// 玩家朝向单次修改
+    /// </summary>
+    /// <param name="faceChange">1为面朝上，2为面朝下，3为面朝左，4为面朝右</param>
+    private void OnBraveFaceChange(int faceChange)
+    {
+        switch (faceChange)
+        {
+            case 1:
+                anim.SetFloat("X",0f);
+                anim.SetFloat("Y",1f);
+                break;
+            case 2:
+                anim.SetFloat("X",0f);
+                anim.SetFloat("Y",-1f);
+                break;
+            case 3:
+                anim.SetFloat("X",-1f);
+                anim.SetFloat("Y",0f);
+                break;
+            case 4:
+                anim.SetFloat("X",1f);
+                anim.SetFloat("Y",0f);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 勇者四处张望
+    /// </summary>
+    /// <param name="time">每次转向的间隔时间</param>
+    /// <returns></returns>
+    private IEnumerator BraveLookAround(float time)
+    {
+        OnBraveFaceChange(3);
+        yield return new WaitForSeconds(time);
+        OnBraveFaceChange(1);
+        yield return new WaitForSeconds(time);
+        OnBraveFaceChange(4);
+        yield return new WaitForSeconds(time);
+        OnBraveFaceChange(2);
+    }
+
+    /// <summary>
+    /// 地牢：初入，勇者熟悉环境
+    /// </summary>
+    private void OnDungeon_FirstEntry()
+    {
+        StartCoroutine(DungeonFirstEntry());
+    }
+    private IEnumerator DungeonFirstEntry()
+    {
+        StartCoroutine(BraveLookAround(0.4f));
+        yield return new WaitForSeconds(0.4f*4);
+        // 四处观察后进入对话
+        EventHandler.CallPlotDialogueEvent(2);
     }
 
 }

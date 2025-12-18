@@ -1,144 +1,42 @@
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GamePlotManager : Singleton <GamePlotManager>
 {
-    //1
-    // public GameObject MPlot_1;
-    // public GameObject KPlot_1;
-    // public GameObject Plot1_Enemy_Dragon;
-    //1
+    // 勇者与国王的谈话中，玩家的选择
+    public Kingdom_PlayerChoose kingdom_PlayerChoose;
 
-    [Header("初始加载场景")]
-    [SerializeField]private string InitScene;
+    // 勇者是否进入地牢
+    public bool braveEntryDungeon;
 
-
-    [Header("剧情一判断布尔值")]
-    // 视野是否打开
-    public bool visionOpen;
-    // 妹红的自言自语1是否结束
-    public bool MTalkOneisOver;
-    // 妹红的跳和走是否结束
-    public bool MJumpAndWalkisOver;
-    // 妹红的自言自语2是否结束
-    public bool MTalkTwoisOver;
-    // 运镜 + 移动是否结束
-    public bool MCameraAndWalkisOver;
-    // 发出感叹号 + 运镜是否结束
-    public bool MAmazingAndCamera;
-    // 小对话
-    public bool dialogue1;
-    // 视野是否展开
-    public bool visionAllOpen;
-    // 小对话 2
-    public bool dialogue2;
-    // 谁肚子叫？
-    public bool strangeSound;
-    // 小对话 3 
-    public bool dialogue3;
-    // 龙出现
-    public bool dragonAppear;
-    // 发现龙
-    public bool findDragon;
-    // 小对话4
-    public bool dialogue4;
-    // 龙冲过来了
-    public bool dragonRush;
+    
+    
 
     private void OnEnable()
     {
-        EventHandler.PlotOneEvent += OnPlotOneEvent;
+        
     }
 
     private void OnDisable()
     {
-        EventHandler.PlotOneEvent -= OnPlotOneEvent;
-    }
-
-
-    /// <summary>
-    /// 进入剧情一
-    /// </summary>
-    private void OnPlotOneEvent()
-    {
-        StartCoroutine(PlotOne());
-    }
-
-    private IEnumerator PlotOne()
-    {
-        EventHandler.CallLoadSceneEvent(InitScene);
-        yield return new WaitForSeconds(0.5f);
-        //MPlot_1.SetActive(true);
-        //KPlot_1.SetActive(true);
-        StartCoroutine(OpenVision());
+        
     }
 
     /// <summary>
-    /// 视野被打开时触发的方法：剧情一启动
+    /// 玩家选择完选项之后，对话结束之后
     /// </summary>
-    private IEnumerator OpenVision()
+    public void Kingdom_ChooseAndDialogueOver()
     {
-        // 1.视野打开
-        EventHandler.CallPlotOneVisionOpen();
-        yield return new WaitUntil(() => visionOpen);
+        switch (kingdom_PlayerChoose)
+        {
+            case Kingdom_PlayerChoose.Yes: //勇者离开王宫
+                EventHandler.CallKingdom_BraveQuit();
+                break;
+            case Kingdom_PlayerChoose.No: //游戏结束
 
-        // 2.妹红的自言自语1
-        EventHandler.CallPlotDialogueEvent(1);
-        // MTalkOneisOver为true表明第一段对话结束了，关闭对话框事时MTalkOneisOver为true
-        yield return new WaitUntil(() => MTalkOneisOver);
-
-        // 3.动画：人物跳起来，随后移动
-        EventHandler.CallPlot1_MJumpAndWalk();
-        yield return new WaitUntil(() => MJumpAndWalkisOver);
-
-        // 4.妹红的自言自语2 + 环顾四周
-        EventHandler.CallPlotDialogueEvent(2);
-        yield return new WaitUntil(() => MTalkTwoisOver);
-
-        // 5.摄像机先移动，妹红紧随其后
-        EventHandler.CallMPlot1_CameraAndMove();
-        yield return new WaitUntil(() => MCameraAndWalkisOver);
-
-        // 6.妹红转向，发现了什么，感叹号出现，摄像机快速移动
-        EventHandler.CallPlot1_MFindWhat();
-        yield return new WaitUntil(() => MAmazingAndCamera);
-
-        // 7.对话1
-        EventHandler.CallPlotDialogueEvent(3);
-        yield return new WaitUntil(() => dialogue1);
-
-        // 8.视野展开!!!
-        EventHandler.CallVisionAllOpen();
-        yield return new WaitUntil(() => visionAllOpen);
-
-        // 9.小对话2
-        EventHandler.CallPlotDialogueEvent(4);
-        yield return new WaitUntil(() => dialogue2);
-
-        // 10.谁肚子叫？
-        EventHandler.CallStrangeSound();
-        yield return new WaitUntil(() => strangeSound);
-
-        yield return new WaitForSeconds(1f);
-
-        // 11.小对话3
-        EventHandler.CallPlotDialogueEvent(5);
-        yield return new WaitUntil(() => dialogue3);
-
-        // 12.龙出现
-        EventHandler.CallDragonAppear();
-        yield return new WaitUntil(() => dragonAppear);
-
-        // 13.两人惊讶
-        EventHandler.CallFindDragon();
-        yield return new WaitUntil(() => findDragon);
-
-        // 14.小对话4
-        EventHandler.CallPlotDialogueEvent(6);
-        yield return new WaitUntil(() => dialogue4);
-
-        // 15.龙冲过来了
-        EventHandler.CallDragonRush();
-        yield return new WaitUntil(() => dragonRush);
+                break;
+        }
     }
+    
 }

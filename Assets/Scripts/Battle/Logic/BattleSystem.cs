@@ -36,6 +36,7 @@ public class BattleSystem : MonoBehaviour
     public UnityEvent EnemyAttackAnimations;
 
 
+
     private void Awake()
     {
         BattleManager.Instance.BattleTurn = Turn.None;
@@ -51,7 +52,6 @@ public class BattleSystem : MonoBehaviour
     {
         EventHandler.PlayerUseItem -= OnPlayerUseItem;
     }
-
     //前方一大波石山来袭()
     private void Update()
     {
@@ -84,22 +84,23 @@ public class BattleSystem : MonoBehaviour
             {
                 //玩家的战斗逻辑
                 BattleManager.Instance.BattleTurn = Turn.Player;
+                UpdataBuff();
                 //UI提示事件
                 nowIsPlayerTurn.Invoke();
                 //等待玩家操作......
                 //当玩家按下Action按钮时，每个按钮对应不同事件
+                //角色buff更新减少一回合
+
             }
             else
             {
                 //敌人的战斗逻辑
                 BattleManager.Instance.BattleTurn = Turn.Enemy;
-                Debug.Log("敌人攻击");
                 EnemyAttack();
             }
         }
         else if(BattleManager.Instance.BattleTurn == Turn.End)
         {
-            Debug.Log("战斗结束");
             BattleEnd();
         }
 
@@ -212,7 +213,14 @@ public class BattleSystem : MonoBehaviour
         BattleManager.Instance.walking = true;
         battleUI.WalkAnimation();
     }
-
+    
+    /// <summary>
+    /// 玩家按下攻击
+    /// </summary>
+    public void AttackButtonDown()
+    {
+        BattleManager.Instance.currentChooseAction = ChooseAction.Attack;
+    }
 
     /// <summary>
     /// 玩家按下防御
@@ -245,6 +253,8 @@ public class BattleSystem : MonoBehaviour
     {
         // 使用物品
         BattleManager.Instance.PlayerUseItem(usedItem);
+        //玩家血量更新
+        nowIsEnemyTurn?.Invoke();
 
         // 该回合结束
         BattleManager.Instance.thisTurnOver = true;
@@ -252,6 +262,34 @@ public class BattleSystem : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// buff状态更新
+    /// </summary>
+    private void UpdataBuff()
+    {
+        //角色buff减少一回合
+        if(thisTurnCharacter.buff.remaining != 0)
+        {
+            // 执行buff效果
+            switch (thisTurnCharacter.buff.type)
+            {
+                case BuffType.Treatment:
+                    BattleManager.Instance.Treatment(thisTurnCharacter.buff.buffAttribute);
+                    nowIsEnemyTurn?.Invoke();
+                    break;
+                case BuffType.Speed:
+
+                    break;
+            }
+            // buff剩余回合-1
+            thisTurnCharacter.buff.remaining--;
+        }
+        else
+        {
+            // buff归零则重置玩家基础属性
+            BattleManager.Instance.BuffReset();
+        }
+    }
     
 
 }

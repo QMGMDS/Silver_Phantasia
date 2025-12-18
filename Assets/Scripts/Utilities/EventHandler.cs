@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http.Headers;
 using UnityEngine;
 
 //EventHandler专门定义跨场景的+控制人物输入系统的  事件
@@ -10,38 +6,20 @@ public static class EventHandler
 {
 
 #region 场景加载事件
-    /// <summary>
-    /// 场景卸载之前的事件
-    /// </summary>
-    public static event Action BeforeSceneUnloadEvent;
-    public static void CallBeforeSceneUnloadEvent()
-    {
-        BeforeSceneUnloadEvent?.Invoke();
-    }
-
-    /// <summary>
-    /// 场景卸载之后的事件
-    /// </summary>
-    public static event Action AfterSceneloadedEvent;
-
-    public static void CallAfterSceneloadedEvent()
-    {
-        AfterSceneloadedEvent?.Invoke();
-    }
-
+    public static event Action<string,Vector3> TransitionEvent;
     /// <summary>
     /// 场景切换事件
     /// </summary>
-    public static event Action<string,Vector3> TransitionEvent;
-
-    public static void CallTransitionEvent(string sceneToGo,Vector3 positionToGo)
+    /// <param name="sceneToGo">要加载的场景</param>
+    /// <param name="posToGo">要去的目的坐标</param>
+    public static void CallTransitionEvent(string sceneToGo,Vector3 posToGo)
     {
-        TransitionEvent?.Invoke(sceneToGo,positionToGo);
+        TransitionEvent?.Invoke(sceneToGo,posToGo);
     }
 
     public static event Action<string> LoadSceneEvent;
     /// <summary>
-    /// 加载对应的场景
+    /// 加载对应的场景事件，只加载
     /// </summary>
     /// <param name="loadScene">要加载的场景</param>
     public static void CallLoadSceneEvent(string loadScene)
@@ -49,55 +27,55 @@ public static class EventHandler
         LoadSceneEvent?.Invoke(loadScene);
     }
 
-    /// <summary>
-    /// 场景切换移动人物目的坐标事件
-    /// </summary>
     public static event Action<Vector3> MoveToPositionEvent;
-
+    /// <summary>
+    /// 场景切换时移动人物到目的坐标的事件
+    /// </summary>
+    /// <param name="targetPosition">目的坐标</param>
     public static void CallMoveToPosition(Vector3 targetPosition)
     {
         MoveToPositionEvent?.Invoke(targetPosition);
     }
-
 #endregion
 
+
+#region 人物移动控制
+    public static event Action ClosePlayerMoveEvent;
     /// <summary>
     /// 关闭人物移动控制的事件
     /// </summary>
-    public static event Action ClosePlayerMoveEvent;
-
     public static void CallClosePlayerMoveEvent()
     {
         ClosePlayerMoveEvent?.Invoke();
     }
 
+    public static event Action OpenPlayerMoveEvent;
     /// <summary>
     /// 开启人物移动控制的事件
     /// </summary>
-    public static event Action OpenPlayerMoveEvent;
-
     public static void CallOpenPlayerMoveEvent()
     {
         OpenPlayerMoveEvent?.Invoke();
     }
+#endregion
 
 
 #region 战斗事件
+    public static event Action<string,BattleAttributeDataList_SO> BattleStartEvent;
     /// <summary>
     /// 战斗开始的触发事件
     /// </summary>
-    public static event Action<string,BattleAttributeDataList_SO> BattleStartEvent;
-    
+    /// <param name="battleBack">战斗背景</param>
+    /// <param name="enemyTeam">战斗敌人队伍</param>
     public static void CallBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
     {
         BattleStartEvent?.Invoke(battleBack,enemyTeam);
     }
 
+    public static event Action BattleEndEvent;
     /// <summary>
     /// 战斗结束的事件（战斗胜利执行的）
     /// </summary>
-    public static event Action BattleEndEvent;
-    
     public static void CallBattleEndEvent()
     {
         BattleEndEvent?.Invoke();
@@ -113,11 +91,19 @@ public static class EventHandler
         PlayerUseItem?.Invoke(usedItem);
     }
 
+    public static event Action<SkillDetails> PlayerUseSkill;
+    /// <summary>
+    /// 玩家使用技能
+    /// </summary>
+    /// <param name="usedSkill">被使用的技能</param>
+    public static void CallPlayerUseSkill(SkillDetails usedSkill)
+    {
+        PlayerUseSkill?.Invoke(usedSkill);
+    }
 #endregion
 
 
 #region 按键交互
-    
     public static event Action InteractButtonStartEvent;
     /// <summary>
     /// 对话交互键被按下事件
@@ -127,58 +113,28 @@ public static class EventHandler
         InteractButtonStartEvent?.Invoke();
     }
 
-    
-    public static event Action OpenDialogueEvent;
+    public static event Action GameSettings_ODown;
     /// <summary>
-    /// 查看对话历史按键Y被按下
+    /// 游戏设置菜单O键被按下
     /// </summary>
-    public static void CallOpenDialogueEvent()
+    public static void CallGameSettings_ODown()
     {
-        OpenDialogueEvent?.Invoke();
+        GameSettings_ODown?.Invoke();
     }
-
-    public static event Action SkipDialogue;
-    /// <summary>
-    /// 跳过对话键按下
-    /// </summary>
-    public static void CallSkipDialogue()
-    {
-        SkipDialogue?.Invoke();
-    }
-
-    public static event Action GameSettings_LDown;
-    /// <summary>
-    /// 游戏设置L键被按下
-    /// </summary>
-    public static void CallGameSettings_LDown()
-    {
-        GameSettings_LDown?.Invoke();
-    }
-
-    public static event Action GameSettings_FDown;
-    /// <summary>
-    /// 游戏背包F键被按下
-    /// </summary>
-    public static void CallGameSettings_FDown()
-    {
-        GameSettings_FDown?.Invoke();
-    }
-
 #endregion
 
 
 #region 对话事件
-    
     public static event Action<DialoguePiece> ShowDialogueEvent;
     /// <summary>
     /// 对话片段UI显示的事件
     /// </summary>
+    /// <param name="piece">要播放的对话</param>
     public static void CallShowDialogueEvent(DialoguePiece piece)
     {
         ShowDialogueEvent?.Invoke(piece);
     }
 
-    
     public static event Action<DialogueOption,int> ShowDialogueOptionEvent;
     /// <summary>
     /// 对话选项UI显示的事件
@@ -190,7 +146,6 @@ public static class EventHandler
         ShowDialogueOptionEvent?.Invoke(option,determinant);
     }
     
-    
     public static event Action DialogueOptionOneDownEvent;
     /// <summary>
     /// 对话选项一被按下(游玩型)
@@ -199,7 +154,6 @@ public static class EventHandler
     {
         DialogueOptionOneDownEvent?.Invoke();
     }
-
     
     public static event Action DialogueOptionTwoDownEvent;
     /// <summary>
@@ -209,7 +163,6 @@ public static class EventHandler
     {
         DialogueOptionTwoDownEvent?.Invoke();
     }
-
     
     public static event Action<int> PlotDialogueOptionDown;
     /// <summary>
@@ -221,123 +174,160 @@ public static class EventHandler
         PlotDialogueOptionDown?.Invoke(choose);
     }
 
-    /// <summary>
-    /// 对话结束的事件
-    /// </summary>
-    public static event Action DialogueOverEvent;
-
-    public static void CallDialogueOverEvent()
-    {
-        DialogueOverEvent?.Invoke();
-    }
-
-
-#endregion
-
-
-#region 剧情对话触发事件
     public static event Action<int> PlotDialogueEvent;
     /// <summary>
     /// 剧情对话触发
     /// </summary>
+    /// <param name="plotIndex">要对话的数据序号</param>
     public static void CallPlotDialogueEvent(int plotIndex)
     {
         PlotDialogueEvent?.Invoke(plotIndex);
     }
+#endregion
+
+
+#region 游戏运行剧情逻辑事件
+
+    #region 摄像机事件
+    public static event Action Kingdom_CameraOverview;
+    /// <summary>
+    /// 自下而上纵观全图：Kingdom
+    /// </summary>
+    public static void CallKingdom_CameraOverview()
+    {
+        Kingdom_CameraOverview?.Invoke();
+    }
+
+    public static event Action Kingdom_CameraFollowBrave;
+    /// <summary>
+    /// 王国：摄像机跟随勇者运镜移动
+    /// </summary>
+    public static void CallKingdom_CameraFollowBrave()
+    {
+        Kingdom_CameraFollowBrave?.Invoke();
+    }
+
+    public static event Action Dungeon_CameraFollowBrave;
+    /// <summary>
+    /// 地牢：摄像机跟随勇者移动
+    /// </summary>
+    public static void CallDungeon_CameraFollowBrave()
+    {
+        Dungeon_CameraFollowBrave?.Invoke();
+    }
+
+    public static event Action Dungeon_CameraFindStranger;
+    /// <summary>
+    /// 地牢：发现陌生人，摄像机移动
+    /// </summary>
+    public static void CallDungeon_CameraFindStranger()
+    {
+        Dungeon_CameraFindStranger?.Invoke();
+    }
+
+    public static event Action Dungeon_CameraFindStrangerEnd;
+    /// <summary>
+    /// 地牢：结束发现陌生人，摄像机移动
+    /// </summary>
+    public static void CallDungeon_CameraFindStrangerEnd()
+    {
+        Dungeon_CameraFindStrangerEnd?.Invoke();
+    }
+    #endregion
+
+    #region 灯光控制事件
+    public static event Action Dungeon_InitAllSpot;
+    /// <summary>
+    /// 初始化地牢的所有灯光
+    /// </summary>
+    public static void CallDungeon_InitAllSpot()
+    {
+        Dungeon_InitAllSpot?.Invoke();
+    }
+    #endregion
+
+    #region 剧情触发控制事件
+    public static event Action Kingdom_BraveQuit;
+    /// <summary>
+    /// 勇者离开王宫
+    /// </summary>
+    public static void CallKingdom_BraveQuit()
+    {
+        Kingdom_BraveQuit?.Invoke();
+    }
+
+    public static event Action<int> BraveFaceChange;
+    /// <summary>
+    /// 玩家朝向单次修改
+    /// </summary>
+    /// <param name="choose">1为面朝上，2为面朝下，3为面朝左，4为面朝右</param>
+    public static void CallBraveFaceChange(int choose)
+    {
+        BraveFaceChange?.Invoke(choose);
+    }
+
+    public static event Action Dungeon_FirstEntry;
+    /// <summary>
+    /// 地牢：初入（勇者熟悉周围环境）
+    /// </summary>
+    public static void CallDungeon_FirstEntry()
+    {
+        Dungeon_FirstEntry?.Invoke();
+    }
+
+    public static event Action<bool> PlayerShowImageChange;
+    /// <summary>
+    /// 是否显示玩家图片
+    /// </summary>
+    /// <param name="change">true为显示，false为不显示</param>
+    public static void CallPlayerShowImageChange(bool change)
+    {
+        PlayerShowImageChange?.Invoke(change);
+    }
+
+    public static event Action<bool> PlayerSign;
+    /// <summary>
+    /// 打开关闭玩家Sign
+    /// </summary>
+    /// <param name="change"></param>
+    public static void CallPlayerSign(bool change)
+    {
+        PlayerSign?.Invoke(change);
+    }
+
+    public static event Action FindStranger;
+    /// <summary>
+    /// 地牢：发现陌生人
+    /// </summary>
+    public static void CallFindStranger()
+    {
+        FindStranger?.Invoke();
+    }
+
+    public static event Action BridgeBreak;
+    /// <summary>
+    /// 地牢：断桥
+    /// </summary>
+    public static void CallBridgeBreak()
+    {
+        BridgeBreak?.Invoke();
+    }
+    #endregion
 
 #endregion
 
-#region 游戏运行逻辑事件
 
-    public static event Action NewGameEvent;
+#region 背包相关事件
+    public static event Action<Treasure> ChestOpen;
     /// <summary>
-    /// 呼叫：游戏开始
+    /// 宝箱打开，玩家背包内物品增加
     /// </summary>
-    public static void CallNewGameEvent()
+    /// <param name="inChest_Truesure">被打开的宝箱内宝藏</param>
+    public static void CallChestOpen(Treasure inChest_Truesure)
     {
-        NewGameEvent?.Invoke();
-    }
-
-    public static event Action PlotOneEvent;
-    /// <summary>
-    /// 呼叫：剧情一开始
-    /// </summary>
-    public static void CallPlotOneEvent()
-    {
-        PlotOneEvent?.Invoke();
-    }
-
-    public static event Action PlotOneVisionOpen;
-    public static void CallPlotOneVisionOpen()
-    {
-        PlotOneVisionOpen?.Invoke();
-    }
-
-    public static event Action Plot1_MJumpAndWalk;
-    public static void CallPlot1_MJumpAndWalk()
-    {
-        Plot1_MJumpAndWalk?.Invoke();
-    }
-
-    public static event Action MPlot1_CameraAndMove;
-    public static void CallMPlot1_CameraAndMove()
-    {
-        MPlot1_CameraAndMove?.Invoke();
-    }
-
-    public static event Action Plot1_MFindWhat;
-    public static void CallPlot1_MFindWhat()
-    {
-        Plot1_MFindWhat?.Invoke();
-    }
-
-    public static event Action VisionAllOpen;
-    /// <summary>
-    /// 视野完全展开
-    /// </summary>
-    public static void CallVisionAllOpen()
-    {
-        VisionAllOpen?.Invoke();
-    }
-
-    
-    public static event Action StrangeSound;
-    /// <summary>
-    /// 谁肚子叫？
-    /// </summary>
-    public static void CallStrangeSound()
-    {
-        StrangeSound?.Invoke();
-    }
-
-    
-    public static event Action DragonAppear;
-    /// <summary>
-    /// 龙出现
-    /// </summary>
-    public static void CallDragonAppear()
-    {
-        DragonAppear?.Invoke();
-    }
-
-    
-    public static event Action FindDragon;
-    /// <summary>
-    /// 发现龙
-    /// </summary>
-    public static void CallFindDragon()
-    {
-        FindDragon?.Invoke();
-    }
-
-    public static event Action DragonRush;
-    /// <summary>
-    /// 龙冲过来
-    /// </summary>
-    public static void CallDragonRush()
-    {
-        DragonRush?.Invoke();
+        ChestOpen?.Invoke(inChest_Truesure);
     }
 #endregion
+
 
 }

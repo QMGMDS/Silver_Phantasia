@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f70022ca11936534484061f0e654135d, type: 3}
+  m_Name: Can
+  m_EditorClassIdentifier: 
+  dialoguePiecesList:
+  - faceImage: {fileID: 21300000, guid: 0e86da5375a19c545a1c338c4384baa7, type: 3}
+    onLeft: 1
+    dialogueName: "\u300C\u52C7\u8005\u300D"
+    dialogueText: "\u613F\u6548\u72AC\u9A6C\u4E4B\u52B3\uFF0C\u6073\u8BF7\u965B\u4E0B\u5E94\u5141\uFF01"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - faceImage: {fileID: 0}
+    onLeft: 0
+    dialogueName: "\u300C\u56FD\u738B\u300D"
+    dialogueText: "\u56FD\u738B\uFF1A\u597D\uFF01\u597D\uFF01\u597D\uFF01\uFF01"
+    hasToPause: 1
+    hasToOption: 0
+    isDone: 0
+    isChoose: 0
+    afterTalkEvent:
+      m_PersistentCalls:
+        m_Calls: []

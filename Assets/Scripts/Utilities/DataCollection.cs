@@ -1,7 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEditor.AddressableAssets.Build.DataBuilders;
 
 // 存储在MapData中每一块瓦片的标识属性
 [System.Serializable]
@@ -15,7 +14,7 @@ public class TileProperty
     public bool boolTypeValue;
 }
 
-//每一块瓦片的详情
+// 每一块瓦片的详情
 [System.Serializable]
 public class TileDetails
 {
@@ -26,11 +25,11 @@ public class TileDetails
     public bool isTransition;
 }
 
-//每个物品的属性
+// 每个物品的属性
 [System.Serializable]
 public class ItemDetials
 {
-    // 物品在背包的格子序号
+    // 物品ID
     public int itemID;
     // 物品图片
     public Sprite itemIcon;
@@ -38,28 +37,34 @@ public class ItemDetials
     public string itemName;
     // 物品数量
     public int itemNum;
+    // 物品详情
+    [TextArea]public string itemDecorations;
     // 物品种类
     public ItemType itemType;
     // 物品攻击力/恢复力
     public int baseAttribute;
-    // 物品详情
-    [TextArea]public string itemDecorations;
-    
+    //赋予的buff
+    public Buff buff;
 }
 
-//NPC的初始坐标属性
+// 每个技能的属性
 [System.Serializable]
-public class NPCPosition 
+public class SkillDetails
 {
-    //拿到NPC身上的Transform
-    public Transform npc;
-    //NPC起始所在的场景
-    public string StartScene;
-    //NPC的起始坐标
-    public Vector3 position;
+    // 技能名称
+    public string name;
+    // 技能显示图片
+    public Sprite sprite;
+    // 技能种类
+    public SkillType type;
+    // 技能属性
+    public int attribute;
+    // 技能描述
+    [TextArea]public string decorations;
+    // 技能动画
 }
 
-//进入回合制战斗的角色属性
+// 进入回合制战斗的角色属性
 [System.Serializable]
 public class BattleAttribute
 {
@@ -71,6 +76,13 @@ public class BattleAttribute
     public Sprite roleSprite;
     //角色是否为玩家阵营
     public bool isPlayer;
+
+    //战斗buff
+    public Buff buff;
+
+
+
+    [Header("战斗属性")]
     //角色的最大血量
     public int maxHP;
     //角色的当前血量
@@ -82,7 +94,12 @@ public class BattleAttribute
     //角色的附加防御力
     public int addDefend;
     //角色的基础速度
-    public float speed;
+    public float baseSpeed;
+    //角色的当前速度
+    public float currentSpeed;
+
+
+    [Header("行动轴属性")]
     //回合制中当前角色走过的路程，默认是0
     public float path;
     //行动轴速度
@@ -93,7 +110,22 @@ public class BattleAttribute
     public float lastWalkPath;
 }
 
-//对话片段
+// 战斗buff
+[System.Serializable]
+public struct Buff
+{
+    //buff显示图片
+    public Sprite sprite;
+    // buff持续剩余回合
+    public int remaining;
+    // buff的种类
+    public BuffType type;
+
+    // buff的基础属性
+    public int buffAttribute;
+}
+
+// 对话片段
 [System.Serializable]
 public class DialoguePiece
 {
@@ -119,7 +151,7 @@ public class DialoguePiece
 }
 
 
-//对话选项内容显示
+// 对话选项内容显示
 [System.Serializable]
 public class DialogueOption
 {
@@ -131,22 +163,67 @@ public class DialogueOption
     [HideInInspector]public bool isChoose;
 }
 
-//战斗背景
+// 战斗背景
 [System.Serializable]
 public class BattleBack
 {
-    //战斗背景的名字（用来查找）
+    // 战斗背景的名字（用来查找）
     public string backName;
-    //战斗背景图片
+    // 战斗背景图片
     public Sprite backImage;
 }
 
-//战斗动画结构体
+// 战斗动画结构体
 [System.Serializable]
 public struct BattleAnim
 {
-    //用于判断该动画是谁的动画
+    // 用于判断该动画是谁的动画
     public int ID;
     public Image image;
     public Animator anim;
+}
+
+// 每个机关
+[System.Serializable]
+public class Organ
+{
+    // 机关的ID；
+    public int ID;
+    // 机关是否被启动
+    public bool isOpen;
+
+    // 该机关注释
+    public string explain;
+}
+
+// 每个宝箱
+[System.Serializable]
+public class Chest
+{
+    // 宝箱的ID；
+    public int ID;
+    // 宝箱是否被打开
+    public bool isOpen;
+
+    [Header("宝藏")]
+    // 存储的宝藏
+    public Treasure inChest_Truesure;
+}
+
+// 宝藏结构体
+[System.Serializable]
+public struct Treasure
+{
+    // 宝箱内的宝藏（物品）ID
+    public int treasureID;
+    // 宝藏的数目
+    public int num;
+}
+
+// 游戏音量数据
+[System.Serializable]
+public class GameAudioVolume
+{
+    public float BGMVolume;
+    public float SEVolume;
 }

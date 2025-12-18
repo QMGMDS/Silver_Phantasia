@@ -18,10 +18,11 @@ public class TextAutoPlay : MonoBehaviour
     //该剧情是否播放完毕
     public bool playIsOver;
 
-    // 每句话间隔时间
-    public float timePiece;
+    
     // 每一页间隔时间
     public float timePage;
+    // 每句话间隔时间
+    public float timePiece;
     // 每个字的间隔时间
     public float timeChar;
 
@@ -86,7 +87,6 @@ public class TextAutoPlay : MonoBehaviour
                 yield return new WaitForSeconds(timePiece);
             }
         }
-        Debug.Log("打印完成");
         //载入正式游戏
         playIsOver = true;
     }

@@ -164,31 +164,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Open GameSettings_L",
+                    "name": "Open GameSettings_O",
                     "type": "Button",
                     "id": "b4a0d395-0a09-48ed-872a-64e3fdc8c07d",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Open GameSettings_F",
-                    "type": "Button",
-                    "id": "9b457b7c-de00-4ebf-8f8d-679f731bb80f",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Move",
-                    "type": "Button",
-                    "id": "b8863ea2-2faa-4d58-a860-f4b6f0811fcd",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -250,66 +232,11 @@
                 {
                     "name": "",
                     "id": "0621a5fb-fb16-43be-b46a-9c38ad13d819",
-                    "path": "<Keyboard>/l",
+                    "path": "<Keyboard>/o",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open GameSettings_L",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b883d169-1b43-4edf-ab08-eae7f80814ae",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Open GameSettings_F",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6fe5677e-52a8-4e6d-9c2c-9771fc191af6",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7d5dcb6e-d118-4d38-a270-21e6b2ade45b",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "35c7fe13-c723-40a0-be53-a932c1a7d46f",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ebe7d7f5-ff37-4362-a197-7bdd2c92222d",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
+                    "action": "Open GameSettings_O",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

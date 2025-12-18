@@ -41,6 +41,7 @@ public class BattleManager : Singleton <BattleManager>
     public BattleAttribute attackedCharacter;
     //当前的回合阶段
     public Turn BattleTurn;
+    public ChooseAction currentChooseAction;
     
 
 
@@ -113,23 +114,45 @@ public class BattleManager : Singleton <BattleManager>
     {
         // 物品-1
         usedItem.itemNum--;
+        // buff持续回合内使用物品，仅消耗物品，不刷新buff
+        if(thisCharacterTurn.buff.remaining != 0)
+            return;
         switch (usedItem.itemType)
         {
             case ItemType.Treatment:
-                if ((thisCharacterTurn.currentHP + usedItem.baseAttribute) > thisCharacterTurn.maxHP)
-                {
-                    thisCharacterTurn.currentHP = thisCharacterTurn.maxHP;
-                }
-                else
-                {
-                    thisCharacterTurn.currentHP += usedItem.baseAttribute;
-                }
+                Treatment(usedItem.baseAttribute);
                 break;
             case ItemType.Speed:
-                
+                thisCharacterTurn.currentSpeed += usedItem.baseAttribute;
                 break;
             
         }
+        thisCharacterTurn.buff = usedItem.buff;
+    }
+
+    
+    /// <summary>
+    /// 治疗当前回合的角色血量
+    /// </summary>
+    /// <param name="treatAttribute">治疗量</param>
+    public void Treatment(int treatAttribute)
+    {
+        if ((thisCharacterTurn.currentHP + treatAttribute) > thisCharacterTurn.maxHP)
+        {
+            thisCharacterTurn.currentHP = thisCharacterTurn.maxHP;
+        }
+        else
+        {
+            thisCharacterTurn.currentHP += treatAttribute;
+        }
+    }
+
+    /// <summary>
+    /// Buff效果重置
+    /// </summary>
+    public void BuffReset()
+    {
+        thisCharacterTurn.currentSpeed = thisCharacterTurn.baseSpeed;
     }
 
 
@@ -204,6 +227,9 @@ public class BattleManager : Singleton <BattleManager>
             character.walkPath = 0;
             character.lastWalkPath = 0;
             character.walkSpeed = 0;
+            character.buff.remaining = 0;
+            character.buff.sprite = null;
+            character.buff.buffAttribute = 0;
         }
         //战斗结束清空列表
         battleList = new List<BattleAttribute>();
@@ -225,9 +251,9 @@ public class BattleManager : Singleton <BattleManager>
             foreach (var character in battleList)
             {
                 //先判断遍历到的角色速度是否为0，为0就陷入无限循环（
-                if (character.speed == 0)
+                if (character.currentSpeed == 0)
                     return null;
-                character.path += character.speed;
+                character.path += character.currentSpeed;
                 if (character.path >= Settings.battleDistance)
                 {
                     //走到终点路程清零

@@ -9,6 +9,8 @@ TagManager:
   - BoundsConfiner
   - CameraObject
   - FadeImage
+  - NormalFade
+  - PlayerLight
   layers:
   - Default
   - TransparentFX

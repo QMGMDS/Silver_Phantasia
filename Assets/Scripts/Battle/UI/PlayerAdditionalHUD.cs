@@ -14,6 +14,9 @@ public class PlayerAdditionalHUD : MonoBehaviour
     //角色血量填充图片
     public Image playerHP;
 
+    //角色buff图片
+    public Image buffImage;
+
     //背景图
     public Image HUDBack;
     public RectTransform HUDBackRec;
@@ -25,6 +28,13 @@ public class PlayerAdditionalHUD : MonoBehaviour
     {
         player = transform.GetComponentInParent<BattleHUD>().thisCharacter;
         UpdateHUD();
+        UpdataBuff();
+        EventHandler.PlayerUseItem += OnPlayerUseItem;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.PlayerUseItem -= OnPlayerUseItem;
     }
 
 
@@ -58,4 +68,32 @@ public class PlayerAdditionalHUD : MonoBehaviour
             HUDNameRec.position = new Vector2(HUDNameRec.position.x,150);
         }
     }
+
+    /// <summary>
+    /// 更新buff
+    /// </summary>
+    private void UpdataBuff()
+    {
+        if(BattleManager.Instance.thisCharacterTurn.roleName == player.roleName && player.buff.remaining > 0)
+        {
+            buffImage.sprite = player.buff.sprite;
+            buffImage.color = new Color(255,255,255,255);
+        }
+        else
+        {
+            if(player.buff.remaining == 0)
+                buffImage.color = new Color(255,255,255,0);
+        }
+    }
+
+
+    /// <summary>
+    /// 玩家使用物品，关闭HUD高亮显示
+    /// </summary>
+    /// <param name="detials"></param>
+    private void OnPlayerUseItem(ItemDetials detials)
+    {
+        CloseisYourTurnHUD();
+    }
+
 }

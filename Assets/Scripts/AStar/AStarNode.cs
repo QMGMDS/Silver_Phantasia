@@ -48,9 +48,10 @@ namespace SP.AStar
             //FCost相等则进而比较gCost
             if(result == 0)
             {
-                result = hCost.CompareTo(other.gCost);
+                result = hCost.CompareTo(other.hCost);
             }
             return result;
         }
+
     }  
 }

@@ -16,13 +16,17 @@ public class BattleUI : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(InitBattle());
-        EventHandler.PlayerUseItem += CloseBag;
+        EventHandler.PlayerUseItem += OnPlayerUseItem;
+        EventHandler.PlayerUseSkill += OnPlayerUseSkill;
     }
 
     private void OnDisable()
     {
-        EventHandler.PlayerUseItem -= CloseBag;
+        EventHandler.PlayerUseItem -= OnPlayerUseItem;
+        EventHandler.PlayerUseSkill -= OnPlayerUseSkill;
     }
+
+
 
     /// <summary>
     /// 确保战斗初始化
@@ -36,7 +40,6 @@ public class BattleUI : MonoBehaviour
             if(battleHUD != null)
             {
                 battleHUD.InitHUD();
-                Debug.Log("battleHUD");
             }
         }
         //等待初始化
@@ -66,6 +69,7 @@ public class BattleUI : MonoBehaviour
     public void OpenAction()
     {
         Action.SetActive(true);
+        BattleManager.Instance.currentChooseAction = ChooseAction.None;
     }
 
     //按钮按下了表示确认了对应的行动
@@ -87,7 +91,16 @@ public class BattleUI : MonoBehaviour
     /// <summary>
     /// 使用物品关闭战斗背包
     /// </summary>
-    public void CloseBag(ItemDetials usedItem)
+    private void OnPlayerUseItem(ItemDetials detials)
+    {
+        battleBag.SetActive(false);
+    }
+
+    /// <summary>
+    /// 使用技能关闭战斗背包
+    /// </summary>
+    /// <param name="details"></param>
+    private void OnPlayerUseSkill(SkillDetails details)
     {
         battleBag.SetActive(false);
     }

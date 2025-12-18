@@ -21,6 +21,19 @@ public class BattleHUD : MonoBehaviour
     public GameObject enemyHUD;
     public Image enemyImage;
 
+
+    private void OnEnable()
+    {
+        EventHandler.PlayerUseItem += OnPlayerUseItem;
+        EventHandler.PlayerUseSkill += OnPlayerUseSkill;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.PlayerUseItem -= OnPlayerUseItem;
+        EventHandler.PlayerUseSkill -= OnPlayerUseSkill;
+    }
+
     /// <summary>
     /// 初始化HUD，由DisplayUI在战斗开始时调用一次，告诉当前的HUD是哪个角色的HUD
     /// </summary>
@@ -87,7 +100,8 @@ public class BattleHUD : MonoBehaviour
     //攻击键被按下：2.开启敌人图片的射线检测，允许预览攻击
     public void AllowEnemyPreview()
     {
-        enemyImage.raycastTarget = true;
+        if(enemyImage != null)
+            enemyImage.raycastTarget = true;
     }
 
     //鼠标按下事件
@@ -126,5 +140,20 @@ public class BattleHUD : MonoBehaviour
     public void PlayerAttackToThis()
     {
         BattleManager.Instance.attackedCharacter = thisCharacter;
+    }
+
+
+    /// <summary>
+    /// 玩家使用物品，关闭玩家图片闪烁
+    /// </summary>
+    /// <param name="usedItem"></param>
+    private void OnPlayerUseItem(ItemDetials usedItem)
+    {
+        CloseisYourTurnImage();
+    }
+
+    private void OnPlayerUseSkill(SkillDetails usedSkill)
+    {
+        AllowEnemyPreview();
     }
 }

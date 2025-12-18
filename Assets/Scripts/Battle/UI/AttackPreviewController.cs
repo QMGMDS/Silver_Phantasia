@@ -16,6 +16,8 @@ public class AttackPreviewController : MonoBehaviour, IPointerEnterHandler, IPoi
     //3.攻击敌人(确认攻击对象，攻击动画，攻击数据处理)
     public UnityEvent mosueDown;
 
+    public UnityEvent UseSkill;
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         mouseEnter?.Invoke();
@@ -28,6 +30,15 @@ public class AttackPreviewController : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        mosueDown?.Invoke();
+        switch (BattleManager.Instance.currentButtonType)
+        {
+            case ButtonType.Attack:
+                mosueDown?.Invoke();
+                break;
+            case ButtonType.Skill:
+                UseSkill?.Invoke();
+                break;
+        }
+        
     }
 }

@@ -65,7 +65,6 @@ public class DialogueUI : MonoBehaviour
 
     private void OnShowDialogueOptionEvent(DialogueOption option,int determinant)
     {
-        Debug.Log(option.option1Text);
         StartCoroutine(ShowOption(option));
         optionDeterminant = determinant;
     }
@@ -132,9 +131,6 @@ public class DialogueUI : MonoBehaviour
             optionText1.text = option.option1Text;
             optionText2.text = option.option2Text;
 
-            //做出选择...
-            Debug.Log("选择ing");
-
             yield return new WaitUntil(() => isButtonDown);
 
             //选择结束后关闭选项框
@@ -182,6 +178,7 @@ public class DialogueUI : MonoBehaviour
     public void ButtonStartTwo()
     {
         isButtonDown = true;
+        // 判断是剧情型对话还是游玩型对话
         switch (optionDeterminant)
         {
             case 1:

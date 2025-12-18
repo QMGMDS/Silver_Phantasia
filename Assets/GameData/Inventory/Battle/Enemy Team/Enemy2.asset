@@ -17,11 +17,16 @@ MonoBehaviour:
     roleName: "\uFF1F\uFF1F\uFF1F"
     roleSprite: {fileID: 318681246, guid: 2ea41edda198e5c44a18921382deeaf6, type: 3}
     isPlayer: 0
+    buff:
+      sprite: {fileID: 0}
+      remaining: 0
     maxHP: 500
     currentHP: 500
     baseAttack: 10
     baseDefend: 10
-    speed: 6.4
+    addDefend: 0
+    baseSpeed: 5
+    currentSpeed: 5
     path: 0
     walkSpeed: 0
     walkPath: 0

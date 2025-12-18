@@ -2,21 +2,25 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class TransitionManager : MonoBehaviour
 {
-    //淡入淡出画布
-    private Image fadeImage;
-
+    [Header("游戏启动时初始加载的场景")]
     //初始场景
     public string InitScene;
 
-    private IEnumerator Start()
+    // 进入战斗的淡入淡出画布
+    private Image fadeImage;
+
+    // 正常的淡入淡出
+    private CanvasGroup normalFade;
+
+    private void Start()
     {
+        normalFade = GameObject.FindWithTag("NormalFade").GetComponent<CanvasGroup>();
         fadeImage = GameObject.FindWithTag("FadeImage").GetComponent<Image>();
-        //yield return LoadSceneSetActive(InitScene);
-        yield return null;
+        EventHandler.CallLoadSceneEvent(InitScene);
     }
+
 
     private void OnEnable()
     {
@@ -39,9 +43,9 @@ public class TransitionManager : MonoBehaviour
     }
 
 
-    private void OnTransitionEvent(string sceneToGo, Vector3 positionToGo)
+    private void OnTransitionEvent(string sceneToGo,Vector3 posToGo)
     {
-        StartCoroutine(Transition(sceneToGo,positionToGo));
+        StartCoroutine(Transition(sceneToGo,posToGo));
     }
 
 
@@ -52,7 +56,7 @@ public class TransitionManager : MonoBehaviour
 
     private void OnLoadSceneEvent(string loadScene)
     {
-        StartCoroutine(LoadScene(loadScene));
+        StartCoroutine(LoadSceneSetActive(loadScene));
     }
 
 
@@ -62,28 +66,28 @@ public class TransitionManager : MonoBehaviour
     /// <param name="sceneToGo"></param>
     /// <param name="positionToGo"></param>
     /// <returns></returns>
-    private IEnumerator Transition(string sceneToGo,Vector3 positionToGo)
+    private IEnumerator Transition(string sceneToGo,Vector3 posToGo)
     {
-        //场景逐渐变黑
-        yield return Fade(1);
+        //画面逐渐变黑
+        yield return StartCoroutine(NormalFade(1));
 
-        // 卸载场景之前的事件
-        EventHandler.CallBeforeSceneUnloadEvent();
+        yield return new WaitForSeconds(1f);
+
+        //移动玩家到指定位置
+        EventHandler.CallMoveToPosition(posToGo);
 
         // 卸载当前激活的场景
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
 
-        // 卸载场景之后的事件
-        EventHandler.CallAfterSceneloadedEvent();
+        
 
         // 加载目标场景并激活
         yield return LoadSceneSetActive(sceneToGo);
 
-        //移动人物坐标
-        EventHandler.CallMoveToPosition(positionToGo);
+        
 
-        //场景逐渐出现
-        yield return Fade(0);
+        //画面逐渐变亮
+        yield return StartCoroutine(NormalFade(0));
     }
 
 
@@ -98,25 +102,9 @@ public class TransitionManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-
-
         //场景逐渐出现
         yield return Fade(0);
     }
-
-
-    /// <summary>
-    /// 加载初始场景
-    /// </summary>
-    /// <param name="loadScene"></param>
-    /// <returns></returns>
-    private IEnumerator LoadScene(string loadScene)
-    {
-        StartCoroutine(LoadSceneSetActive(loadScene));
-        yield return null;
-    }
-
-
 
     /// <summary>
     /// 加载场景并激活
@@ -131,7 +119,7 @@ public class TransitionManager : MonoBehaviour
 
 
     /// <summary>
-    /// 淡入淡出场景
+    /// 战斗加载动画
     /// </summary>
     /// <param name="targetAlpha">1是黑，0是透明</param>
     /// <returns></returns>
@@ -152,4 +140,22 @@ public class TransitionManager : MonoBehaviour
 
         fadeImage.raycastTarget = false;
     }
+
+    /// <summary>
+    /// 正常渐入渐出动画
+    /// </summary>
+    /// <param name="targetAlpha">1是黑，0是透明</param>
+    /// <returns></returns>
+    private IEnumerator NormalFade(float targetAlpha)
+    {
+
+        while (!Mathf.Approximately(normalFade.alpha, targetAlpha))
+        {
+            normalFade.alpha = Mathf.MoveTowards(normalFade.alpha, targetAlpha, 2f * Time.deltaTime);
+            yield return null;
+        }
+
+    }
+
+
 }

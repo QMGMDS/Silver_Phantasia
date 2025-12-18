@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09fe6a140869af841acf0f27d2d54c9d, type: 3}
+  m_Name: Save_AllOrgan_SO
+  m_EditorClassIdentifier: 
+  allOrganData:
+  - ID: 3
+    isOpen: 1
+    explain: "Dungeon_3\u5904\u7684\u62C9\u6746"
+  - ID: 4
+    isOpen: 1
+    explain: "Dungeon_4\u5904\u7684\u62C9\u6746"
+  - ID: 2
+    isOpen: 1
+    explain: "Dungeon_2\u5904\u7684\u65AD\u6865\u91CD\u63A5"
+  - ID: 1
+    isOpen: 1
+    explain: "Dungeon_2\u5904\u7684\u5267\u60C5\u89E6\u53D1"
