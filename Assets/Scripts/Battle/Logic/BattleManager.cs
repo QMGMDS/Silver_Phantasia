@@ -1,48 +1,58 @@
 using System.Collections.Generic;
-
-//战斗流程：
-//战斗开始，初始化准备工作(战斗场景UI显示，角色移动操作关闭，)
-//while循环（直到判断游戏结束）
-//{
-//行动轴判断谁的回合（行动轴判断谁的回合，行动轴移动判断动画，对应玩家角色HUD实化提示和人物选中半透明浮现提示，玩家操作面板显示提示）
-//对应回合的角色攻击（攻击动画提示，攻击后数据更新，状态栏更新）
-//判断游戏是否结束
-//}
-
-
-
+using UnityEngine;
 
 //BattleManager处理战斗的数据
-
 public class BattleManager : Singleton <BattleManager>
 {
-    //战斗是否初始化完毕
-    public bool Inited;
-    //当前回合是否结束
-    public bool thisTurnOver;
+    // //战斗是否初始化完毕
+    // public bool Inited;
+    // //当前回合是否结束
+    // public bool thisTurnOver;
 
 
-    //战斗列表（用于搜索出角色行动轴和判断在场存活人数）
-    public List<BattleAttribute> battleList = new List<BattleAttribute>();
-    //行动轴动画是否在播放
-    public bool walking;
+    // //战斗列表（用于搜索出角色行动轴和判断在场存活人数）
+    // public List<BattleAttribute> battleList = new List<BattleAttribute>();
+    // //行动轴动画是否在播放
+    // public bool walking;
 
 
-    //玩家的战斗信息，调用时实时进行修改SO
-    public BattleAttributeDataList_SO playerTeam;
-    //敌人的战斗信息
-    public List<BattleAttribute> enemyTeam;
+    // //玩家的战斗信息，调用时实时进行修改SO
+    // public BattleAttributeDataList_SO playerTeam;
+    // //敌人的战斗信息
+    // public List<BattleAttribute> enemyTeam;
 
-    //当前按下的按钮类型
-    public ButtonType currentButtonType;
-    //当前行动回合的角色
-    public BattleAttribute thisCharacterTurn;
-    //被攻击的角色
-    public BattleAttribute attackedCharacter;
-    //当前的回合阶段
-    public Turn BattleTurn;
-    public ChooseAction currentChooseAction;
-    
+    // //当前按下的按钮类型
+    // public ButtonType currentButtonType;
+    // //当前行动回合的角色
+    // public BattleAttribute thisCharacterTurn;
+    // //被攻击的角色
+    // public BattleAttribute attackedCharacter;
+    // //当前的回合阶段
+    // public Turn BattleTurn;
+    // public ChooseAction currentChooseAction;
+
+    // 所有参战角色的行动轴
+    public List<AxisOfAction> allAxisOfAction = new List<AxisOfAction>();
+    // 所有参战角色的战斗属性
+    public List<BattleARB> allBattleARB = new List<BattleARB>();
+
+    [Header("敌人队伍")]
+    public EnemyTeam_SO enemyTeam_SO;
+    // 敌人是否死亡
+    private bool isDead_Enemy;
+    // 当前受到攻击的敌人的站位编号
+    public int attackedEnemy_StandID;
+    // 当前回合的敌人的站位编号
+    public int attackEnemy_StandID;
+
+    [Header("玩家")]
+    public PlayerBattleARB_SO playerBattleARB_SO;
+    // 玩家当前的操作
+    public PlayerChooseAction playerChooseAction;
+    // 玩家是否死亡
+    private bool isDead_Player;
+    // 玩家是否做出操作
+    public bool playerMakeOperation;
 
 
 
@@ -53,123 +63,105 @@ public class BattleManager : Singleton <BattleManager>
 
     private void OnDisable()
     {
-        EventHandler.BattleStartEvent += OnBattleStartEvent;
+        EventHandler.BattleStartEvent -= OnBattleStartEvent;
     }
 
-    private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
+    private void OnBattleStartEvent(string battleBack,EnemyTeam_SO enemyTeam)
     {
-        //战斗开始从Team_SO中获取敌人队伍信息
-        this.enemyTeam = enemyTeam.AttributesList;
-        //创建战斗列表
-        foreach (var player in playerTeam.AttributesList)
-        {
-            battleList.Add(player);
-        }
-        foreach (var enemy in this.enemyTeam)
-        {
-            battleList.Add(enemy);
-        }
+        // 获取敌人队伍信息
+        enemyTeam_SO = enemyTeam;
+        // 构建战斗属性表
+        InitAllBattleARB();
+        // 构建行动轴表
+        InitAllAxisOfAction();
     }
 
+
+    //TODO:玩家攻击操作（三个事件）
     
     /// <summary>
     /// 玩家攻击
     /// </summary>
     public void PlayerAttack()
     {
-        if (attackedCharacter == null)
-            return;
-        //搜索对应的enemy
-       
-        switch (currentButtonType)
+        switch (playerChooseAction)
         {
             //普攻
-            case ButtonType.Attack:
-                attackedCharacter.currentHP = attackedCharacter.currentHP + attackedCharacter.baseDefend + attackedCharacter.addDefend - thisCharacterTurn.baseAttack;
+            case PlayerChooseAction.Attack:
+                int enemyRemainHP = allBattleARB[attackedEnemy_StandID].currentHP + allBattleARB[attackedEnemy_StandID].currentDefend - allBattleARB[0].currentAttack;
+                if(enemyRemainHP > 0)
+                {
+                    allBattleARB[attackedEnemy_StandID].currentHP = enemyRemainHP;
+                }
+                else
+                {
+                    allBattleARB[attackedEnemy_StandID].currentHP = 0;
+                }
                 break;
+
             //技能攻击
-            case ButtonType.Skill:
-
-                break;
-            //物品攻击
-            case ButtonType.Item:
+            case PlayerChooseAction.Skill:
 
                 break;
         }
-        BattleTurn = Turn.None;
     }
 
-    /// <summary>
-    /// 玩家防御
-    /// </summary>
-    public void PlayerDefend()
-    {
-        thisCharacterTurn.addDefend = (int)(thisCharacterTurn.baseDefend*0.4);
-    }
 
-    /// <summary>
-    /// 玩家使用物品
-    /// </summary>
-    public void PlayerUseItem(ItemDetials usedItem)
-    {
-        // 物品-1
-        usedItem.itemNum--;
-        // buff持续回合内使用物品，仅消耗物品，不刷新buff
-        if(thisCharacterTurn.buff.remaining != 0)
-            return;
-        switch (usedItem.itemType)
-        {
-            case ItemType.Treatment:
-                Treatment(usedItem.baseAttribute);
-                break;
-            case ItemType.Speed:
-                thisCharacterTurn.currentSpeed += usedItem.baseAttribute;
-                break;
+    // /// <summary>
+    // /// 玩家使用物品
+    // /// </summary>
+    // public void PlayerUseItem(ItemDetials usedItem)
+    // {
+    //     // 物品-1
+    //     usedItem.itemNum--;
+    //     // buff持续回合内使用物品，仅消耗物品，不刷新buff
+    //     if(thisCharacterTurn.buff.remaining != 0)
+    //         return;
+    //     switch (usedItem.itemType)
+    //     {
+    //         case ItemType.Treatment:
+    //             Treatment(usedItem.baseAttribute);
+    //             break;
+    //         case ItemType.Speed:
+    //             thisCharacterTurn.currentSpeed += usedItem.baseAttribute;
+    //             break;
             
-        }
-        thisCharacterTurn.buff = usedItem.buff;
-    }
+    //     }
+    //     thisCharacterTurn.buff = usedItem.buff;
+    // }
 
     
-    /// <summary>
-    /// 治疗当前回合的角色血量
-    /// </summary>
-    /// <param name="treatAttribute">治疗量</param>
-    public void Treatment(int treatAttribute)
-    {
-        if ((thisCharacterTurn.currentHP + treatAttribute) > thisCharacterTurn.maxHP)
-        {
-            thisCharacterTurn.currentHP = thisCharacterTurn.maxHP;
-        }
-        else
-        {
-            thisCharacterTurn.currentHP += treatAttribute;
-        }
-    }
-
-    /// <summary>
-    /// Buff效果重置
-    /// </summary>
-    public void BuffReset()
-    {
-        thisCharacterTurn.currentSpeed = thisCharacterTurn.baseSpeed;
-    }
+    // /// <summary>
+    // /// 治疗当前回合的角色血量
+    // /// </summary>
+    // /// <param name="treatAttribute">治疗量</param>
+    // public void Treatment(int treatAttribute)
+    // {
+    //     if ((thisCharacterTurn.currentHP + treatAttribute) > thisCharacterTurn.maxHP)
+    //     {
+    //         thisCharacterTurn.currentHP = thisCharacterTurn.maxHP;
+    //     }
+    //     else
+    //     {
+    //         thisCharacterTurn.currentHP += treatAttribute;
+    //     }
+    // }
 
 
     /// <summary>
-    /// 敌人攻击
+    /// 敌人攻击后玩家血量处理
     /// </summary>
     public void EnemyAttack()
     {
-        //搜索活着的站位靠前的Player进行攻击
-        foreach (var player in playerTeam.AttributesList)
+        // 玩家剩余血量
+        int playerRemainHP = allBattleARB[0].currentHP + allBattleARB[0].currentDefend - allBattleARB[attackEnemy_StandID].currentAttack;
+        if (playerRemainHP > 0)
         {
-            if (player.currentHP > 0)
-            {
-                attackedCharacter = player;
-                player.currentHP = player.currentHP + player.baseDefend +player.addDefend - thisCharacterTurn.baseAttack;
-                return;
-            }
+            allBattleARB[0].currentHP = playerRemainHP;
+        }
+        else
+        {
+            allBattleARB[0].currentHP = 0;
         }
     }
 
@@ -180,90 +172,113 @@ public class BattleManager : Singleton <BattleManager>
     /// <returns>玩家胜利返回1，敌人胜利返回2，无人胜利返回-1</returns>
     public int BattleEnd()
     {
-        //玩家是否存活
-        bool playerSurvive = false;
-        //敌人是否存活
-        bool enemySurvive = false;
-        foreach (var enemy in enemyTeam)
+        // 检测敌人是否死光
+        int surviveEnemyNum = 0;
+        foreach (var enemy in allBattleARB)
         {
-            if (enemy.currentHP > 0)
-            {
-                enemySurvive = true;
-                break;
-            }
+            if (enemy.currentHP > 0 && enemy.standID != 0)
+                surviveEnemyNum++;
         }
-        foreach (var player in playerTeam.AttributesList)
-        {
-            if (player.currentHP > 0)
-            {
-                playerSurvive = true;
-                break;
-            }
-        }
-        if(enemySurvive == false)
+        if(surviveEnemyNum == 0)
+            isDead_Enemy = true;
+        else
+            isDead_Enemy = false;
+
+        // 检测玩家是否死亡
+        if (allBattleARB[0].currentHP > 0)
+            isDead_Player = false;
+        else 
+            isDead_Player = true;
+
+
+        if (isDead_Enemy) // 如果敌人死亡，玩家胜利
         {
             return 1;
         }
-            
-        if(playerSurvive == false)
+        else if (isDead_Player) // 如果玩家死亡，敌人胜利
         {
             return 2;
         }
-        return -1;
-    }
-
-
-    /// <summary>
-    /// 战斗数据复原
-    /// </summary>
-    public void Recovery()
-    {
-        //清空临时数据
-        foreach (var character in battleList)
+        else
         {
-            if(!character.isPlayer)
-                character.currentHP = character.maxHP;
-            character.path = 0;
-            character.walkPath = 0;
-            character.lastWalkPath = 0;
-            character.walkSpeed = 0;
-            character.buff.remaining = 0;
-            character.buff.sprite = null;
-            character.buff.buffAttribute = 0;
+            return -1;
         }
-        //战斗结束清空列表
-        battleList = new List<BattleAttribute>();
-        BattleTurn = Turn.None;
-        Inited = false;
     }
 
+    /// <summary>
+    /// 保存玩家战斗属性
+    /// </summary>
+    public void Save_PlayerARB()
+    {
+        playerBattleARB_SO.playerBattleARB.currentHP = allBattleARB[0].currentHP;
+    }
 
     /// <summary>
-    /// 行动轴判断下一次轮到谁的回合，返回角色的信息BattleAttribute，BattleUI调用
+    /// 重置杂七杂八的值
     /// </summary>
-    /// <returns>角色信息BattleAttribute，为null则角色速度没赋值</returns>
-    public BattleAttribute isWhoTurn()
+    public void InitAllData()
     {
+        playerMakeOperation = false;
+        playerChooseAction = PlayerChooseAction.None;
+        isDead_Enemy = false;
+        isDead_Player = false;
+        attackedEnemy_StandID = 0;
+        attackEnemy_StandID = 100;
+    }
+
+    /// <summary>
+    /// 构建新的战斗属性表
+    /// </summary>
+    private void InitAllBattleARB()
+    {
+        allBattleARB.Clear();
+
+        allBattleARB.Add(new BattleARB(playerBattleARB_SO.playerBattleARB));
+        foreach (var enemy in enemyTeam_SO.enemyTeam)
+        {
+            allBattleARB.Add(new BattleARB(enemy));
+        }
+    }
+
+    /// <summary>
+    /// 构建新的行动轴表
+    /// </summary>
+    private void InitAllAxisOfAction()
+    {
+        allAxisOfAction.Clear();
+
+        allAxisOfAction.Add(new AxisOfAction(playerBattleARB_SO.playerBattleARB));
+        foreach (var enemy in enemyTeam_SO.enemyTeam)
+        {
+            allAxisOfAction.Add(new AxisOfAction(enemy));
+        }
+    }
+
+    /// <summary>
+    /// 行动轴：判断当前为谁的回合，返回对应回合角色的行动轴ID，0为玩家，1、2、3为敌人站位
+    /// </summary>
+    /// <returns></returns>
+    public int isWhoTurn()
+    {
+        int i = 0;
         //直到循环到有角色行动到路程的终点
-        while (true)
+        while (i < 100)
         {
             //用速度乘以次数的方式，对战斗列表的每个元素进行判断是否抵达终点
-            foreach (var character in battleList)
+            foreach (var axisOfAction in allAxisOfAction)
             {
-                //先判断遍历到的角色速度是否为0，为0就陷入无限循环（
-                if (character.currentSpeed == 0)
-                    return null;
-                character.path += character.currentSpeed;
-                if (character.path >= Settings.battleDistance)
+                axisOfAction.path += axisOfAction.walkSpeed;
+                if (axisOfAction.path >= Settings.battleDistance)
                 {
-                    //走到终点路程清零
-                    character.path = 0f;
-                    //临时存储
-                    thisCharacterTurn = character;
-                    //进入该角色的回合，返回该角色的信息
-                    return character;
+                    // 走到终点路程清零
+                    axisOfAction.path = 0f;
+                    Debug.Log("轮到" + axisOfAction.AxisID);
+                    // 返回该角色行动轴ID
+                    return axisOfAction.AxisID;
                 }
             }
+            i++;
         }
+        return 100;
     }
 }

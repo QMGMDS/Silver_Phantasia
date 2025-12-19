@@ -12,7 +12,7 @@ public class Chest_SO : ScriptableObject
     /// </summary>
     /// <param name="chestID"></param>
     /// <returns></returns>
-    public Chest fromIDToFindChest(int chestID)
+    public Chest FromIDToFindChest(int chestID)
     {
         foreach (var chest in allChestData)
         {

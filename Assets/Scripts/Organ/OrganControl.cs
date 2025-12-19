@@ -32,9 +32,9 @@ public class OrganControl : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.InteractButtonStartEvent += OnOrganOpenEvent;
-        organ1ID_OK = organ_SO.fromIDToFindOrgan(organ1ID).isOpen;
+        organ1ID_OK = organ_SO.FromIDToFindOrgan(organ1ID).isOpen;
 
-        thisOrganOpened = organ_SO.fromIDToFindOrgan(thisOrganID).isOpen;
+        thisOrganOpened = organ_SO.FromIDToFindOrgan(thisOrganID).isOpen;
         if(thisOrganOpened)
             OrganAlwaysOpen();
     }
@@ -66,7 +66,7 @@ public class OrganControl : MonoBehaviour
         thisOrganOpened = true;
         organAnim.SetTrigger("Open");
         organAnim.SetBool("IsOpen",true);
-        organ_SO.fromIDToFindOrgan(thisOrganID).isOpen = true;
+        organ_SO.FromIDToFindOrgan(thisOrganID).isOpen = true;
         EventHandler.CallPlayerSign(false);
     }
 

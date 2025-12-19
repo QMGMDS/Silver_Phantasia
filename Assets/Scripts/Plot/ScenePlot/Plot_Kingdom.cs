@@ -29,11 +29,16 @@ public class Plot_Kingdom : MonoBehaviour
     /// <returns></returns>
     private IEnumerator KingdomPlot()
     {
+        // 关闭人物显示
+        EventHandler.CallPlayerShowImageChange(false);
+        // 初始化灯光
+        EventHandler.CallKingdom_InitAllSpot();
         // 缓慢移动摄像机
         EventHandler.CallKingdom_CameraOverview();
 
         // 等待摄像机移动结束
         yield return new WaitUntil(() => CameraController.Instance.cameraMoveIsOver); 
+        CameraController.Instance.cameraMoveIsOver = false;
 
         yield return new WaitForSeconds(1f);
         // 触发对话

@@ -28,7 +28,7 @@ public class ChestControl : MonoBehaviour
         EventHandler.InteractButtonStartEvent += OnChestOpenEvent;
 
 
-        thisChestOpened = chest_SO.fromIDToFindChest(thisChestID).isOpen;
+        thisChestOpened = chest_SO.FromIDToFindChest(thisChestID).isOpen;
         if(thisChestOpened)
             ChestAlwaysOpen();
     }
@@ -56,7 +56,7 @@ public class ChestControl : MonoBehaviour
     private void ChestOpen()
     {
         // 宝箱内的物品（宝藏）传给玩家背包
-        EventHandler.CallChestOpen(chest_SO.fromIDToFindChest(thisChestID).inChest_Truesure);
+        EventHandler.CallChestOpen(chest_SO.FromIDToFindChest(thisChestID).inChest_Truesure);
 
 
         canInteract = false;
@@ -64,7 +64,7 @@ public class ChestControl : MonoBehaviour
         chestAnim.SetTrigger("Open");
         chestAnim.SetBool("IsOpen",true);
         EventHandler.CallPlayerSign(false);
-        chest_SO.fromIDToFindChest(thisChestID).isOpen = true;
+        chest_SO.FromIDToFindChest(thisChestID).isOpen = true;
     }
 
     /// <summary>

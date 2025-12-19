@@ -16,7 +16,7 @@ public class Plot_Dungeon_2 : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.FindStranger += OnFindStranger;
-        smallPlotIsTriggered = organ_SO.fromIDToFindOrgan(1).isOpen;
+        smallPlotIsTriggered = organ_SO.FromIDToFindOrgan(1).isOpen;
         StrangerShow();
     }
 

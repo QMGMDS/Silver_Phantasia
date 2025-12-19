@@ -96,8 +96,6 @@ public class DialogueUI : MonoBehaviour
             yield return dialogueText.DOText(piece.dialogueText, 0.01f).WaitForCompletion();
             //触发对话后的事件
             piece.afterTalkEvent.Invoke();
-            //记录历史对话
-            historyContent.text += "\n\n" + dialogueName.text + "：" + dialogueText.text;
     
             piece.isDone = true;
 
@@ -162,14 +160,8 @@ public class DialogueUI : MonoBehaviour
             case 1:
                 EventHandler.CallPlotDialogueOptionDown(1);
                 break;
-            case 2:
-                EventHandler.CallDialogueOptionOneDownEvent();
-                break;
         }
         
-
-        //记录历史选项
-        historyContent.text += "\n\n" + optionText1.text;
     }
 
     /// <summary>
@@ -184,14 +176,8 @@ public class DialogueUI : MonoBehaviour
             case 1:
                 EventHandler.CallPlotDialogueOptionDown(2);
                 break;
-            case 2:
-                EventHandler.CallDialogueOptionTwoDownEvent();
-                break;
         }
         
-
-        //记录历史选项
-        historyContent.text += "\n\n" + optionText2.text;
     }
 
     /// <summary>

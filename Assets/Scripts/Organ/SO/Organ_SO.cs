@@ -12,7 +12,7 @@ public class Organ_SO : ScriptableObject
     /// </summary>
     /// <param name="organID"></param>
     /// <returns></returns>
-    public Organ fromIDToFindOrgan(int organID)
+    public Organ FromIDToFindOrgan(int organID)
     {
         foreach (var organ in allOrganData)
         {

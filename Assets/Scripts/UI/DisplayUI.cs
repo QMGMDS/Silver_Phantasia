@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class DisplayUI : MonoBehaviour
 {
-    public GameObject baseUI;
     public GameObject normalUI;
     public GameObject battleUI;
 
@@ -19,7 +18,7 @@ public class DisplayUI : MonoBehaviour
         EventHandler.BattleEndEvent -= OnBattleEndEvent;
     }
 
-    private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
+    private void OnBattleStartEvent(string battleBack,EnemyTeam_SO enemyTeam)
     {
         StartCoroutine(SwitchBattleStartUI());
     }
@@ -42,8 +41,8 @@ public class DisplayUI : MonoBehaviour
     
     private IEnumerator SwitchBattleEndUI()
     {
-        yield return new WaitForSeconds(2f);
-        normalUI.SetActive(true);
+        yield return new WaitForSeconds(1.2f);
         battleUI.SetActive(false);
+        normalUI.SetActive(true);
     }
 }

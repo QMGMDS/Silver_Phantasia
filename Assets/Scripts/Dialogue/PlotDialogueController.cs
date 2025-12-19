@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlotDialogueController : MonoBehaviour
@@ -16,8 +17,8 @@ public class PlotDialogueController : MonoBehaviour
     [Header("对话：可疑之人断桥了")]
     public Dialogue_SO dialogue_4;
     private Stack<DialoguePiece> fourPlotStack;
-    [Header("剧情一对话5")]
-    public List<DialoguePiece> plotFive;
+    [Header("对话：遇到BOSS")]
+    public Dialogue_SO dialogue_5;
     private Stack<DialoguePiece> fivePlotStack;
     [Header("剧情一对话6")]
     public List<DialoguePiece> plotSix;
@@ -36,27 +37,20 @@ public class PlotDialogueController : MonoBehaviour
     public Dialogue_SO plot1_Option1_Choose2;
     //选项选择的堆栈
     private Stack<DialoguePiece> plot1_Option1_ChooseStack;
-    
-    [Header("剧情一选项2")]
-    // 选项信息
-    public DialogueOption dialogueOption2;
-    // 选项一的对话
-    public List<DialoguePiece> plot1_Option2_Choose1;
-    private Stack<DialoguePiece> plot1_Option2_Choose1_Stack;
-    // 选项二的对话
-    public List<DialoguePiece> plot1_Option2_Choose2;
-    private Stack<DialoguePiece> plot1_Option2_Choose2_Stack;
 
 
 
     // 确定播放的主对话，类似指向当前播放对话的一个指针
     private int plotIndex;
-    // 确定哪个剧情选项出现
-    private int plotChooseIndex = 100;
+    private bool isChoose;
     // 当前片段动画是否播放结束
     [SerializeField]private bool pieceOver;
-    //跳过键是否按下,按下跳过键则进入跳过模式
-    [SerializeField]private bool skip;
+
+
+
+    [Header("BOSS战")]
+    public string battleBack;
+    public EnemyTeam_SO enemyTeam_SO;
     
 
 
@@ -74,14 +68,6 @@ public class PlotDialogueController : MonoBehaviour
         EventHandler.PlotDialogueOptionDown += OnPlotDialogueOptionDown;
     }
 
-    /// <summary>
-    /// 模式切换：对话是否跳过
-    /// </summary>
-    private void OnSkipDialogue()
-    {
-        skip = !skip;
-    }
-
     private void OnInteractButtonStart()
     {
         // 对话未播放完成则空格键无法起作用
@@ -92,7 +78,7 @@ public class PlotDialogueController : MonoBehaviour
         switch (plotIndex)
         {
             case 1:
-                if (plotChooseIndex == 101)
+                if (isChoose)
                     StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));
                 else
                     StartCoroutine(PlayPlotDialogue(onePlotStack,plotIndex));
@@ -108,6 +94,10 @@ public class PlotDialogueController : MonoBehaviour
 
             case 4:
                 StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
+                break;
+
+            case 5:
+                StartCoroutine(PlayPlotDialogue(fivePlotStack,plotIndex));
                 break;
 
 
@@ -142,7 +132,7 @@ public class PlotDialogueController : MonoBehaviour
                 StartCoroutine(PlayPlotDialogue(fourPlotStack,plotIndex));
                 break;
             case 5:
-                InitPlotStack(ref fivePlotStack,plotFive);
+                InitPlotStack(ref fivePlotStack,dialogue_5.dialoguePiecesList);
                 StartCoroutine(PlayPlotDialogue(fivePlotStack,plotIndex));
                 break;
             case 6:
@@ -176,11 +166,7 @@ public class PlotDialogueController : MonoBehaviour
                         EventHandler.CallShowDialogueOptionEvent(dialogueOption1,1); // 1是剧情型对话
                         // 等待选项选择
                         yield return new WaitUntil(() => dialogueOption1.isChoose);
-                        break;
-                    case 2:
-                        EventHandler.CallShowDialogueOptionEvent(dialogueOption2,1);
-                        // 等待选项选择
-                        yield return new WaitUntil(() => dialogueOption2.isChoose);
+                        dialogueOption1.isChoose = false;
                         break;
                 }
             }
@@ -197,6 +183,7 @@ public class PlotDialogueController : MonoBehaviour
             switch (plotIndex)
             {
                 case 1:
+                    isChoose = false;
                     GamePlotManager.Instance.Kingdom_ChooseAndDialogueOver();
                     break;
                 case 2:
@@ -208,8 +195,9 @@ public class PlotDialogueController : MonoBehaviour
                 case 4:
                     EventHandler.CallOpenPlayerMoveEvent();
                     break;
-                case 5:
-                    //GamePlotManager.Instance.dialogue3 = true;
+                case 5: // BOSS战斗
+                    EventHandler.CallBattleStartEvent(battleBack,enemyTeam_SO);
+                    GamePlotManager.Instance.battle_BOSS = Battle_BOSS.Ing;
                     break;
                 case 6:
                     //GamePlotManager.Instance.dialogue4 = true;
@@ -243,27 +231,20 @@ public class PlotDialogueController : MonoBehaviour
     /// <param name="choose"></param>
     private void OnPlotDialogueOptionDown(int choose)
     {
-        plotChooseIndex++;
-        // 101说明此时为第一个对话选项出现并已经选择了
-        // 102说明此时为第二个对话选项出现并已经选择了
-        switch (plotChooseIndex)
+        isChoose = true;
+        if(choose == 1)
         {
-            case 101:
-                if(choose == 1)
-                {
-                    // 玩家选择了能
-                    GamePlotManager.Instance.kingdom_PlayerChoose = Kingdom_PlayerChoose.Yes;
-                    InitPlotStack(ref plot1_Option1_ChooseStack,plot1_Option1_Choose1.dialoguePiecesList);
-                    currentDialogueStack = plot1_Option1_ChooseStack;
-                }
-                else if(choose == 2)
-                {
-                    // 玩家选择了不能
-                    GamePlotManager.Instance.kingdom_PlayerChoose = Kingdom_PlayerChoose.No;
-                    InitPlotStack(ref plot1_Option1_ChooseStack,plot1_Option1_Choose2.dialoguePiecesList);
-                    currentDialogueStack = plot1_Option1_ChooseStack;
-                }
-                break;
+            // 玩家选择了能
+            GamePlotManager.Instance.kingdom_PlayerChoose = Kingdom_PlayerChoose.Yes;
+            InitPlotStack(ref plot1_Option1_ChooseStack,plot1_Option1_Choose1.dialoguePiecesList);
+            currentDialogueStack = plot1_Option1_ChooseStack;
+        }
+        else if(choose == 2)
+        {
+            // 玩家选择了不能
+            GamePlotManager.Instance.kingdom_PlayerChoose = Kingdom_PlayerChoose.No;
+            InitPlotStack(ref plot1_Option1_ChooseStack,plot1_Option1_Choose2.dialoguePiecesList);
+            currentDialogueStack = plot1_Option1_ChooseStack;
         }
 
         StartCoroutine(PlayPlotDialogue(currentDialogueStack,plotIndex));

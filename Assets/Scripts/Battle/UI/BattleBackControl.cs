@@ -37,9 +37,14 @@ public class BattleBackControl : MonoBehaviour
     /// 战斗开始————显示战斗背景画布
     /// </summary>
     /// <param name="battleBack"></param>
-    private void OnBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
+    private void OnBattleStartEvent(string battleBack,EnemyTeam_SO enemyTeam)
     {
         StartCoroutine(SwitchBattleBack(battleBack));
+    }
+
+    private void OnBattleEndEvent()
+    {
+        StartCoroutine(BattleEnd());
     }
 
     private IEnumerator SwitchBattleBack(string battleBack)
@@ -57,14 +62,9 @@ public class BattleBackControl : MonoBehaviour
         return battleBack_SO.battleBacksList.Find(i => i.backName == battleBack);
     }
 
-    private void OnBattleEndEvent()
-    {
-        StartCoroutine(BattleEnd());
-    }
-
     private IEnumerator BattleEnd()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.2f);
         battleBackImage.enabled = false;
     }
 }

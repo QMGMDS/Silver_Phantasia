@@ -63,9 +63,19 @@ public class SettingsMenu : MonoBehaviour
         StartCoroutine(OpenSettings_O(0));
     }
 
+    /// <summary>
+    /// 返回主菜单
+    /// </summary>
+    public void QuitToMainMenu()
+    {
+        EventHandler.CallPlayerShowImageChange(false);
+        StartCoroutine(OpenSettings_O(0));
+        EventHandler.CallTransitionEvent("Main_Menu",new Vector3(0,0,0));
+    }
+
 
     /// <summary>
-    /// 打开/关闭游戏设置L
+    /// 打开/关闭游戏设置O
     /// </summary>
     /// <param name="i">1为打开设置，0为关闭设置</param>
     private IEnumerator OpenSettings_O(int i)

@@ -44,6 +44,11 @@ public class CameraController : Singleton<CameraController>
     /// </summary>
     private void OnKingdom_CameraOverview()
     {
+        cinemachineVirtualCamera.Follow = transform;
+        cinemachineVirtualCamera.LookAt = transform;
+        cinemachineVirtualCamera.m_Lens.OrthographicSize = 10;
+
+        transform.position = new Vector3(1.6f,-13,0);
         StartCoroutine(CameraMove(false,18f,0.1f,30,true));
     }
 

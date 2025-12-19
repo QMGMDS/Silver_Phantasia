@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allOrganData:
   - ID: 3
-    isOpen: 1
+    isOpen: 0
     explain: "Dungeon_3\u5904\u7684\u62C9\u6746"
   - ID: 4
-    isOpen: 1
+    isOpen: 0
     explain: "Dungeon_4\u5904\u7684\u62C9\u6746"
   - ID: 2
-    isOpen: 1
+    isOpen: 0
     explain: "Dungeon_2\u5904\u7684\u65AD\u6865\u91CD\u63A5"
   - ID: 1
-    isOpen: 1
+    isOpen: 0
     explain: "Dungeon_2\u5904\u7684\u5267\u60C5\u89E6\u53D1"
+  - ID: 5
+    isOpen: 0
+    explain: "Dungeon_5\u5904\u7684\u5267\u60C5\u89E6\u53D1"

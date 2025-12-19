@@ -28,7 +28,6 @@ public class BagControl : MonoBehaviour
     {
         // 玩家背包内对应物品增加
         bagInventory.fromIDToFindItem(inChest_Truesure.treasureID).itemNum += inChest_Truesure.num;
-        Debug.Log("物品增加"+inChest_Truesure.num);
         // 更新物品信息
         UpdateBag();
     }

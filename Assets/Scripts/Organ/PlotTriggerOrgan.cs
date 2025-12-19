@@ -15,7 +15,7 @@ public class PlotTriggerOrgan : MonoBehaviour
 
     private void OnEnable()
     {
-        thisOrganOpened = organ_SO.fromIDToFindOrgan(thisOrganID).isOpen;
+        thisOrganOpened = organ_SO.FromIDToFindOrgan(thisOrganID).isOpen;
     }
 
 
@@ -25,8 +25,8 @@ public class PlotTriggerOrgan : MonoBehaviour
         if (!thisOrganOpened)
         {
             thisOrganOpened = true;
-            EventHandler.CallClosePlayerMoveEvent();
-            organ_SO.fromIDToFindOrgan(thisOrganID).isOpen = true;
+            //EventHandler.CallClosePlayerMoveEvent();
+            organ_SO.FromIDToFindOrgan(thisOrganID).isOpen = true;
 
             // 机关触发事件
             switch (thisOrganID)
@@ -34,7 +34,18 @@ public class PlotTriggerOrgan : MonoBehaviour
                 case 1:
                     EventHandler.CallDungeon_CameraFindStranger();
                     break;
+                case 5:
+                    StartCoroutine(FindBOSS());
+                    break;
             }
         }
+    }
+
+    private IEnumerator FindBOSS()
+    {
+        EventHandler.CallClosePlayerMoveEvent();
+        yield return new WaitForSeconds(2f);
+        EventHandler.CallBraveFaceChange(1);
+        EventHandler.CallPlotDialogueEvent(5);
     }
 }

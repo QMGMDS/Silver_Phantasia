@@ -28,6 +28,8 @@ public class TransitionManager : MonoBehaviour
         EventHandler.TransitionEvent += OnTransitionEvent;
         //进入战斗显示效果
         EventHandler.BattleStartEvent += OnBattleStartEvent;
+        //退出战斗显示效果
+        EventHandler.BattleEndEvent += OnBattleEndEvent;
         //加载场景
         EventHandler.LoadSceneEvent += OnLoadSceneEvent;
     }
@@ -38,10 +40,11 @@ public class TransitionManager : MonoBehaviour
         EventHandler.TransitionEvent -= OnTransitionEvent;
         //进入战斗显示效果
         EventHandler.BattleStartEvent -= OnBattleStartEvent;
+        //退出战斗显示效果
+        EventHandler.BattleEndEvent += OnBattleEndEvent;
         //加载场景
         EventHandler.LoadSceneEvent -= OnLoadSceneEvent;
     }
-
 
     private void OnTransitionEvent(string sceneToGo,Vector3 posToGo)
     {
@@ -49,9 +52,14 @@ public class TransitionManager : MonoBehaviour
     }
 
 
-    private void OnBattleStartEvent(string battleBack, BattleAttributeDataList_SO enemyTeam)
+    private void OnBattleStartEvent(string battleBack, EnemyTeam_SO enemyTeam)
     {
-        StartCoroutine(BattleStartFade());
+        StartCoroutine(BattleStartAndEndFade());
+    }
+
+    private void OnBattleEndEvent()
+    {
+        StartCoroutine(BattleStartAndEndFade());
     }
 
     private void OnLoadSceneEvent(string loadScene)
@@ -95,7 +103,7 @@ public class TransitionManager : MonoBehaviour
     /// 切换战斗模式 “场景 ”
     /// </summary>
     /// <returns></returns>
-    private IEnumerator BattleStartFade()
+    private IEnumerator BattleStartAndEndFade()
     {
         //场景逐渐变黑
         yield return Fade(1);

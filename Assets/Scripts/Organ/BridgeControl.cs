@@ -31,7 +31,7 @@ public class BridgeControl : MonoBehaviour
 
     private void OnEnable()
     {
-        if(organ_SO.fromIDToFindOrgan(organ3ID).isOpen)
+        if(organ_SO.FromIDToFindOrgan(organ3ID).isOpen)
             BridgeOpen();
         EventHandler.BridgeBreak += OnBridgeBreak;
     }
@@ -56,17 +56,17 @@ public class BridgeControl : MonoBehaviour
     /// </summary>
     private void BridgeOpen()
     {
-        if(organ_SO.fromIDToFindOrgan(organ1ID).isOpen && organ_SO.fromIDToFindOrgan(organ2ID).isOpen)
+        if(organ_SO.FromIDToFindOrgan(organ1ID).isOpen && organ_SO.FromIDToFindOrgan(organ2ID).isOpen)
         {
             spriteRenderer.enabled = true;
             coll.enabled = false;
-            organ_SO.fromIDToFindOrgan(thisOrganID).isOpen = true;
+            organ_SO.FromIDToFindOrgan(thisOrganID).isOpen = true;
         }
         else
         {
             spriteRenderer.enabled = false;
             coll.enabled = true;
-            organ_SO.fromIDToFindOrgan(thisOrganID).isOpen = false;
+            organ_SO.FromIDToFindOrgan(thisOrganID).isOpen = false;
         }
         
     }

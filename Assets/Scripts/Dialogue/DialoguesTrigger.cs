@@ -83,19 +83,13 @@ public class DialoguesTrigger : MonoBehaviour
     private void OnEnable()
     {
         EventHandler.InteractButtonStartEvent += OnInteractButtonStart;
-        EventHandler.DialogueOptionOneDownEvent += OnDialogueOptionOneDownEvent;
-        EventHandler.DialogueOptionTwoDownEvent += OnDialogueOptionTwoDownEvent;
     }
 
     private void OnDisable()
     {
         EventHandler.InteractButtonStartEvent -= OnInteractButtonStart;
-        EventHandler.DialogueOptionOneDownEvent -= OnDialogueOptionOneDownEvent;
-        EventHandler.DialogueOptionTwoDownEvent -= OnDialogueOptionTwoDownEvent;
     }
 
-
-#region 一次对话的触发
     /// <summary>
     /// 按下空格触发的一次对话
     /// </summary>
@@ -106,29 +100,6 @@ public class DialoguesTrigger : MonoBehaviour
             StartCoroutine(DialogueRoutine(currentDialogueStack));
         }
     }
-
-    /// <summary>
-    /// 按下选项一立马触发的一次对话
-    /// </summary>
-    private void OnDialogueOptionOneDownEvent()
-    {
-        Debug.Log("按下分支1");
-        currentDialogueStack = dialogueBranchOneStack;
-        StartCoroutine(DialogueRoutine(dialogueBranchOneStack));
-    }
-
-    /// <summary>
-    /// 按下选项二立马触发的一次对话
-    /// </summary>
-    private void OnDialogueOptionTwoDownEvent()
-    {
-        Debug.Log("按下分支2");
-        currentDialogueStack = dialogueBranchTwoStack;
-        StartCoroutine(DialogueRoutine(dialogueBranchTwoStack));
-    }
-#endregion
-
-
 
     /// <summary>
     /// 从目标堆栈中拿出单次对话

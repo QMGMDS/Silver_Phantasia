@@ -1,16 +1,4 @@
-﻿//场景类别
-public enum SceneType
-{
-    Menu,Battle,Loaction,Dialogue
-}
-
-//战斗回合
-public enum BattleState 
-{
-    Start, PlayerTurn, MonsterTurn, Won, Lost
-}
-
-//物品类型
+﻿// 物品类型
 public enum ItemType
 {
     // +攻击
@@ -21,19 +9,18 @@ public enum ItemType
     Speed,
 }
 
-//buff种类
+// buff种类
 public enum BuffType
 {
     Treatment,
     Speed,
 }
 
-//技能种类
+// 技能种类
 public enum SkillType
 {
     Treatment,
     Attack,
-    
 }
 
 // 存储容器的类别
@@ -43,19 +30,8 @@ public enum BagType
     skill,
 }
 
-//按键Button类型
-public enum ButtonType
-{
-    Attack,
-    Defend,
-    Status,
-    Skill,
-    Item,
-    Flee,
-}
-
-//现在是什么回合？
-public enum Turn
+// 现在是什么回合？
+public enum BattleTurn
 {
     None,
     Player,
@@ -64,18 +40,16 @@ public enum Turn
 }
 
 // 玩家选择的操作
-public enum ChooseAction
+public enum PlayerChooseAction
 {
     None,
     Attack,
-    Defend,
-    Status,
     Skill,
     Item,
     Flee,
 }
 
-//Grid地图的类型
+// Grid地图的类型
 public enum GridType
 {
     //NPC障碍物地图
@@ -95,4 +69,16 @@ public enum Kingdom_PlayerChoose
     Yes,
     // 不能
     No,
+}
+
+public enum Battle_BOSS
+{
+    // 未战斗
+    None,
+    // 进行中
+    Ing,
+    // 胜利
+    Win,
+    // 失败
+    Lost,
 }

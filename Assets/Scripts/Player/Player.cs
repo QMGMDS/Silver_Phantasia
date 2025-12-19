@@ -19,9 +19,6 @@ public class Player : MonoBehaviour
     [Header("人物属性")]
     [SerializeField] private bool isMoving;
     [SerializeField] private bool canMoving;
-    
-    [Header("玩家阵营")]
-    public BattleAttributeDataList_SO playerTeam;
 
 
     private void Awake()

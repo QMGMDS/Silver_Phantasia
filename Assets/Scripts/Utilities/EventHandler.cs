@@ -61,13 +61,13 @@ public static class EventHandler
 
 
 #region 战斗事件
-    public static event Action<string,BattleAttributeDataList_SO> BattleStartEvent;
+    public static event Action<string,EnemyTeam_SO> BattleStartEvent;
     /// <summary>
     /// 战斗开始的触发事件
     /// </summary>
     /// <param name="battleBack">战斗背景</param>
     /// <param name="enemyTeam">战斗敌人队伍</param>
-    public static void CallBattleStartEvent(string battleBack,BattleAttributeDataList_SO enemyTeam)
+    public static void CallBattleStartEvent(string battleBack,EnemyTeam_SO enemyTeam)
     {
         BattleStartEvent?.Invoke(battleBack,enemyTeam);
     }
@@ -79,6 +79,23 @@ public static class EventHandler
     public static void CallBattleEndEvent()
     {
         BattleEndEvent?.Invoke();
+    }
+    public static event Action Battle_ShowPrepareAttack;
+    /// <summary>
+    /// 进入预攻击状态
+    /// </summary>
+    public static void CallBattle_ShowPrepareAttack()
+    {
+        Battle_ShowPrepareAttack?.Invoke();
+    }
+
+    public static event Action Battle_PlayerHUDUpdate;
+    /// <summary>
+    /// 更新玩家HUD
+    /// </summary>
+    public static void CallBattle_PlayerHUDUpdate()
+    {
+        Battle_PlayerHUDUpdate?.Invoke();
     }
 
     public static event Action<ItemDetials> PlayerUseItem;
@@ -146,28 +163,10 @@ public static class EventHandler
         ShowDialogueOptionEvent?.Invoke(option,determinant);
     }
     
-    public static event Action DialogueOptionOneDownEvent;
-    /// <summary>
-    /// 对话选项一被按下(游玩型)
-    /// </summary>
-    public static void CallDialogueOptionOneDownEvent()
-    {
-        DialogueOptionOneDownEvent?.Invoke();
-    }
-    
-    public static event Action DialogueOptionTwoDownEvent;
-    /// <summary>
-    /// 对话选项二被按下(游玩型)
-    /// </summary>
-    public static void CallDialogueOptionTwoDownEvent()
-    {
-        DialogueOptionTwoDownEvent?.Invoke();
-    }
-    
     public static event Action<int> PlotDialogueOptionDown;
     /// <summary>
-    /// 对话选项被按下(剧情型)
-    /// 1代表选择了选项一，以此类推
+    /// 对话选项被按下
+    /// 1代表选择了选项一，2代表选择了选项二
     /// </summary>
     public static void CallPlotDialogueOptionDown(int choose)
     {
@@ -236,6 +235,15 @@ public static class EventHandler
     #endregion
 
     #region 灯光控制事件
+    public static event Action Kingdom_InitAllSpot;
+    /// <summary>
+    /// 初始化王国的所有灯光
+    /// </summary>
+    public static void CallKingdom_InitAllSpot()
+    {
+        Kingdom_InitAllSpot?.Invoke();
+    }
+
     public static event Action Dungeon_InitAllSpot;
     /// <summary>
     /// 初始化地牢的所有灯光

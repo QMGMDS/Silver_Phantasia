@@ -64,50 +64,64 @@ public class SkillDetails
     // 技能动画
 }
 
-// 进入回合制战斗的角色属性
+// 进入回合制战斗的玩家属性
 [System.Serializable]
-public class BattleAttribute
+public class PlayerBattleARB
 {
-    //角色的站位ID
-    public int roleID;
-    //角色名字
+    [Header("UI")]
+    //玩家名字
     public string roleName;
-    //角色的图片
+    //玩家图片
     public Sprite roleSprite;
-    //角色是否为玩家阵营
-    public bool isPlayer;
 
-    //战斗buff
-    public Buff buff;
-
-
-
-    [Header("战斗属性")]
-    //角色的最大血量
-    public int maxHP;
-    //角色的当前血量
-    public int currentHP;
-    //角色的基础攻击力
+    [Header("基础战斗属性")]
+    //玩家基础血量
+    public int baseHP;
+    //玩家基础攻击力
     public int baseAttack;
-    //角色的基础防御力
+    //玩家基础防御力
     public int baseDefend;
-    //角色的附加防御力
-    public int addDefend;
-    //角色的基础速度
+    //玩家基础速度
     public float baseSpeed;
-    //角色的当前速度
+
+    [Header("当前战斗属性")]
+    //玩家当前血量
+    public int currentHP;
+    //玩家当前攻击力
+    public int currentAttack;
+    //玩家当前防御力
+    public int currentDefend;
+    //玩家当前速度
     public float currentSpeed;
+    [Header("行动轴显示图片")]
+    public Sprite axisSprite;
+}
 
+// 进入回合制战斗的敌人属性
+[System.Serializable]
+public class EnemyBattleARB
+{
+    [Header("UI")]
+    //敌人名字
+    public string roleName;
+    //敌人图片
+    public Sprite roleSprite;
+    //图片尺寸
+    public Vector2 spriteSize;
 
-    [Header("行动轴属性")]
-    //回合制中当前角色走过的路程，默认是0
-    public float path;
-    //行动轴速度
-    public float walkSpeed;
-    //行动轴终点坐标
-    public float walkPath;
-    //上次行动轴的起点坐标
-    public float lastWalkPath;
+    [Header("基础战斗属性")]
+    //敌人的站位编号
+    public int enemyStandID;
+    //敌人基础血量
+    public int baseHP;
+    //敌人基础攻击力
+    public int baseAttack;
+    //敌人基础防御力
+    public int baseDefend;
+    //敌人基础速度
+    public float baseSpeed;
+    [Header("行动轴显示图片")]
+    public Sprite axisSprite;
 }
 
 // 战斗buff

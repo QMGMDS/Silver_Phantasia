@@ -17,16 +17,25 @@ public class PlotLightControl : MonoBehaviour
 
     private void OnEnable()
     {
+        EventHandler.Kingdom_InitAllSpot += OnKingdom_InitAllSpot;
         EventHandler.Dungeon_InitAllSpot += OnDungeon_InitAllSpot;
     }
 
     private void OnDisable()
     {
+        EventHandler.Kingdom_InitAllSpot -= OnKingdom_InitAllSpot;
         EventHandler.Dungeon_InitAllSpot -= OnDungeon_InitAllSpot;
     }
 
 
-
+    /// <summary>
+    /// 初始化王国所有灯光
+    /// </summary>
+    private void OnKingdom_InitAllSpot()
+    {
+        globalLight.intensity = 1f;
+        playerLight.intensity = 0f;
+    }
 
     /// <summary>
     /// 初始化地牢所有灯光
@@ -37,7 +46,6 @@ public class PlotLightControl : MonoBehaviour
         globalLight.intensity = 0.02f;
         // 玩家跟随灯光打开
         StartCoroutine(PlayerLightOpen());
-        // 打开所有火把灯光
     }
 
 
