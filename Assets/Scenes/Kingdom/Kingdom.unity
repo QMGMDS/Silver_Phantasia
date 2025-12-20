@@ -430,7 +430,7 @@ MonoBehaviour:
   currentGridPosition: {x: 0, y: 0, z: 0}
   startGridPosition: {x: 0, y: 0, z: 0}
   targetGridPosition: {x: 0, y: 0, z: 0}
-  moveTime: 0.3
+  moveTime: 0.5
   moveToTarget: 0
 --- !u!95 &95619050
 Animator:

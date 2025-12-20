@@ -5772,6 +5772,7 @@ GameObject:
   - component: {fileID: 1710822328}
   - component: {fileID: 1710822329}
   - component: {fileID: 1710822326}
+  - component: {fileID: 1710822330}
   m_Layer: 0
   m_Name: Organ
   m_TagString: Untagged
@@ -5928,6 +5929,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.1787548}
   m_EdgeRadius: 0
+--- !u!114 &1710822330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710822324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b4cf470a9ccb24684755bb7aae690b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playAudioEvent: {fileID: 11400000, guid: a5bb139a476ce8640aaab9de804b7c79, type: 2}
+  audioClip: {fileID: 8300000, guid: c3777beb47112e7428f25dc25574698b, type: 3}
 --- !u!1 &1806287202
 GameObject:
   m_ObjectHideFlags: 0

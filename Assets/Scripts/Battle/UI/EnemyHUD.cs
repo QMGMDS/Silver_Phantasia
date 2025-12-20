@@ -19,8 +19,17 @@ public class EnemyHUD : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void OnEnable()
     {
         EventHandler.Battle_ShowPrepareAttack += OnBattle_ShowPrepareAttack;
+        EventHandler.Battle_ShowItemChoose += OnBattle_ShowItemChoose;
+        EventHandler.Battle_AllQuitPrepare += OnBattle_AllQuitPrepare;
         InitEnemyShow();
         
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.Battle_ShowPrepareAttack -= OnBattle_ShowPrepareAttack;
+        EventHandler.Battle_ShowItemChoose -= OnBattle_ShowItemChoose;
+        EventHandler.Battle_AllQuitPrepare -= OnBattle_AllQuitPrepare;
     }
 
     private void InitEnemyShow()
@@ -42,12 +51,17 @@ public class EnemyHUD : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    private void OnDisable()
+    private void OnBattle_AllQuitPrepare()
     {
-        EventHandler.Battle_ShowPrepareAttack -= OnBattle_ShowPrepareAttack;
+        enemyImage.raycastTarget = false;
     }
 
     private void OnBattle_ShowPrepareAttack()
+    {
+        enemyImage.raycastTarget = true;
+    }
+
+    private void OnBattle_ShowItemChoose()
     {
         enemyImage.raycastTarget = true;
     }
@@ -63,9 +77,11 @@ public class EnemyHUD : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         enemyHUD.SetActive(false);
-        // 玩家攻击该目标
+        // 玩家攻击(选择)该目标
         BattleManager.Instance.attackedEnemy_StandID = enemyStandID;
         BattleManager.Instance.playerMakeOperation = true;
+        // 所有目标射线检测关闭
+        EventHandler.CallBattle_AllQuitPrepare();
     }
 
 }

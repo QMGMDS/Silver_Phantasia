@@ -8,9 +8,6 @@ public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHand
     public PlayerChooseAction thisButtonType;
     [SerializeField]private Image highlight;
 
-    //按钮按下时的触发事件
-    public UnityEvent ButtonStarted;
-
     private void OnEnable()
     {
         highlight.enabled = false;
@@ -40,12 +37,25 @@ public class ActionButton : MonoBehaviour,IPointerEnterHandler, IPointerExitHand
     public void OnPointerClick(PointerEventData eventData)
     {
         highlight.enabled = false;
+        // 玩家选择对应操作
 
         switch (thisButtonType)
         {
             case PlayerChooseAction.Attack:
                 EventHandler.CallBattle_ShowPrepareAttack();
                 BattleManager.Instance.playerChooseAction = PlayerChooseAction.Attack;
+                break;
+            case PlayerChooseAction.Item:
+                EventHandler.CallBattle_ShowPrepareItemUse();
+                BattleManager.Instance.playerChooseAction = PlayerChooseAction.Item;
+                break;
+            case PlayerChooseAction.Skill:
+                BattleManager.Instance.playerMakeOperation = true;
+                BattleManager.Instance.playerChooseAction = PlayerChooseAction.Skill;
+                break;
+            case PlayerChooseAction.Flee:
+                BattleManager.Instance.playerMakeOperation = true;
+                BattleManager.Instance.playerChooseAction = PlayerChooseAction.Flee;
                 break;
         }
     }

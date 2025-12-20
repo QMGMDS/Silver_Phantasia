@@ -410,9 +410,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plotText_SO: {fileID: 11400000, guid: 2a50a6535d4c97f428c93e51b5e22a2f, type: 2}
   playIsOver: 0
-  timePage: 1
-  timePiece: 0.1
-  timeChar: 0.01
+  timePage: 3
+  timePiece: 0.3
+  timeChar: 0.05
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -13,6 +13,9 @@ public class OrganControl : MonoBehaviour
     [Header("该机关触发条件")]
     public int organ1ID;
     private bool organ1ID_OK;
+
+    // 音效
+    private AudioDefination audioDefination;
     
 
     private Animator organAnim;
@@ -27,6 +30,8 @@ public class OrganControl : MonoBehaviour
     {
         organAnim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        audioDefination = GetComponent<AudioDefination>();
+        audioDefination.enabled = false;
     }
 
     private void OnEnable()
@@ -52,6 +57,7 @@ public class OrganControl : MonoBehaviour
         if (canInteract && organ1ID_OK)
         {
             OrganOpen();
+            audioDefination.enabled = true;
         }
     }
 

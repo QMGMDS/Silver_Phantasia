@@ -20,9 +20,13 @@ public class PlotDialogueController : MonoBehaviour
     [Header("对话：遇到BOSS")]
     public Dialogue_SO dialogue_5;
     private Stack<DialoguePiece> fivePlotStack;
-    [Header("剧情一对话6")]
-    public List<DialoguePiece> plotSix;
+    [Header("逃跑对话")]
+    public Dialogue_SO dialogue_6;
     private Stack<DialoguePiece> sixPlotStack;
+    [Header("技能对话")]
+    public Dialogue_SO dialogue_7;
+    private Stack<DialoguePiece> sevenPlotStack;
+    
 
 
     // 选项分支对话堆栈
@@ -136,10 +140,38 @@ public class PlotDialogueController : MonoBehaviour
                 StartCoroutine(PlayPlotDialogue(fivePlotStack,plotIndex));
                 break;
             case 6:
-                InitPlotStack(ref sixPlotStack,plotSix);
-                StartCoroutine(PlayPlotDialogue(sixPlotStack,plotIndex));
+                InitPlotStack(ref sixPlotStack,dialogue_6.dialoguePiecesList);
+                StartCoroutine(FleeTip());
+                break;
+            case 7:
+                InitPlotStack(ref sevenPlotStack,dialogue_7.dialoguePiecesList);
+                StartCoroutine(SkillTip());
                 break;
         }
+    }
+
+    /// <summary>
+    /// 逃跑提示对话
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator FleeTip()
+    {
+        StartCoroutine(PlayPlotDialogue(sixPlotStack,plotIndex));
+        yield return new WaitForSeconds(1.5f);
+        // 关闭对话框，退出对话状态
+        EventHandler.CallShowDialogueEvent(null);
+    }
+
+    /// <summary>
+    /// 技能提示对话
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SkillTip()
+    {
+        StartCoroutine(PlayPlotDialogue(sevenPlotStack,plotIndex));
+        yield return new WaitForSeconds(1.5f);
+        // 关闭对话框，退出对话状态
+        EventHandler.CallShowDialogueEvent(null);
     }
 
     /// <summary>

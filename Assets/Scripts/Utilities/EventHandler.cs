@@ -80,6 +80,7 @@ public static class EventHandler
     {
         BattleEndEvent?.Invoke();
     }
+
     public static event Action Battle_ShowPrepareAttack;
     /// <summary>
     /// 进入预攻击状态
@@ -87,6 +88,33 @@ public static class EventHandler
     public static void CallBattle_ShowPrepareAttack()
     {
         Battle_ShowPrepareAttack?.Invoke();
+    }
+
+    public static event Action Battle_ShowPrepareItemUse;
+    /// <summary>
+    /// 物品进入预使用状态
+    /// </summary>
+    public static void CallBattle_ShowPrepareItemUse()
+    {
+        Battle_ShowPrepareItemUse?.Invoke();
+    }
+
+    public static event Action Battle_ShowItemChoose;
+    /// <summary>
+    /// 物品选择了
+    /// </summary>
+    public static void CallBattle_ShowItemChoose()
+    {
+        Battle_ShowItemChoose?.Invoke();
+    }
+
+    public static event Action Battle_AllQuitPrepare;
+    /// <summary>
+    /// 所有目标退出预选择
+    /// </summary>
+    public static void CallBattle_AllQuitPrepare()
+    {
+        Battle_AllQuitPrepare?.Invoke();
     }
 
     public static event Action Battle_PlayerHUDUpdate;

@@ -16,11 +16,11 @@ MonoBehaviour:
     roleName: "\u52C7\u8005"
     roleSprite: {fileID: -744445304, guid: 5a1892460bf796c40839d1a58c7e12d9, type: 3}
     baseHP: 10000
-    baseAttack: 6000
+    baseAttack: 1000
     baseDefend: 10
     baseSpeed: 4
-    currentHP: 9450
-    currentAttack: 6000
+    currentHP: 7760
+    currentAttack: 1000
     currentDefend: 10
     currentSpeed: 5.5
     axisSprite: {fileID: -1430019700, guid: 5a1892460bf796c40839d1a58c7e12d9, type: 3}

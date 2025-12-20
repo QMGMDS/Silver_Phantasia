@@ -230,9 +230,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plotText_SO: {fileID: 11400000, guid: 0e111a165049e3b409cbb992015f8b51, type: 2}
   playIsOver: 0
-  timePage: 1
-  timePiece: 0.1
-  timeChar: 0.01
+  timePage: 3
+  timePiece: 0.3
+  timeChar: 0.05
 --- !u!114 &158610660
 MonoBehaviour:
   m_ObjectHideFlags: 0

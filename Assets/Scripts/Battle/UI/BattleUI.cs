@@ -6,18 +6,22 @@ public class BattleUI : MonoBehaviour
     public GameObject AllButton;
     // 玩家操作提示
     public GameObject Tip;
+    // 背包
+    public GameObject Bag;
 
     
     private void OnEnable()
     {
 
         EventHandler.Battle_ShowPrepareAttack += OnBattle_ShowPrepareAttack;
+        EventHandler.Battle_ShowPrepareItemUse += OnBattle_ShowPrepareItemUse;
     }
 
     private void OnDisable()
     {
 
         EventHandler.Battle_ShowPrepareAttack -= OnBattle_ShowPrepareAttack;
+        EventHandler.Battle_ShowPrepareItemUse -= OnBattle_ShowPrepareItemUse;
     }
 
 
@@ -36,7 +40,17 @@ public class BattleUI : MonoBehaviour
     public void Battle_ShowPlayerAction()
     {
         Tip.SetActive(false);
+        Bag.SetActive(false);
         AllButton.SetActive(true);
+    }
+
+    /// <summary>
+    /// 关闭玩家操作UI————Action，打开背包面板
+    /// </summary>
+    private void OnBattle_ShowPrepareItemUse()
+    {
+        AllButton.SetActive(false);
+        Bag.SetActive(true);
     }
 
     

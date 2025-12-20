@@ -1,7 +1,7 @@
 // 一个角色的战斗基本属性
 public class BattleARB
 {
-    //站位
+    //站位 玩家为0
     public int standID;
 
 
@@ -24,7 +24,8 @@ public class BattleARB
     //当前速度
     public float currentSpeed;
 
-
+    //角色身上的Buff
+    public Buff buff;
 
 
     /// <summary>
@@ -43,6 +44,7 @@ public class BattleARB
         currentAttack = player.currentAttack;
         currentDefend = player.currentDefend;
         currentSpeed = player.currentSpeed;
+        
     }
 
 
@@ -58,4 +60,28 @@ public class BattleARB
         currentDefend = baseDefend = enemy.baseDefend;
         currentSpeed = baseSpeed = enemy.baseSpeed;
     }
+
+    /// <summary>
+    /// 更新Buff
+    /// </summary>
+    public void UpdataBuff()
+    {
+        if(buff.remaining != 0)
+        {
+            switch (buff.type)
+            {
+                case BuffType.Speed:
+                    break;
+                case BuffType.Treatment:
+                    currentHP += buff.buffAttribute;
+                    break;
+            }
+            buff.remaining--;
+        }
+        else
+        {
+            currentSpeed = baseSpeed;
+        }
+        
+    } 
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allChestData:
   - ID: 1
-    isOpen: 0
+    isOpen: 1
     inChest_Truesure:
       treasureID: 1002
       num: 3

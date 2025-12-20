@@ -150,7 +150,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382848110}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -204,7 +204,7 @@ Transform:
   m_GameObject: {fileID: 382848110}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.53, y: -4.36, z: 0}
+  m_LocalPosition: {x: 9, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69caabb97dab3234a940d1fb6e8fd72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 500
+  speed: 240
   currentSpeed: {x: 0, y: 0}
   isMoving: 0
   canMoving: 1
@@ -386,62 +386,8 @@ MonoBehaviour:
   dialogue_3: {fileID: 11400000, guid: d1f01d9b73f0d4e4daa9fa7bb79f7c55, type: 2}
   dialogue_4: {fileID: 11400000, guid: d57f5bc11fc7a0743a117d9f83991be0, type: 2}
   dialogue_5: {fileID: 11400000, guid: efb3ba71d48cf174190e239fe51cf0be, type: 2}
-  plotSix:
-  - faceImage: {fileID: 21300000, guid: 7bd6d39c58a882940a57feef4cb0eef6, type: 3}
-    onLeft: 0
-    dialogueName: "\u300C\u59B9\u7EA2\u300D"
-    dialogueText: "\u5582\uFF01\uFF01\u8FD9\u662F\u4EC0\u4E48\u4E1C\u897F\uFF01\uFF01\uFF01\u4E0D\u662F\u6BDB\u7389\u4E48\uFF01"
-    hasToPause: 1
-    hasToOption: 0
-    isDone: 0
-    isChoose: 0
-    afterTalkEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - faceImage: {fileID: 21300000, guid: b38c0ec265ee86649a64c2a593e8bb27, type: 3}
-    onLeft: 1
-    dialogueName: "\u300C\u8F89\u591C\u300D"
-    dialogueText: "\u770B\u6765\u8FD9\u91CC\u771F\u7684\u4E0D\u662F\u5E7B\u60F3\u4E61\u554A......"
-    hasToPause: 1
-    hasToOption: 0
-    isDone: 0
-    isChoose: 0
-    afterTalkEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - faceImage: {fileID: 21300000, guid: 570b9fd56fb2a204db482e67896841fe, type: 3}
-    onLeft: 0
-    dialogueName: "\u300C\u59B9\u7EA2\u300D"
-    dialogueText: "\u4F3C\u4E4E\u5B8C\u5168\u4E0D\u53CB\u597D\u7684\u6837\u5B50......"
-    hasToPause: 1
-    hasToOption: 0
-    isDone: 0
-    isChoose: 0
-    afterTalkEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - faceImage: {fileID: 21300000, guid: 8a8d4f24d2806d3428187846f94c71e0, type: 3}
-    onLeft: 1
-    dialogueName: "\u300C\u8F89\u591C\u300D"
-    dialogueText: "\u800C\u4E14\u6BD4\u8D77\u5E7B\u60F3\u4E61\u4E0D\u662F\u6BDB\u7389\u5C31\u662F\u5996\u7CBE\u840C\u5C11\u5973\u7684\u654C\u4EBA\u6765\u8BF4\u8FD9\u4E2A\u663E\u5F97\u592A\u4E11\u4E86\uFF01\uFF01\u7C97\u5236\u6EE5\u9020\u7684\u5427\uFF01\uFF01"
-    hasToPause: 1
-    hasToOption: 0
-    isDone: 0
-    isChoose: 0
-    afterTalkEvent:
-      m_PersistentCalls:
-        m_Calls: []
-  - faceImage: {fileID: 21300000, guid: 7bd6d39c58a882940a57feef4cb0eef6, type: 3}
-    onLeft: 0
-    dialogueName: "\u300C\u59B9\u7EA2\u300D"
-    dialogueText: "\u73B0\u5728\u4E0D\u662F\u8BF4\u90A3\u79CD\u5E9F\u8BDD\u7684\u65F6\u5019\uFF01\uFF01\u8FD9\u5BB6\u4F19\u653B\u8FC7\u6765\u4E86\uFF01\uFF01"
-    hasToPause: 1
-    hasToOption: 0
-    isDone: 0
-    isChoose: 0
-    afterTalkEvent:
-      m_PersistentCalls:
-        m_Calls: []
+  dialogue_6: {fileID: 11400000, guid: ac9067727865b4b42bcfb87a78e5f9b5, type: 2}
+  dialogue_7: {fileID: 11400000, guid: 3ac93675d0b96d24b84295084ad2a8f9, type: 2}
   dialogueOption1:
     option1Text: "<\u2014\u80FD"
     option2Text: "<\u2014\u4E0D\u80FD"
@@ -1138,12 +1084,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d06fc210649bf45a9f08a138f64364, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Bag: {fileID: 11400000, guid: bd2bb70bf67a2f445b5cbb240dc8318b, type: 2}
   enemyTeam_SO: {fileID: 0}
   attackedEnemy_StandID: 0
   attackEnemy_StandID: 0
   playerBattleARB_SO: {fileID: 11400000, guid: c8305cb7502efe04e9d07039a885c671, type: 2}
   playerChooseAction: 0
   playerMakeOperation: 0
+  playerChooseItemID: 0
 --- !u!1 &1325455802
 GameObject:
   m_ObjectHideFlags: 0

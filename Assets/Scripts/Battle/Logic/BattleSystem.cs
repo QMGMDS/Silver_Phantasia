@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //BattleSystem处理战斗的逻辑
@@ -89,7 +90,7 @@ public class BattleSystem : MonoBehaviour
         battleUI.Battle_ShowPlayerAction();
 
 
-        // 等待玩家做出操作
+        // 等待玩家做出操作(抵达操作终点)
         yield return new WaitUntil(() => BattleManager.Instance.playerMakeOperation);
 
 
@@ -98,7 +99,23 @@ public class BattleSystem : MonoBehaviour
             case PlayerChooseAction.Attack:
                 BattleManager.Instance.PlayerAttack();
                 break;
+            case PlayerChooseAction.Item:
+                BattleManager.Instance.PlayerUseItem();
+                break;
+            case PlayerChooseAction.Skill:
+                EventHandler.CallPlotDialogueEvent(7);
+                break;
+            case PlayerChooseAction.Flee:
+                EventHandler.CallPlotDialogueEvent(6);
+                break;
         }
+
+        //更新Buff
+        BattleManager.Instance.UpdataAllBuff();
+
+        //更新玩家HUD
+        EventHandler.CallBattle_PlayerHUDUpdate();
+
 
         StartCoroutine(Battle_LogicEnd());
     }
@@ -123,6 +140,9 @@ public class BattleSystem : MonoBehaviour
     /// </summary>
     public IEnumerator Battle_LogicEnd()
     {
+
+
+
         int k = BattleManager.Instance.BattleEnd();
         if(k == 1)
         {
@@ -163,143 +183,6 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-
-
-    // //玩家攻击动画和数据处理
-    // private IEnumerator PlayerAttackAnimAndThenAttack()
-    // {
-    //     //播放动画
-    //     playerAttackAnimations?.Invoke();
-    //     //等待动画播放
-    //     yield return new WaitForSeconds(2f);
-    //     //玩家攻击数据处理
-    //     BattleManager.Instance.PlayerAttack();
-
-    //     //判断战斗是否结束
-    //     if(BattleManager.Instance.BattleEnd() == -1)
-    //     {
-    //         BattleManager.Instance.BattleTurn = Turn.None;
-    //     }
-    //     else
-    //     {
-    //         BattleManager.Instance.BattleTurn = Turn.End;
-    //     }
-    //     //该回合结束
-    //     BattleManager.Instance.thisTurnOver = true;
-    // }
-
-    // public void EnemyAttack()
-    // {
-    //     StartCoroutine(EnemyAttackAnimAndThenAttack());
-    // }
-
-    // private IEnumerator EnemyAttackAnimAndThenAttack()
-    // {
-    //     //播放动画
-    //     EnemyAttackAnimations?.Invoke();
-    //     //等待动画播放
-    //     yield return new WaitForSeconds(2f);
-    //     //敌人攻击数据处理
-    //     BattleManager.Instance.EnemyAttack();
-    //     //玩家血量更新
-    //     nowIsEnemyTurn?.Invoke();
-
-    //     //战斗是否结束
-    //     if(BattleManager.Instance.BattleEnd() == -1)
-    //     {
-    //         BattleManager.Instance.BattleTurn = Turn.None;
-    //     }
-    //     else
-    //     {
-    //         BattleManager.Instance.BattleTurn = Turn.End;
-    //     }
-    //     //该回合结束
-    //     BattleManager.Instance.thisTurnOver = true;
-    // }
-
-
-    
-
-
-
-    
-    
-    // /// <summary>
-    // /// 玩家按下攻击
-    // /// </summary>
-    // public void AttackButtonDown()
-    // {
-    //     BattleManager.Instance.currentChooseAction = ChooseAction.Attack;
-    // }
-
-    // /// <summary>
-    // /// 玩家按下防御
-    // /// </summary>
-    // public void DefendButtonDown()
-    // {
-    //     //玩家防御数据处理
-    //     BattleManager.Instance.PlayerDefend();
-
-    //     //该回合结束
-    //     BattleManager.Instance.thisTurnOver = true;
-    //     BattleManager.Instance.BattleTurn = Turn.None;
-    // }
-
-    // /// <summary>
-    // /// 玩家按下逃跑
-    // /// </summary>
-    // public void FleeButtonDown()
-    // {
-    //     //该回合结束
-    //     BattleManager.Instance.thisTurnOver = true;
-    //     BattleManager.Instance.BattleTurn = Turn.End;
-    // }
-
-    // /// <summary>
-    // /// 玩家使用物品
-    // /// </summary>
-    // /// <param name="usedItem">被使用的物品</param>
-    // private void OnPlayerUseItem(ItemDetials usedItem)
-    // {
-    //     // 使用物品
-    //     BattleManager.Instance.PlayerUseItem(usedItem);
-    //     //玩家血量更新
-    //     nowIsEnemyTurn?.Invoke();
-
-    //     // 该回合结束
-    //     BattleManager.Instance.thisTurnOver = true;
-    //     BattleManager.Instance.BattleTurn = Turn.None;
-    // }
-
-
-    // /// <summary>
-    // /// buff状态更新
-    // /// </summary>
-    // private void UpdataBuff()
-    // {
-    //     //角色buff减少一回合
-    //     if(thisTurnCharacter.buff.remaining != 0)
-    //     {
-    //         // 执行buff效果
-    //         switch (thisTurnCharacter.buff.type)
-    //         {
-    //             case BuffType.Treatment:
-    //                 BattleManager.Instance.Treatment(thisTurnCharacter.buff.buffAttribute);
-    //                 nowIsEnemyTurn?.Invoke();
-    //                 break;
-    //             case BuffType.Speed:
-
-    //                 break;
-    //         }
-    //         // buff剩余回合-1
-    //         thisTurnCharacter.buff.remaining--;
-    //     }
-    //     else
-    //     {
-    //         // buff归零则重置玩家基础属性
-    //         BattleManager.Instance.BuffReset();
-    //     }
-    // }
     
 
 }

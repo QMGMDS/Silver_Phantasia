@@ -4,43 +4,19 @@ using UnityEngine;
 //BattleManager处理战斗的数据
 public class BattleManager : Singleton <BattleManager>
 {
-    // //战斗是否初始化完毕
-    // public bool Inited;
-    // //当前回合是否结束
-    // public bool thisTurnOver;
-
-
-    // //战斗列表（用于搜索出角色行动轴和判断在场存活人数）
-    // public List<BattleAttribute> battleList = new List<BattleAttribute>();
-    // //行动轴动画是否在播放
-    // public bool walking;
-
-
-    // //玩家的战斗信息，调用时实时进行修改SO
-    // public BattleAttributeDataList_SO playerTeam;
-    // //敌人的战斗信息
-    // public List<BattleAttribute> enemyTeam;
-
-    // //当前按下的按钮类型
-    // public ButtonType currentButtonType;
-    // //当前行动回合的角色
-    // public BattleAttribute thisCharacterTurn;
-    // //被攻击的角色
-    // public BattleAttribute attackedCharacter;
-    // //当前的回合阶段
-    // public Turn BattleTurn;
-    // public ChooseAction currentChooseAction;
-
     // 所有参战角色的行动轴
     public List<AxisOfAction> allAxisOfAction = new List<AxisOfAction>();
     // 所有参战角色的战斗属性
     public List<BattleARB> allBattleARB = new List<BattleARB>();
 
+    [Header("背包")]
+    public ItemDataList_SO Bag;
+
     [Header("敌人队伍")]
     public EnemyTeam_SO enemyTeam_SO;
     // 敌人是否死亡
     private bool isDead_Enemy;
-    // 当前受到攻击的敌人的站位编号
+    // 当前受到攻击的敌人的站位编号 （为0说明目标为玩家）
     public int attackedEnemy_StandID;
     // 当前回合的敌人的站位编号
     public int attackEnemy_StandID;
@@ -51,10 +27,11 @@ public class BattleManager : Singleton <BattleManager>
     public PlayerChooseAction playerChooseAction;
     // 玩家是否死亡
     private bool isDead_Player;
-    // 玩家是否做出操作
+    // 玩家是否做出操作(选择目标)(达到目标操作线路的终点)
     public bool playerMakeOperation;
 
-
+    // 玩家选择的物品的ID
+    public int playerChooseItemID;
 
     private void OnEnable()
     {
@@ -77,7 +54,7 @@ public class BattleManager : Singleton <BattleManager>
     }
 
 
-    //TODO:玩家攻击操作（三个事件）
+    
     
     /// <summary>
     /// 玩家攻击
@@ -106,46 +83,77 @@ public class BattleManager : Singleton <BattleManager>
         }
     }
 
-
-    // /// <summary>
-    // /// 玩家使用物品
-    // /// </summary>
-    // public void PlayerUseItem(ItemDetials usedItem)
-    // {
-    //     // 物品-1
-    //     usedItem.itemNum--;
-    //     // buff持续回合内使用物品，仅消耗物品，不刷新buff
-    //     if(thisCharacterTurn.buff.remaining != 0)
-    //         return;
-    //     switch (usedItem.itemType)
-    //     {
-    //         case ItemType.Treatment:
-    //             Treatment(usedItem.baseAttribute);
-    //             break;
-    //         case ItemType.Speed:
-    //             thisCharacterTurn.currentSpeed += usedItem.baseAttribute;
-    //             break;
+    public void PlayerUseItem()
+    {
+        switch (playerChooseItemID)
+        {
+            case 1001: //速度药剂
+                UseSpeedPotion();
+                break;
+            case 1002: //恢复药剂
+                UseHPPotion();
+                Debug.Log("恢复！");
+                break;
+            case 1003: //未知药剂
+                UseUnknownPotion();
+                break;
+            case 1004: //神秘小药水
+                UseMysteriousPotion();
+                break;
             
-    //     }
-    //     thisCharacterTurn.buff = usedItem.buff;
-    // }
+        }
+    }
+    /// <summary>
+    /// 使用速度药剂
+    /// </summary>
+    private void UseSpeedPotion()
+    {
+        allBattleARB[attackedEnemy_StandID].currentSpeed += Bag.fromIDToFindItem(1001).baseAttribute;
+        allAxisOfAction[attackedEnemy_StandID].walkSpeed += Bag.fromIDToFindItem(1001).baseAttribute;
+        // 上Buff
+        allBattleARB[attackedEnemy_StandID].buff = Bag.fromIDToFindItem(1001).buff;
+    }
+    /// <summary>
+    /// 使用恢复药剂
+    /// </summary>
+    private void UseHPPotion()
+    {
+        if((allBattleARB[attackedEnemy_StandID].currentHP += Bag.fromIDToFindItem(1002).baseAttribute) <= allBattleARB[attackedEnemy_StandID].baseHP)
+            allBattleARB[attackedEnemy_StandID].currentHP += Bag.fromIDToFindItem(1002).baseAttribute;
+        else
+            allBattleARB[attackedEnemy_StandID].currentHP = allBattleARB[attackedEnemy_StandID].baseHP;
+        // 上Buff
+        allBattleARB[attackedEnemy_StandID].buff = Bag.fromIDToFindItem(1002).buff;
+    }
+    /// <summary>
+    /// 使用未知药剂
+    /// </summary>
+    private void UseUnknownPotion()
+    {
+        allBattleARB[attackedEnemy_StandID].currentHP -= Bag.fromIDToFindItem(1003).baseAttribute;
+    }
+    /// <summary>
+    /// 使用神秘小药水
+    /// </summary>
+    private void UseMysteriousPotion()
+    {
+        if((allBattleARB[attackedEnemy_StandID].currentHP += Bag.fromIDToFindItem(1004).baseAttribute) <= allBattleARB[attackedEnemy_StandID].baseHP)
+            allBattleARB[attackedEnemy_StandID].currentHP += Bag.fromIDToFindItem(1004).baseAttribute;
+        else
+            allBattleARB[attackedEnemy_StandID].currentHP = allBattleARB[attackedEnemy_StandID].baseHP;
+    }
 
-    
-    // /// <summary>
-    // /// 治疗当前回合的角色血量
-    // /// </summary>
-    // /// <param name="treatAttribute">治疗量</param>
-    // public void Treatment(int treatAttribute)
-    // {
-    //     if ((thisCharacterTurn.currentHP + treatAttribute) > thisCharacterTurn.maxHP)
-    //     {
-    //         thisCharacterTurn.currentHP = thisCharacterTurn.maxHP;
-    //     }
-    //     else
-    //     {
-    //         thisCharacterTurn.currentHP += treatAttribute;
-    //     }
-    // }
+    /// <summary>
+    /// 更新所有Buff效果
+    /// </summary>
+    public void UpdataAllBuff()
+    {
+        foreach (var battleARB in allBattleARB)
+        {
+            battleARB.UpdataBuff();
+        }
+    }
+
 
 
     /// <summary>
